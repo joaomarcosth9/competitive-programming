@@ -7,26 +7,34 @@ using namespace std;
 const int MAX = 2e2;
 typedef long long ll;
 
-ll n, arr[MAX], Adj[MAX], root, res[MAX];
-map<ll,int> vis;
-
-void dfs(ll node, int p, int rt){
-    vis[node]++;
-    res[rt] = p;
-    if(!vis[Adj[node]]) dfs(Adj[node], p+1, rt);
-    if(p+res[Adj[node]] == n)
-}
+int n, root, Adj[MAX];
+ll arr[MAX];
+map<int,int> vis;
 
 void solve(){
     cin >> n;
-    for(int i = 0; i < n; i++){
-        cin >> arr[i];
+    for(int i = 1; i <= n; i++) cin >> arr[i];
+    for(int i = 1; i <= n; i++) for(int j = 1; j <= n; j++) {
+        if(arr[j] == arr[i]*2){
+            Adj[i] = j;
+            vis[j] = 1;
+        } else if (arr[i] % 3 == 0 && arr[j] == arr[i]/3){
+            Adj[i] = j;
+            vis[j] = 1;
+        }
     }
-    for(int i = 0; i < n; i++) for(int j = 0; j < n; j++){
-        if(arr[i] == (arr[j]/3) || arr[i] == (arr[j]*2)) Adj[j] = i;
+
+    for(int i = 1; i <= n; i++) if(!vis[i]) root = i;
+    
+    int next = root;
+    int c = 0;
+    while(1){
+        cout << arr[next] << ' ';
+        next = Adj[next];
+        c++;
+        if(c == n) break;
     }
-    for(int i = 0; i < n; i++) dfs(i, 1, i);
-    cout << arr[root] << endl;
+    cout << endl;
 }
 
 int main(){ _
