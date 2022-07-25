@@ -5,27 +5,40 @@
 
 using namespace std;
 const int MAX = 1e2;
-typedef long long ll;
-ll pascal[60][60];
+string s;
 
 void solve(){
     int n, m; cin >> n >> m;
-    for(int i = 0; i < 50; i++) for(int j = 0; j < 50; j++){
-        if(i == j || j == 0) pascal[i][j] = 1;
-        else pascal[i][j] = pascal[i-1][j] + pascal[i-1][j-1];
-    }
-    for(int i = 0; i < 20; i++){
-        for(int j = 0; j < 20; j++){
-            if(j>i) break;
-            cout << pascal[i][j] << ' ';
-        }
-        cout << endl;
-    }
-    int res = pow(2, n)-1;
     for(int i = 0; i < m; i++){
         int a, b; cin >> a >> b;
     }
-    cout << res << endl;
+
+    vector<int> V;
+    for(int i = 1; i <= n; i++){
+        V.push_back(i);
+    }
+
+    for(int j = 1; j <= (1 << (int)V.size())-1; j++){
+        for(int i = 1; i <= (int)V.size(); i++){
+            if(((1 << (i-1)) & j)) cout << V[i-1];
+        }
+    }
+
+    //for(int k = 1; k <= 7; k++){
+    //    int i = k;
+    //    int j = 0;
+    //    while(j < (int)s.size()){
+    //        if(i%2){
+    //            cout << s[j];
+    //            i = (i >> 1);
+    //            j++;
+    //        } else {
+    //            i = (i >> 1);
+    //            j++;
+    //        }
+    //    }
+    //    cout << endl;
+    //}
 }
 
 int main(){ _

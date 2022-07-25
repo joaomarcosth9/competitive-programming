@@ -7,8 +7,8 @@ using namespace std;
 typedef long long ll;
 int d;
 
-vector<int> phi1n(int n) {
-    vector<int> phi(n + 1);
+vector<ll> phi1n(int n) {
+    vector<ll> phi(n + 1);
     for (int i = 0; i <= n; i++) phi[i] = i;
     for (int i = 2; i <= n; i++) if (phi[i] == i) {
         for (int j = i; j <= n; j += i)
@@ -19,12 +19,12 @@ vector<int> phi1n(int n) {
 
 void solve(){
     cin >> d;
-    vector<int> R = phi1n(d);
+    vector<ll> R = phi1n(d);
     ll res = 0;
     for(int i = 2; i <= d; i++){
         res += R[i];
     }
-    cout << res << endl;
+    cout << res % (int)(1e9+7) << endl;
 }
 
 int main(){ _
