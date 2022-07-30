@@ -5,40 +5,46 @@
 
 using namespace std;
 const int MAX = 1e2;
-string s;
 
 void solve(){
     int n, m; cin >> n >> m;
-    for(int i = 0; i < m; i++){
-        int a, b; cin >> a >> b;
-    }
 
     vector<int> V;
     for(int i = 1; i <= n; i++){
         V.push_back(i);
     }
+    
+    vector<pair<int,int>> Np;
 
-    for(int j = 1; j <= (1 << (int)V.size())-1; j++){
-        for(int i = 1; i <= (int)V.size(); i++){
-            if(((1 << (i-1)) & j)) cout << V[i-1];
-        }
+    for(int i = 0; i < m; i++){
+        int a, b; cin >> a >> b;
+        Np.push_back({a,b});
     }
 
-    //for(int k = 1; k <= 7; k++){
-    //    int i = k;
-    //    int j = 0;
-    //    while(j < (int)s.size()){
-    //        if(i%2){
-    //            cout << s[j];
-    //            i = (i >> 1);
-    //            j++;
-    //        } else {
-    //            i = (i >> 1);
-    //            j++;
-    //        }
-    //    }
-    //    cout << endl;
-    //}
+    int res = (1 << n)-1;
+    for(int j = 1; j <= (1 << n)-1; j++){
+        vector<int> Pm;
+        for(int i = 1; i <= (int)V.size(); i++){
+            if((1 << (i-1)) & j) Pm.push_back(V[i-1]);
+        }
+        
+        int dmr = 0;
+        for(int k = 0; k < m; k++){
+            int dr = 0;
+            if(dmr) break;
+            auto [a,b] = Np[k];
+            for(int i = 0; i < (int)Pm.size(); i++){
+                if(Pm[i] == a || Pm[i] == b){
+                    dr++;
+                    if(dr == 2){
+                        dmr = 1;
+                        res--;
+                    }
+                }
+            }
+        }
+    }
+    cout << res << endl;
 }
 
 int main(){ _
