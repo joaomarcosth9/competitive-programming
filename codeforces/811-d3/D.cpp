@@ -10,13 +10,13 @@ void solve(){
     vector<int> M(t.size());
     int n; cin >> n;
     vector<pair<int,string>> Ss(n);
-    map<int,set<int>> Df;
+    map<int,set<pair<int,int>>> Df;
     cout << t << endl;
     for(int i = 0; i < n; i++){
         string ss; cin >> ss;
         Ss[i] = {ss.size(), ss};
     }
-    sort(begin(Ss), end(Ss), greater<pair<int,string>>());
+    //sort(begin(Ss), end(Ss), greater<pair<int,string>>());
     for(int i = 0; i < n; i++){
         auto [sz,s] = Ss[i];
         for(int j = 0; j < (int)t.size(); j++){
@@ -28,25 +28,53 @@ void solve(){
                 }
             }
             if(!dr){
-                //for(int k = 0; k < (int)s.size(); k++){
-                //    Df[j+k].insert(i+1);
-                //    M[j+k] = 1;
-                //}
-                Df[j].insert(i+1);
-                M[j] = 1;
+                for(int k = 0; k < (int)s.size() && k+j < (int)t.size(); k++){
+                    M[j+k] = 1;
+                }
+                Df[i+1].insert({j+1,j+sz});
             }
         }
     }
-    for(auto [len,st] : Ss){
-        cout << len << ": " << st << endl;
+    for(int i = 0; i < (int)M.size(); i++){
+        if(!M[i]){
+            cout << -1 << endl;
+            return;
+        }
     }
+    //for(auto [len,st] : Ss){
+    //    cout << len << ": " << st << endl;
+    //}
     for(auto [k,v] : Df){
         cout << k << ": ";
-        for(auto a : v) cout << a << ' ';
+        for(auto [st,en] : v) cout << st << ',' << en << ' ';
         cout << endl;
     }
-    for(int i = 0; i < (int)M.size(); i++){
-        cout << M[i] << ' ';
+    vector<int> P(t.size());
+    int sstr = -1;
+    int slen = INT_MIN;
+    int estr = -1;
+    int elen = INT_MIN;
+    for(auto [ss,rr] : Df){
+        for(auto [st,en] : rr){
+            if(st == 1 && en-st+1 > slen){
+                sstr = ss;
+                slen = en-st+1;
+            }
+            if(en == (int)t.size() && en-st+1 > elen){
+                estr = ss;
+                elen = en-st+1;
+            }
+        }
+    }
+    cout << sstr << ' ' << estr << endl;
+    for(int i = 0; i < slen; i++){
+        P[i] = 1;
+    }
+    for(int j = (int)t.size()-1; j >= (int)t.size()-elen; j--){
+        P[j] = 1;
+    }
+    for(int i = 0; i < (int)t.size(); i++){
+        cout << P[i] << ' ';
     }
     cout << endl;
 }
