@@ -31,6 +31,8 @@ void solve(){
     for(int i = 0; i < 3*n; i+=3) cin >> arr[i] >> arr[i+1] >> arr[i+2];
     for(int i = 0; i < 3*n; i++) dp[i] = -1;
     for(int i = 0; i < 3; i++) dp[i] = arr[i];
+
+    // iterative
     for(int i = 3; i < 3*n; i++){
         if(i % 3 == 0){
             // -1 e -2
