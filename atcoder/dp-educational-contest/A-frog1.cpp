@@ -10,6 +10,7 @@ const int MAX = 1e5+10;
 int dp[MAX];
 int arr[MAX];
 
+// recursive
 int dpp(int p){ 
     if(p == 1){
         dp[p] = abs(arr[1] - arr[0]);
@@ -32,7 +33,7 @@ void solve(){
     }
 
     dp[0] = 0; dp[1] = abs(arr[1] - arr[0]);
-
+    // iterative
     for(int i = 2; i < n; i++){
         dp[i] = min(dp[i-1]+abs(arr[i] - arr[i-1]), dp[i-2]+abs(arr[i] - arr[i-2]));
     }

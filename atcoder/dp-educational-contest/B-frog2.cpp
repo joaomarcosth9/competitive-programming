@@ -11,19 +11,13 @@ int dp[MAX];
 int arr[MAX];
 int n, k;
 
+// recursive 
 int dpp(int p){ 
-    if(p == 1){
-        dp[p] = abs(arr[p] - arr[0]);
-        return dp[p];
-    } else if (p == 0){
-        return 0;
-    } else if (p < 0) return 1e9;
     if(dp[p] != -1) return dp[p];
     int menor = dpp(p-1)+abs(arr[p] - arr[p-1]);
-    for(int i = 2; i <= k; i--){
-        if(menor > dpp(p-i)+abs(arr[p] - arr[p-i])){
-            menor = dpp(p-i)+abs(arr[p] - arr[p-i]);
-        }
+    for(int i = 1; i <= k && p-i >= 0; i++){
+        int poss = dpp(p-i)+abs(arr[p] - arr[p-i]);
+        menor = min(menor,poss);
     }
     dp[p] = menor;
     return dp[p];
@@ -32,12 +26,23 @@ int dpp(int p){
 void solve(){
     cin >> n >> k;
     for(int i = 0; i < MAX; i++){
-        dp[i] = -1;
+        dp[i] = INT_MAX;
     }
     for(int i = 0; i < n; i++){
         cin >> arr[i];
     }
-    cout << dpp(n-1) << endl;
+    // iterative
+    dp[0] = 0;
+    dp[1] = abs(arr[1] - arr[0]);
+
+    for(int i = 0; i < n; i++){
+        for(int j = 1; j <= k && i-j >= 0; j++){
+            int dis = abs(arr[i] - arr[i-j]);
+            dp[i] = min(dp[i], dis+dp[i-j]);
+        }
+    }
+
+    cout << dp[n-1] << endl;
 }
 
 int main(){ _
