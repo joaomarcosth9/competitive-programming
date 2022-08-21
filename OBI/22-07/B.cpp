@@ -7,76 +7,118 @@ typedef long long ll;
 typedef vector<int> vi;
 typedef pair<int,int> pi;
 #define endl '\n'
-#define print_op(...) ostream& operator<<(ostream& out, const __VA_ARGS__& u)
-#define db(val) "["#val" = "<<(val)<<"] "
-#define CONCAT_(x, y) x##y
-#define CONCAT(x, y) CONCAT_(x, y)
-#ifdef LOCAL_DEBUG   
-#   define _ 
-#   define clog cerr << setw(__db_level * 2) << setfill(' ') << "" << setw(0)
-#   define DB() debug_block CONCAT(dbbl, __LINE__)
-    int __db_level = 0;
-    struct debug_block {
-        debug_block() { clog << "{" << endl; ++__db_level; }
-        ~debug_block() { --__db_level; clog << "}" << endl; }
-    };
-#else
-#   define _ ios_base::sync_with_stdio(0);cin.tie(0);
-#   define clog if (0) cerr
-#   define DB(...)
-#endif
-template<class U, class V> print_op(pair<U, V>) {
-    return out << "(" << u.first << ", " << u.second << ")";
-}
-template<class Con, class = decltype(begin(declval<Con>()))>
-typename enable_if<!is_same<Con, string>::value, ostream&>::type
-operator<<(ostream& out, const Con& con) { 
-    out << "{";
-    for (auto beg = con.begin(), it = beg; it != con.end(); ++it)
-        out << (it == beg ? "" : ", ") << *it;
-    return out << "}";
-}
-template<size_t i, class T> ostream& print_tuple_utils(ostream& out, const T& tup) {
-    if constexpr(i == tuple_size<T>::value) return out << ")"; 
-    else return print_tuple_utils<i + 1, T>(out << (i ? ", " : "(") << get<i>(tup), tup); 
-}
-template<class ...U> print_op(tuple<U...>) {
-    return print_tuple_utils<0, tuple<U...>>(out, u);
-}
-
 const int MAX = 1e2+10;
+
 int l,c;
 ll M[MAX][MAX];
-int mod = 31;
+ll values[MAX];
+int solved = 0;
+map<int,int> sol;
+int var = 1;
 
 void solve(){
     cin >> l >> c;
-    map<ll,int> Mp;
-    for(int i = 0; i < l+1; i++){
-        for(int j = 0; j < c+1; j++){
+    map<string,int> sti;
+    map<int,string> its;
+    for(int i = 0; i <= l; i++){
+        for(int j = 0; j <= c; j++){
             if(j == c && i == l) break;
             if(j < c && i < l){
                 string s; cin >> s;
-                int a = s[0] - '0';
-                int b = s[1] - '0';
-                M[i][j] = a*(ll)pow(mod,0)+b*(ll)pow(mod,1);
+                if(!sti[s]){
+                    sti[s] = var;
+                    its[var] = s;
+                    var++;
+                }
+                M[i][j] = sti[s];
             } else {
                 cin >> M[i][j];
             }
         }
     }
-    for(int i = 0; i < l; i++){
-        for(int j = 0; j < c; j++){
-            clog << M[i][j] << ' ';
-        } 
-        clog << endl;
+    var--;
+    while(solved < var){
+        map<int,set<int>> linhas;
+        map<int,set<int>> colunas;
+        for(int i = 0; i < l; i++){
+            for(int j = 0; j < c; j++){
+                if(!sol[M[i][j]]){
+                    linhas[i].insert(M[i][j]);
+                    colunas[j].insert(M[i][j]);
+                }
+            }
+        }
+        for(auto [k,s] : linhas){
+            /* cout << "Linha: " << k << ' ' << s.size() << '\n'; */
+            if(s.size() == 1){
+                /* cout << "Linha " << k << endl; */
+                ll lv = M[k][c];
+                pi tosol;
+                map<int,int> alsol;
+                for(int j = 0; j < c; j++){
+                    /* cout << "Valor " << M[k][j] << endl; */
+                    if(!sol[M[k][j]]){
+                        /* cout << "Valor pra calcular " << M[k][j] << endl; */
+                        tosol.first = M[k][j];
+                        tosol.second++;
+                    } else {
+                        alsol[M[k][j]]++;
+                    }
+                }
+                for(auto [kk,v] : alsol){
+                    lv -= values[kk]*v;
+                }
+                if(tosol.second){
+                    values[tosol.first] = lv/tosol.second;
+                    sol[tosol.first]++;
+                    solved++;
+                }
+            }
+        }
+        /* cout << endl; */
+        for(auto [k,s] : colunas){
+            /* cout << "Coluna: " << k << ' ' << s.size() << '\n'; */
+            if(s.size() == 1){
+                /* cout << "Coluna " << k << endl; */
+                ll cv = M[l][k];
+                pi tosol;
+                map<int,int> alsol;
+                for(int i = 0; i < l; i++){
+                    /* cout << "Valor " << M[i][k] << endl; */
+                    if(!sol[M[i][k]]){
+                        /* cout << "Valor pra calcular " << M[i][k] << endl; */
+                        tosol.first = M[i][k];
+                        tosol.second++;
+                    } else {
+                        alsol[M[i][k]]++;
+                    }
+                }
+                for(auto [kk,v] : alsol){
+                    cv -= values[kk]*v;
+                }
+                if(tosol.second){
+                    values[tosol.first] = cv/tosol.second;
+                    sol[tosol.first]++;
+                    solved++;
+                }
+            }
+        }
+        /* cout << endl; */
+        /* cout << "SOLVED " << solved << endl; */
     }
-    for(int i = 0; i < n; i++){
-
+    vector<pair<string,int>> res;
+    for(int i = 1; i <= var; i++){
+        string vv = its[i];
+        int vl = values[i];
+        res.push_back({vv,vl});
+    }
+    sort(res.begin(), res.end());
+    for(auto [v,vl] : res){
+        cout << v << ' ' << vl << endl;
     }
 }
 
-int main(){ _
+int main(){
     solve();
     return 0;
 }

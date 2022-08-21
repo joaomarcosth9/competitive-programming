@@ -88,8 +88,7 @@ void solve(){
 int main(){ _
     int tsts; cin >> tsts;
     for(int Testcase = 1; Testcase <= tsts; Testcase++){
-        clog << db(Testcase) << endl;
-        cout << Testcase << endl;
+        //clog << db(Testcase) << endl;
         solve();
     }
     return 0;

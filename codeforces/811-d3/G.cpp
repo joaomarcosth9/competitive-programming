@@ -1,15 +1,13 @@
 #include <bits/stdc++.h>
 
-#define _ ios_base::sync_with_stdio(0);cin.tie(0);
-#define endl '\n'
-
 using namespace std;
-const int MAX = 1e2;
 const int INF = 1.05e9;
 const long long LINF = 4.5e18;
+const int MAX = 2e5;
 typedef long long ll;
 typedef vector<int> vi;
 typedef pair<int,int> pi;
+#define endl '\n'
 #define print_op(...) ostream& operator<<(ostream& out, const __VA_ARGS__& u)
 #define db(val) "["#val" = "<<(val)<<"] "
 #define CONCAT_(x, y) x##y
@@ -48,45 +46,46 @@ template<class ...U> print_op(tuple<U...>) {
     return print_tuple_utils<0, tuple<U...>>(out, u);
 }
 
+int n;
+vector<tuple<int,int,int>> Adj[MAX];
+ll A[MAX];
+
+void dfs_prefix(int node){
+    for(int i = 0; i < (int)Adj[node].size(); i++){
+        auto[f,a,b] = Adj[node][i];
+        cout << f << ' ' << a << ' ' << b << endl;
+        A[f] = a + A[node];
+        dfs_prefix(f);
+    }
+}
+
 void solve(){
-    int n, m; cin >> n >> m;
-    
-    vector<pair<int,int>> Np;
-
-    for(int i = 0; i < m; i++){
-        int a, b; cin >> a >> b;
-        Np.push_back({a,b});
+    cin >> n;
+    clog << db(n) << endl;
+    for(int i = 2; i <= n; i++){
+        int p, a, b; cin >> p >> a >> b;
+        Adj[p].push_back(tie(i,a,b));
     }
-
-    int res = (1 << n)-1;
-    for(int j = 1; j <= (1 << n)-1; j++){
-        vector<int> Pm;
-        for(int i = 1; i <= n; i++){
-            if((1 << (i-1)) & j) Pm.push_back(i);
-        }
-
-        clog << db(Pm) << endl;
-        
-        int dmr = 0;
-        for(int k = 0; k < m; k++){
-            int dr = 0;
-            if(dmr) break;
-            auto [a,b] = Np[k];
-            for(int i = 0; i < (int)Pm.size(); i++){
-                if(Pm[i] == a || Pm[i] == b){
-                    dr++;
-                    if(dr == 2){
-                        dmr = 1;
-                        res--;
-                    }
-                }
-            }
-        }
+    A[1] = 0;
+    dfs_prefix(1);
+    for(int i = 1; i <= n; i++){
+        clog << i << ' ' << db(Adj[i]) << endl;
     }
-    cout << res << endl;
+    for(int i = 0; i <= n; i++){
+        Adj[i].clear();
+    }
+    for(int i = 1; i <= n; i++){
+        cout << A[i] << ' ';
+    }
+    cout << endl;
 }
 
 int main(){ _
-    solve();
+    int tsts; cin >> tsts;
+    for(int Testcase = 1; Testcase <= tsts; Testcase++){
+        clog << db(Testcase) << endl;
+        solve();
+    }
     return 0;
 }
+

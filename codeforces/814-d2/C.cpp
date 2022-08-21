@@ -1,15 +1,13 @@
 #include <bits/stdc++.h>
 
-#define _ ios_base::sync_with_stdio(0);cin.tie(0);
-#define endl '\n'
-
 using namespace std;
-const int MAX = 1e2;
 const int INF = 1.05e9;
+const int MAX = 1e5+500;
 const long long LINF = 4.5e18;
 typedef long long ll;
 typedef vector<int> vi;
 typedef pair<int,int> pi;
+#define endl '\n'
 #define print_op(...) ostream& operator<<(ostream& out, const __VA_ARGS__& u)
 #define db(val) "["#val" = "<<(val)<<"] "
 #define CONCAT_(x, y) x##y
@@ -48,45 +46,55 @@ template<class ...U> print_op(tuple<U...>) {
     return print_tuple_utils<0, tuple<U...>>(out, u);
 }
 
+int n, q, arr[MAX], pref[MAX];
+
 void solve(){
-    int n, m; cin >> n >> m;
-    
-    vector<pair<int,int>> Np;
-
-    for(int i = 0; i < m; i++){
-        int a, b; cin >> a >> b;
-        Np.push_back({a,b});
+    cin >> n >> q;
+    for(int i = 0; i <= n; i++){
+        arr[i] = 0;
+        pref[i] = 0;
     }
-
-    int res = (1 << n)-1;
-    for(int j = 1; j <= (1 << n)-1; j++){
-        vector<int> Pm;
-        for(int i = 1; i <= n; i++){
-            if((1 << (i-1)) & j) Pm.push_back(i);
+    int maior = 0;
+    for(int i = 0; i < n; i++){
+        cin >> arr[i];
+        if(arr[i] > arr[maior]) maior = i;
+    }
+    int ganhador = (arr[0] > arr[1] ? 0 : 1);
+    // pref diz quanto cada lutador ganhou nas primeiras n-1 rodadas;
+    pref[ganhador]++;
+    for(int i = 2; i < n; i++){
+        ganhador = (arr[i] > arr[ganhador] ? i : ganhador);
+        pref[ganhador]++;
+    }
+    /* se um jogador X (!= 0) ganhou n rodadas, com ctz foram as rodadas X, X+1,...X+n */
+    /* se o jogador X = 0 ganhou n rodadas, com ctz foram as rodadas X+1, X+2,...X+n+1 */
+    /* quando chegar o lutador i (indexando em 0), estamos na i-esima luta */
+    /* se quero saber do lutador i ate a luta n, se n >= i, ele lutou n-i+1 */
+    /* Exemplos: lutador 0 lutou a 1, e a 2 = 2, lutador 0 lutou a 1, a 2, a 3 = 3 */
+    /* Exemplos: lutador 1 lutou a 1, e a 2 = 2, lutador 1 lutou a 1, a 2, a 3 e a 4 = 4 */
+    /* Exemplos: lutador 2 lutou a 2, e a 3 = 2, lutador 1 lutou a 1, a 2, a 3 e a 4 = 4 */
+    /* Exemplos: lutador 3 lutou a 3, e a 4 = 2, lutador 3 lutou a 3, a 4, a 5 e a 6 = 4 */
+    for(int i = 0; i < q; i++){
+        int p, nr; cin >> p >> nr;
+        p--;
+        int rd = nr-p+1;
+        if(p == 0) {
+            rd--;
         }
-
-        clog << db(Pm) << endl;
-        
-        int dmr = 0;
-        for(int k = 0; k < m; k++){
-            int dr = 0;
-            if(dmr) break;
-            auto [a,b] = Np[k];
-            for(int i = 0; i < (int)Pm.size(); i++){
-                if(Pm[i] == a || Pm[i] == b){
-                    dr++;
-                    if(dr == 2){
-                        dmr = 1;
-                        res--;
-                    }
-                }
-            }
+        if(p == maior){
+            cout << max(0, rd) << endl;
+        } else {
+            cout << max(0, (rd >= pref[p] ? pref[p] : rd)) << endl;
         }
     }
-    cout << res << endl;
 }
 
 int main(){ _
-    solve();
+    int tsts; cin >> tsts;
+    for(int Testcase = 1; Testcase <= tsts; Testcase++){
+        clog << db(Testcase) << endl;
+        solve();
+    }
     return 0;
 }
+

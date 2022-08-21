@@ -24,3 +24,4 @@ int main(){ _
     while(tscf--) solve();
     return 0;
 }
+
