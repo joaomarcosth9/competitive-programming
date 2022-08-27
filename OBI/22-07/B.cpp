@@ -11,24 +11,24 @@ const int MAX = 1e2+10;
 
 int l,c;
 ll M[MAX][MAX];
-ll values[MAX];
+map<ll,ll> values;
 int solved = 0;
 map<int,int> sol;
-int var = 1;
+int var = 0;
+map<string,int> sti;
+map<int,string> its;
 
 void solve(){
     cin >> l >> c;
-    map<string,int> sti;
-    map<int,string> its;
     for(int i = 0; i <= l; i++){
         for(int j = 0; j <= c; j++){
             if(j == c && i == l) break;
             if(j < c && i < l){
                 string s; cin >> s;
                 if(!sti[s]){
+                    var++;
                     sti[s] = var;
                     its[var] = s;
-                    var++;
                 }
                 M[i][j] = sti[s];
             } else {
@@ -36,10 +36,10 @@ void solve(){
             }
         }
     }
-    var--;
     while(solved < var){
         map<int,set<int>> linhas;
         map<int,set<int>> colunas;
+        int solvedone = 0;
         for(int i = 0; i < l; i++){
             for(int j = 0; j < c; j++){
                 if(!sol[M[i][j]]){
@@ -72,11 +72,13 @@ void solve(){
                     values[tosol.first] = lv/tosol.second;
                     sol[tosol.first]++;
                     solved++;
+                    solvedone++;
+                    break;
                 }
             }
         }
         /* cout << endl; */
-        for(auto [k,s] : colunas){
+        if(!solvedone) for(auto [k,s] : colunas){
             /* cout << "Coluna: " << k << ' ' << s.size() << '\n'; */
             if(s.size() == 1){
                 /* cout << "Coluna " << k << endl; */
@@ -100,16 +102,17 @@ void solve(){
                     values[tosol.first] = cv/tosol.second;
                     sol[tosol.first]++;
                     solved++;
+                    break;
                 }
             }
         }
         /* cout << endl; */
         /* cout << "SOLVED " << solved << endl; */
     }
-    vector<pair<string,int>> res;
+    vector<pair<string,ll>> res;
     for(int i = 1; i <= var; i++){
         string vv = its[i];
-        int vl = values[i];
+        ll vl = values[i];
         res.push_back({vv,vl});
     }
     sort(res.begin(), res.end());
