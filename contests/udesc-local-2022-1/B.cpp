@@ -3,7 +3,6 @@
 using namespace std;
 
 int main(){
-    int a, b;
-    cin >> a >> b;
-    cout << b << endl;
+    int n; cin >> n >> n;
+    cout << n << endl;
 }
