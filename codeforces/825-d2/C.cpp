@@ -1,14 +1,7 @@
 #include <bits/stdc++.h>
-
-#define _ ios_base::sync_with_stdio(0);cin.tie(0);
-#define endl '\n'
-
 using namespace std;
 
-#include <bits/stdc++.h>
-using namespace std;
-
-int temtestcase = 0;
+int temtestcase = 1;
 const int INF = 1.05e9;
 const long long LINF = 4.5e18;
 using ll = long long;
@@ -31,15 +24,47 @@ template <typename T> using pqg = priority_queue<T, vector<T>, greater<T>>;
 #define FO(x) FOR(i,0,x)
 #define OF(x) ROF(i,x,0)
 #define endl '\n'
+#define int long long
+
+const int mx = 2.1e5;
+int n, arr[mx], gd[mx];
 
 void solve(){
-    int n, w; cin >> n >> w;
+    cin >> n;
+    int res = 0;
+    int sum = 0;
     for(int i = 0; i < n; i++){
-        int ww, vv; cin >> ww >> vv;
+        cin >> arr[i];
     }
+    out << endl;
+
+    int t = 0;
+    int ex = 1;
+    
+    for(int i = 0; i < n; i++){
+        if(arr[i] >= ex){
+            ex++;
+            t++;
+            res+=t;
+        } else {
+            ex = 1;
+            t = 0;
+            res++;
+        }
+    }
+
+    cout << res << endl;
 }
 
-int main(){ _
-    solve();
+int32_t main(){
+#ifndef LOCAL_DEBUG   
+    ios_base::sync_with_stdio(0);cin.tie(0);
+#endif
+    int tsts = 1;
+    if(temtestcase) cin >> tsts;
+    for(int Testcase = 1; Testcase <= tsts; Testcase++){
+        /* clog << db(Testcase) << endl; */
+        solve();
+    }
     return 0;
 }

@@ -1,14 +1,7 @@
 #include <bits/stdc++.h>
-
-#define _ ios_base::sync_with_stdio(0);cin.tie(0);
-#define endl '\n'
-
 using namespace std;
 
-#include <bits/stdc++.h>
-using namespace std;
-
-int temtestcase = 0;
+int temtestcase = 1;
 const int INF = 1.05e9;
 const long long LINF = 4.5e18;
 using ll = long long;
@@ -33,13 +26,34 @@ template <typename T> using pqg = priority_queue<T, vector<T>, greater<T>>;
 #define endl '\n'
 
 void solve(){
-    int n, w; cin >> n >> w;
+    int n; cin >> n;
+    vi v(n);
     for(int i = 0; i < n; i++){
-        int ww, vv; cin >> ww >> vv;
+        cin >> v[i];
     }
+    int res = INT_MAX;
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < n; j++){
+            for(int k = 0; k < n; k++){
+                if(i == j || i == k || j == k) continue;
+                int t[3] = {v[i], v[j], v[k]};
+                sor(t);
+                res = min(res, abs(t[1]-t[0]) + abs(t[1]-t[2]));
+            }
+        }
+    }
+    cout << res << endl;
 }
 
-int main(){ _
-    solve();
+int main(){
+#ifndef LOCAL_DEBUG   
+    ios_base::sync_with_stdio(0);cin.tie(0);
+#endif
+    int tsts = 1;
+    if(temtestcase) cin >> tsts;
+    for(int Testcase = 1; Testcase <= tsts; Testcase++){
+        /* clog << db(Testcase) << endl; */
+        solve();
+    }
     return 0;
 }

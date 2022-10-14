@@ -1,11 +1,4 @@
 #include <bits/stdc++.h>
-
-#define _ ios_base::sync_with_stdio(0);cin.tie(0);
-#define endl '\n'
-
-using namespace std;
-
-#include <bits/stdc++.h>
 using namespace std;
 
 int temtestcase = 0;
@@ -33,13 +26,19 @@ template <typename T> using pqg = priority_queue<T, vector<T>, greater<T>>;
 #define endl '\n'
 
 void solve(){
-    int n, w; cin >> n >> w;
-    for(int i = 0; i < n; i++){
-        int ww, vv; cin >> ww >> vv;
-    }
+    ll n; cin >> n;
+
 }
 
-int main(){ _
-    solve();
+int main(){
+#ifndef LOCAL_DEBUG   
+    ios_base::sync_with_stdio(0);cin.tie(0);
+#endif
+    int tsts = 1;
+    if(temtestcase) cin >> tsts;
+    for(int Testcase = 1; Testcase <= tsts; Testcase++){
+        /* clog << db(Testcase) << endl; */
+        solve();
+    }
     return 0;
 }

@@ -1,11 +1,4 @@
 #include <bits/stdc++.h>
-
-#define _ ios_base::sync_with_stdio(0);cin.tie(0);
-#define endl '\n'
-
-using namespace std;
-
-#include <bits/stdc++.h>
 using namespace std;
 
 int temtestcase = 0;
@@ -14,7 +7,7 @@ const long long LINF = 4.5e18;
 using ll = long long;
 using vi = vector<int>;
 using ii = pair<int,int>;
-using vii = vector<ii>;
+using vii = vector<int,int>;
 template <typename T> using pql = priority_queue<T>;
 template <typename T> using pqg = priority_queue<T, vector<T>, greater<T>>;
 #define mp make_pair
@@ -26,20 +19,28 @@ template <typename T> using pqg = priority_queue<T, vector<T>, greater<T>>;
 #define rsor(x) sort(rall(x)) 
 #define pb push_back
 #define eb emplace_back
-#define FOR(i,x,y) for(int i = x; i < y; i++)
-#define ROF(i,x,y) for(int i = x-1; i >= y; i--)
-#define FO(x) FOR(i,0,x)
-#define OF(x) ROF(i,x,0)
+#ifdef LOCAL_DEBUG   
 #define endl '\n'
+#   define _   
+#else
+#   define _ ios_base::sync_with_stdio(0);cin.tie(0);
+#endif
 
 void solve(){
-    int n, w; cin >> n >> w;
-    for(int i = 0; i < n; i++){
-        int ww, vv; cin >> ww >> vv;
+    ll n,t; cin >> n >> t;
+    if(t != 2){
+        cout << (t ? n*(n-1) : n) << endl;
+    } else {
+        cout << (n*(n-1)*(n-2)/3)/2 << endl;
     }
 }
 
 int main(){ _
-    solve();
+    int tsts = 1;
+    if(temtestcase) cin >> tsts;
+    for(int Testcase = 1; Testcase <= tsts; Testcase++){
+        /* clog << db(Testcase) << endl; */
+        solve();
+    }
     return 0;
 }
