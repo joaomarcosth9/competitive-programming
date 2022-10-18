@@ -1,7 +1,3 @@
-#include <bits/stdc++.h>
-using namespace std;
-
-
 // dijkstra (int source, int number_of_nodes, vector<vii>& adj);
 const int MAXN = 2e5;
 int dist[MAXN];
@@ -20,33 +16,5 @@ void dijkstra(int source, int n_nodes, vector<vector<pair<int,int>>>& Adj){
             }
         }
     }
-}
-
-
-void solve(){
-    int n, m;
-    cin >> n >> m;
-    vector<vector<pair<int,int>>> Adj(n+1);
-    for(int i = 0; i < m; i++){
-        int a,b,c; cin >> a >> b >> c;
-        Adj[a].push_back({c,b});
-        Adj[b].push_back({c,a});
-    }
-    int u; cin >> u;
-    dijkstra(u, n, Adj);
-    int minn = INT_MAX;
-    int maxx = INT_MIN;
-    for(int i = 1; i <= n; i++){
-        minn = min(minn, (i != u ? dist[i] : minn));
-        maxx = max(maxx, (i != u ? dist[i] : maxx));
-    }
-    cout << maxx - minn << endl;
-}
-
-int main(){
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
-    solve();
-    return 0;
 }
 
