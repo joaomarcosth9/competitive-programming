@@ -4,39 +4,38 @@ using namespace std;
 
 const int MAX = 2e5+40;
 int arr[MAX];
-int sums[MAX];
 
 void solve(){
     int n; cin >> n; 
-    for (int i = 0; i < n; i++){
-        arr[i] = 0;
-    }
     for(int i = 0; i < n; i++){
-        int t; cin >> t;
-        arr[t%10]++;
+        cin >> arr[i];
+        arr[i] %= 10;
     }
-    for(int i = 0; i < 10; i++){
-        for(int j = 0; j < 10; j++){
-            for(int k = 0; k < 10; k++){
-                if((i+j+k) % 10 == 3){
-                    if(i==j && j==k && arr[i]>=3){
-                        cout << "YES\n";
-                        return;
-                    } else if(i==j && arr[i]>=2){
-                        cout << "YES\n";
-                        return;
-                    } else if (i==k && arr[i]>=2){
-                        cout << "YES\n";
-                        return;
-                    } else if (j==k && arr[j]>=2){
-                        cout << "YES\n";
-                        return;
-                    }
+
+    map<int,int> has;
+    for(int i = 0; i < n; i++){
+        has[arr[i]]++;
+    }
+
+    bool res = false;
+
+    for(auto [k0,v0] : has){
+        for(auto [k1,v1] : has){
+            for(auto [k2,v2] : has){
+                if(k0 == k1 && k1 == k2){
+                    if(v0 < 3) continue;
+                } else if(k0 == k1){
+                    if(v0 < 2) continue;
+                } else if(k1 == k2){
+                    if(v1 < 2) continue;
+                } else if(k0 == k2){
+                    if(v2 < 2) continue;
                 }
+                res |= (((k0+k1+k2)%10) == 3);
             }
         }
     }
-    cout << "NO\n";
+    cout << (res ? "YES" : "NO") << endl;
 }
 
 int main(){

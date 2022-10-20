@@ -5,22 +5,46 @@
 using namespace std;
 
 const int MAX = 2e5+50;
-int arr[MAX], pref[MAX], res;
+int arr[MAX], pref[MAX], suff[MAX];
 map<int,int> freq;
 
 void solve(){
     int n, s; cin >> n >> s;
-    memset(arr, 0, arr+n);
-    memset(pref, 0, pref+n);
+    memset(arr, 0, n+4);
+    memset(pref, 0, n+4);
     freq.clear();
-    for(int i = 0; i < n; i++){
+
+    int sum = 0;
+
+    for(int i = 1; i <= n; i++){
         cin >> arr[i];
-        pref[i+1] = pref[i] + arr[i];
+        sum += arr[i];
     }
 
-    int res = 0;
+    if(sum < s){
+        cout << -1 << endl;
+        return;
+    } 
 
+    vector<int> pf(sum+1);
+    vector<int> sf(sum+1);
+    int ii = 1, jj = sum;
+    for(int i = 1; i <= n; i++){
+        if(arr[i] == 1){
+            pf[ii] = i;
+            sf[jj] = n-i+1;
+            ii++, jj--;
+        }
+    }
+
+    int res = INT_MAX;
+    int tirar = sum-s;
+    for(int i = 0; i <= tirar; i++){
+        int tres = (pf[i] + sf[tirar-i]);
+        res = min(res, tres);
+    }
     cout << res << endl;
+
 }
 
 int main(){ _

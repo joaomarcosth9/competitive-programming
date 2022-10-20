@@ -1,37 +1,60 @@
 #include <bits/stdc++.h>
-
-#define _ ios_base::sync_with_stdio(0);cin.tie(0);
-#define endl '\n'
-
 using namespace std;
-const int MAX = 2e5;
 
-int arr[MAX];
+#define int long long
+
+const int neutral = 0;
+#define comp(a, b) ((a)+(b))
+
+class FenwickTree {
+private:
+    vector<int> ft;
+public:
+    FenwickTree(int n) { ft.assign(n + 1, 0); }
+    int rsq(int i) { // returns RSQ(1, i)
+        int sum = neutral;
+        for(; i; i -= (i & -i))
+            sum = comp(sum, ft[i]);
+        return sum;
+    }
+    int rsq(int i, int j) {
+        return rsq(j) - rsq(i - 1);
+    }
+    void update(int i, int v) {
+        for(; i > 0 && i < (int)ft.size(); i += (i & -i))
+            ft[i] = comp(v, ft[i]);
+    }
+};
 
 void solve(){
     int n; cin >> n;
-    vector<pair<int,int>> V;
-    map<int,int> M;
+    vector<int> idx;
+    vector<int> v;
     for(int i = 1; i <= n; i++){
-        cin >> arr[i];
-        if(arr[i] < i) V.push_back({i,arr[i]});
-    }
-    int res = 0;
-    for(int k = 0; k < V.size(); k++){
-        auto [i,v] = V[k];
-
-        for(int l = i+1; l < 1e5; l++){
-            M[l]++;
+        int a; cin >> a;
+        if(a < i){
+            v.push_back(a);
+            idx.push_back(i);
         }
-        res += M[v];
+    }
+
+    int nn = (int)v.size();
+
+    FenwickTree ft(n+1);
+
+    int res = 0;
+    for(int i = 0; i < nn; i++){
+        if(v[i] != 0){
+            res += ft.rsq(min(v[i]-1, idx[i]));
+        }
+        ft.update(idx[i], 1);
     }
     cout << res << endl;
 }
 
-int main(){ _
+signed main(){
+    ios_base::sync_with_stdio(0);cin.tie(0);
     int testcases; cin >> testcases;
-    for (int i = 0; i < testcases; i++){
-        solve();
-    }
+    while(testcases--)solve();
     return 0;
 }
