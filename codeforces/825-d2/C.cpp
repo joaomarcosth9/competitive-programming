@@ -1,29 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
-
 int temtestcase = 1;
 const int INF = 1.05e9;
 const long long LINF = 4.5e18;
-using ll = long long;
-using vi = vector<int>;
-using ii = pair<int,int>;
-using vii = vector<ii>;
-template <typename T> using pql = priority_queue<T>;
-template <typename T> using pqg = priority_queue<T, vector<T>, greater<T>>;
-#define mp make_pair
-#define fst first
-#define snd second
-#define all(x) begin(x), end(x)
-#define rall(x) rbegin(x), rend(x)
-#define sor(x) sort(all(x)) 
-#define rsor(x) sort(rall(x)) 
-#define pb push_back
-#define eb emplace_back
-#define FOR(i,x,y) for(int i = x; i < y; i++)
-#define ROF(i,x,y) for(int i = x-1; i >= y; i--)
-#define FO(x) FOR(i,0,x)
-#define OF(x) ROF(i,x,0)
-#define endl '\n'
 #define int long long
 
 const int mx = 2.1e5;
@@ -31,32 +10,20 @@ int n, arr[mx], gd[mx];
 
 void solve(){
     cin >> n;
-    int res = 0;
-    int sum = 0;
+    for(int i = 0; i < n; i++) cin >> arr[i];
     for(int i = 0; i < n; i++){
-        cin >> arr[i];
+        /* arr[i] = min(arr[i], i+1); */
     }
-    out << endl;
-
-    int t = 0;
-    int ex = 1;
-    
-    for(int i = 0; i < n; i++){
-        if(arr[i] >= ex){
-            ex++;
-            t++;
-            res+=t;
-        } else {
-            ex = 1;
-            t = 0;
-            res++;
-        }
+    vector<int> res(n+1);
+    int ress = 0;
+    for(int i = 1; i <= n; i++){
+        res[i] = min(res[i-1] + 1, arr[i-1]);
+        ress += res[i];
     }
-
-    cout << res << endl;
+    cout << ress << endl;
 }
 
-int32_t main(){
+signed main(){
 #ifndef LOCAL_DEBUG   
     ios_base::sync_with_stdio(0);cin.tie(0);
 #endif

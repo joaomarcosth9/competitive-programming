@@ -28,48 +28,9 @@ template <typename T> using pqg = priority_queue<T, vector<T>, greater<T>>;
 
 const int mod = 998244353;
 
-int extended_euclidean(int a, int b, int& x, int& y) {
-    x = 1, y = 0;
-    int x1 = 0, y1 = 1, a1 = a, b1 = b;
-    while (b1) {
-        int q = a1 / b1;
-        tie(x, x1) = make_tuple(x1, x - q * x1);
-        tie(y, y1) = make_tuple(y1, y - q * y1);
-        tie(a1, b1) = make_tuple(b1, a1 - q * b1);
-    }
-    return a1;
-}
-
-int modinv(int n){
-    int x, y;
-    int g = extended_euclidean(n, mod, x, y);
-    if (g != 1) {
-        return -1;
-    }
-    else {
-        x = (x % mod + mod) % mod;
-        return x;
-    }
-}
 
 void solve(){
     int n; cin >> n;
-    int fatn = 1, fatn2 = 1;;
-    for(int i = 2; i <= n; i++){
-        fatn *= i;
-        fatn %= mod;
-    }
-    for(int i = 2; i <= n/2; i++){
-        fatn2 *= i;
-        fatn2 %= mod;
-    }
-    int t = fatn;
-    t *= (modinv(fatn2));
-    t %= mod;
-    t *= (modinv(fatn2));
-    t %= mod;
-    cout << "Total: " << t << endl;
-    t--;
 }
 
 signed main(){

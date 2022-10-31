@@ -5,19 +5,31 @@
 
 using namespace std;
 const int MAX = 1e5;
-int n, arr[MAX];
 
 void solve(){
-    cin >> n;
-    for(int i = 0; i < n; i++) cin >> arr[i];
-    while(n>0){
-        sort(arr, arr+n);
-        for(int i = 0; i < n-1; i++){
-            arr[i] = arr[i+1] - arr[i];
-        }
-        n--;
+    int n; cin >> n;
+    vector<int> v;
+    int zeros = 0;
+    for(int i = 0; i < n; i++){
+        int nu; cin >> nu;
+        if(nu) v.push_back(nu);
+        else zeros++;
     }
-    cout << arr[0] << endl;
+    while ((int)v.size() > 1) {
+        vector<int> temp;
+        if (zeros) {
+            temp.push_back(v[0]);
+            zeros--;
+        }
+        for (int i = 1; i < (int)v.size(); i++) {
+            int nu = v[i] - v[i-1];
+            if (nu) temp.push_back(nu);
+            else zeros++;
+        }
+        v = temp;
+        sort(v.begin(), v.end());
+    }
+    cout << ((int)v.size() ? v[0] : 0) << endl;
 }
 
 int main(){ _

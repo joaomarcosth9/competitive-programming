@@ -29,19 +29,14 @@ void solve(){
     }
     for(int x : dva){
         for(int y : dvb){
-            poss.insert(x*y);
-        }
-    }
-    for(auto i : poss){
-        if(i <= a || i > c) continue;
-        int falta = dv / (__gcd(i, dv));
-        int proxmut;
-        if((b+1) % falta == 0){
-            proxmut = b+1;
-        } else proxmut = ((b+1) - ((b+1) % falta))+falta;
-        if(proxmut <= d && proxmut > b){
-            cout << i << ' ' << proxmut << endl;
-            return;
+            int prod = x * y;
+            int falta = dv / prod;
+            int resx = (c/prod) * prod;
+            int resy = (d/falta) * falta;
+            if(resx > a && resx <= c && resy > b && resy <= d){
+                cout << resx << ' ' << resy << endl;
+                return;
+            }
         }
     }
     cout << -1 << ' ' << -1 << endl;

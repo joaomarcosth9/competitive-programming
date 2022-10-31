@@ -9,20 +9,21 @@ int n, q, arr[MAX], res[MAX];
 
 void solve(){
     cin >> n >> q;
-    memset(res, 0, sizeof(res));
     for(int i = 0; i < n; i++){
         cin >> arr[i];
-        if(arr[i] <= q) res[i] = 1;
     }
+    int qi = 0;
     for(int i = n-1; i >= 0; i--){
-        if(q){
+        if(arr[i] <= qi){
             res[i] = 1;
-            q--;
+        } else if (qi < q){
+            qi++;
+            res[i] = 1;
+        } else {
+            res[i] = 0;
         }
     }
-    for(int i = 0; i < n; i++){
-        cout << res[i];
-    }
+    for(int i = 0; i < n; i++) cout << res[i];
     cout << endl;
 }
 
