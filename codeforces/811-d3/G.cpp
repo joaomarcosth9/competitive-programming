@@ -1,91 +1,77 @@
 #include <bits/stdc++.h>
 
 using namespace std;
-const int INF = 1.05e9;
-const long long LINF = 4.5e18;
-const int MAX = 2e5;
-typedef long long ll;
-typedef vector<int> vi;
-typedef pair<int,int> pi;
-#define endl '\n'
-#define print_op(...) ostream& operator<<(ostream& out, const __VA_ARGS__& u)
-#define db(val) "["#val" = "<<(val)<<"] "
-#define CONCAT_(x, y) x##y
-#define CONCAT(x, y) CONCAT_(x, y)
-#ifdef LOCAL_DEBUG   
-#   define _   
-#   define clog cerr << setw(__db_level * 2) << setfill(' ') << "" << setw(0)
-#   define DB() debug_block CONCAT(dbbl, __LINE__)
-    int __db_level = 0;
-    struct debug_block {
-        debug_block() { clog << "{" << endl; ++__db_level; }
-        ~debug_block() { --__db_level; clog << "}" << endl; }
-    };
-#else
-#   define _ ios_base::sync_with_stdio(0);cin.tie(0);
-#   define clog cerr << setw(__db_level * 2) << setfill(' ') << "" << setw(0)
-#   define clog if (0) cerr
-#   define DB(...)
-#endif
-template<class U, class V> print_op(pair<U, V>) {
-    return out << "(" << u.first << ", " << u.second << ")";
-}
-template<class Con, class = decltype(begin(declval<Con>()))>
-typename enable_if<!is_same<Con, string>::value, ostream&>::type
-operator<<(ostream& out, const Con& con) { 
-    out << "{";
-    for (auto beg = con.begin(), it = beg; it != con.end(); ++it)
-        out << (it == beg ? "" : ", ") << *it;
-    return out << "}";
-}
-template<size_t i, class T> ostream& print_tuple_utils(ostream& out, const T& tup) {
-    if constexpr(i == tuple_size<T>::value) return out << ")"; 
-    else return print_tuple_utils<i + 1, T>(out << (i ? ", " : "(") << get<i>(tup), tup); 
-}
-template<class ...U> print_op(tuple<U...>) {
-    return print_tuple_utils<0, tuple<U...>>(out, u);
+
+const int MAX = 3e5+5;
+const long long INF = 1e18+5;
+
+struct edge {
+	long long a, b;
+};
+
+int res[MAX];
+vector<pair<int,edge>> Adj[MAX];
+vector<long long> pref_a, pref_b;
+
+void check(int u){
+	long long pfa = pref_a.back();
+	pref_b.push_back(INF);
+	int l = 0, r = (int)pref_b.size()-1;
+	while(l < r){
+		int mid = l + (r-l)/2;
+		if(pref_b[mid] <= pfa){
+			l = mid+1;
+		} else {
+			r = mid;
+		}
+	}
+	res[u] = l-1;
+	pref_b.pop_back();
 }
 
-int n;
-vector<tuple<int,int,int>> Adj[MAX];
-ll A[MAX];
-
-void dfs_prefix(int node){
-    for(int i = 0; i < (int)Adj[node].size(); i++){
-        auto[f,a,b] = Adj[node][i];
-        cout << f << ' ' << a << ' ' << b << endl;
-        A[f] = a + A[node];
-        dfs_prefix(f);
-    }
+void dfs(int u){
+	if(u){
+		check(u);
+	}
+	for(auto [v,edge] : Adj[u]){
+		pref_a.push_back(pref_a.back() + edge.a);
+		pref_b.push_back(pref_b.back() + edge.b);
+		dfs(v);
+		pref_a.pop_back();
+		pref_b.pop_back();
+	}
 }
 
 void solve(){
-    cin >> n;
-    clog << db(n) << endl;
-    for(int i = 2; i <= n; i++){
-        int p, a, b; cin >> p >> a >> b;
-        Adj[p].push_back(tie(i,a,b));
-    }
-    A[1] = 0;
-    dfs_prefix(1);
-    for(int i = 1; i <= n; i++){
-        clog << i << ' ' << db(Adj[i]) << endl;
-    }
-    for(int i = 0; i <= n; i++){
-        Adj[i].clear();
-    }
-    for(int i = 1; i <= n; i++){
-        cout << A[i] << ' ';
-    }
-    cout << endl;
+	int n; cin >> n;
+	for(int i = 1; i < n; i++){
+		int p, a, b;
+		cin >> p >> a >> b;
+		p--;
+		Adj[p].emplace_back(i, edge{a,b});
+	}
+	dfs(0);
+	for(int i = 0; i < n; i++){
+		Adj[i].clear();
+	}
+	for(int i = 1; i < n; i++){
+		cout << res[i] << " \n"[i == n-1];
+	}
 }
 
-int main(){ _
-    int tsts; cin >> tsts;
-    for(int Testcase = 1; Testcase <= tsts; Testcase++){
-        clog << db(Testcase) << endl;
-        solve();
-    }
-    return 0;
+signed main(){
+	pref_a.push_back(0LL);
+	pref_b.push_back(0LL);
+#ifdef SUBLIME
+	freopen("/tmp/input.txt", "r", stdin);
+	freopen("/tmp/output.txt", "w", stdout);
+#endif
+#ifndef LOCAL_DEBUG
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
+#endif
+	int t; cin >> t;
+	while(t--) solve();
+	return 0;
 }
 

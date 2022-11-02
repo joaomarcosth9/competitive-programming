@@ -1,54 +1,36 @@
 #include <bits/stdc++.h>
+ 
 using namespace std;
-int temtestcase = 0;
-const int INF = 1.05e9;
-const long long INFLL = 4.5e18;
-typedef long long ll;
-
-vector<pair<ll,ll>> vw;
-
-const int maxn = 1e2+5;
-const int maxv = 1e3+5;
-
-ll dp[maxn][maxv];
-
-ll N, W;
-
-void solve(){
-    cin >> N >> W;
-    for(int i = 0; i <= N; i++) for(int j = 0; j <= maxv; j++){
-        dp[i][j] = -1;
+ 
+long long dp[105][100005], v[105], w[105];
+const long long INF = 1e18+5;
+ 
+long long ks(int n, int c){
+    if(c < 0 || n < 0) return INF-5;
+    if(dp[n][c] != INF) return dp[n][c];
+    if(c == 0 && n == 0) return dp[n][c] = 0;
+    dp[n][c] = min(dp[n][c], ks(n-1, c));
+    if(v[n] <= c){
+        dp[n][c] = min(ks(n-1, c), ks(n-1,c-v[n]) + w[n]);
     }
-    vw.emplace_back(0LL, 0LL);
-    for(int i = 0; i < N; i++){
-        int w1, v1; cin >> w1 >> v1;
-        vw.emplace_back(v1,w1);
-    }
-    sort(begin(vw), end(vw));
-
-    for(int i = 0; i <= N; i++){
-        for(int j = 0; j <= 1e3; j++){
-            if(i == 0 || j == 0){
-                dp[i][j] = 0;
-            } else if(w[i] > j){
-                dp[i][j] = dp[i-1][j];
-            } else {
-                dp[i][j] = max(dp[i-1][j], v[i] + dp[i-1][j - w[i]]);
-            }
-        }
-    }
-
-    cout << dp[N][W] << endl;
+    return dp[n][c];
 }
-
-signed main(){
-#ifdef LOCAL_DEBUG
-    freopen("/tmp/input.txt", "r", stdin);
-    freopen("/tmp/output.txt", "w", stdout);
-#else
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
-#endif
-    solve();
+ 
+int main(){
+    int n, W; cin >> n >> W;
+    long long max_v = 0;
+    for(int i = 1; i <= n; i++){
+        cin >> w[i] >> v[i];
+        max_v += v[i];
+    }
+    for(int i = 0; i <= n; i++){
+        for(int j = 0; j <= max_v; j++) dp[i][j] = INF;
+    }
+    for(int i = 0; i <= max_v; i++) ks(n, i);
+    long long maxx = -1;
+    for(long long j = 1; j <= max_v; j++){
+        if(dp[n][j] <= W) maxx = max(maxx, j);
+    }
+    cout << maxx << endl;
     return 0;
 }

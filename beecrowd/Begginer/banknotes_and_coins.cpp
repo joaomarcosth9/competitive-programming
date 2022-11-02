@@ -4,12 +4,12 @@ using namespace std;
 
 int notas[] = {0,0,0,0,0,0};
 int moedas[] = {0,0,0,0,0,0};
-float arr[] = {10000,5000,2000,1000,500,200};
-float arrm[] = {100,50,25,10,5,1};
+double arr[] = {10000,5000,2000,1000,500,200};
+double arrm[] = {100,50,25,10,5,1};
 
 void solve(){
-    float n; cin >> n;
-    float nu = n * 100;
+    double n; cin >> n;
+    double nu = n * 100;
     for(int i = 0; i < 6; i++){
         while(nu - arr[i] >= 0){
             nu -= arr[i];
