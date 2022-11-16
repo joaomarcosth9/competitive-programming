@@ -7,8 +7,8 @@ void solve(){
 
 int main(){
 #ifdef SUBLIME
-	freopen("/tmp/input.txt", "r", stdin);
-	freopen("/tmp/output.txt", "w", stdout);
+	freopen("/inp-out/input.txt", "r", stdin);
+	freopen("/inp-out/output.txt", "w", stdout);
 #endif
 #ifndef LOCAL_DEBUG
 	ios_base::sync_with_stdio(0);
