@@ -6,7 +6,8 @@ using namespace std;
 #else
 #define debug(...)
 #define endl '\n'
-#define cerr if (false) cerr
+#define cerr                                                                                                           \
+    if (false) cerr
 #endif
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 typedef long long ll;
@@ -23,7 +24,7 @@ struct custom_hash {
         x = (x ^ (x >> 27)) * 0x94d049bb133111eb;
         return x ^ (x >> 31);
     }
- 
+
     size_t operator()(uint64_t x) const {
         static const uint64_t FIXED_RANDOM = chrono::steady_clock::now().time_since_epoch().count();
         return splitmix64(x + FIXED_RANDOM);
@@ -47,16 +48,19 @@ int mysqrt(int u) {
 }
 
 void solve() {
-    int n; cin >> n;
+    int n;
+    cin >> n;
     vector<int> aa(n);
     for (int &i : aa) cin >> i;
     unordered_map<int, int, custom_hash> f;
     for (int &i : aa) f[i]++;
-    int q; cin >> q;
+    int q;
+    cin >> q;
     while (q--) {
-        int s, p; cin >> s >> p;
+        int s, p;
+        cin >> s >> p;
         // y = xaj - aj^2
-        // -x^2 + xs - y = 0 
+        // -x^2 + xs - y = 0
         int a = -1, b = s, c = -p;
         int delta = b * b - 4 * a * c;
         int u = mysqrt(delta);
@@ -67,7 +71,7 @@ void solve() {
             if ((s - u) % 2 == 0) {
                 int x1 = (s - u) / 2;
                 res += f[x1] * (f[s - x1] - (x1 + x1 == s));
-            } 
+            }
             if (u != 0 && (s + u) % 2 == 0) {
                 int x2 = (s + u) / 2;
                 res += f[x2] * (f[s - x2] - (x2 + x2 == s));
@@ -80,10 +84,12 @@ void solve() {
 }
 
 signed main() {
-    ios_base::sync_with_stdio(0); cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 1;
     auto start = chrono::steady_clock::now();
-    if (TC) { cin >> TC;
+    if (TC) {
+        cin >> TC;
         start = chrono::steady_clock::now();
         int TEST = 0;
         while (TEST < TC) {
@@ -92,11 +98,12 @@ signed main() {
             ++TEST;
             cerr << endl;
         }
-    } else solve();
+    } else
+        solve();
 #ifdef LOCAL_DEBUG
     auto end = chrono::steady_clock::now();
     auto diff = end - start;
     cerr << "\nTime taken: ";
-    cerr << chrono::duration <double, milli> (diff).count() << " ms" << endl;
+    cerr << chrono::duration<double, milli>(diff).count() << " ms" << endl;
 #endif
 }

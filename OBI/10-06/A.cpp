@@ -4,16 +4,16 @@ using namespace std;
 
 int n, d, a;
 
-void solve(){
+void solve() {
     cin >> n >> d >> a;
-    int out = (d-a)%n;
-    if (out < 0){
+    int out = (d - a) % n;
+    if (out < 0) {
         out += n;
     }
     cout << out << endl;
 }
 
-int main(){
+int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     solve();

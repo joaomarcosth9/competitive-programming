@@ -8,9 +8,7 @@ using namespace std;
 #endif
 typedef long double ld;
 
-ld area(ld b1, ld b2, ld h){
-    return (ld(b1) + ld(b2)) * ld(h) / 2.0;
-}
+ld area(ld b1, ld b2, ld h) { return (ld(b1) + ld(b2)) * ld(h) / 2.0; }
 
 int n;
 ld d, h;
@@ -27,12 +25,12 @@ void solve() {
     for (int i = 0; i < n; i++) {
         if (i < n - 1) {
             int h1 = a[i], h2 = a[i + 1];
-            if(!computed[i]) {
+            if (!computed[i]) {
                 res += ld(d) * h / 2;
                 debug(i, res);
                 computed[i] = 1;
             }
-            if(!computed[i + 1] && h2 + h > h1){
+            if (!computed[i + 1] && h2 + h > h1) {
                 int nh = h1 - h2;
                 ld prop = 1.0 - (ld(nh) / ld(h));
                 debug(nh, prop, prop * d);
@@ -41,7 +39,7 @@ void solve() {
                 computed[i + 1] = 1;
             }
         } else {
-            if(!computed[i]){
+            if (!computed[i]) {
                 res += ld(d) * h / 2;
                 computed[i] = 1;
             }
@@ -51,10 +49,13 @@ void solve() {
 }
 
 signed main() {
-    ios_base::sync_with_stdio(0);cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 1;
-    if (TC) { cin >> TC;
+    if (TC) {
+        cin >> TC;
         while (TC--) solve();
-    } else solve();
+    } else
+        solve();
     return 0;
 }

@@ -1,25 +1,28 @@
 #include <bits/stdc++.h>
 
-#define _ ios_base::sync_with_stdio(0);cin.tie(0);
+#define _                                                                                                              \
+    ios_base::sync_with_stdio(0);                                                                                      \
+    cin.tie(0);
 #define endl '\n'
 
 using namespace std;
 
-void solve(){
-    int n, k; cin >> n >> k;
+void solve() {
+    int n, k;
+    cin >> n >> k;
     vector<int> v(n);
-    for(int i = 0; i < n; i++){
+    for (int i = 0; i < n; i++) {
         cin >> v[i];
     }
 
-    if(k * 2 < n){
+    if (k * 2 < n) {
         cout << "NO\n";
         return;
     } else {
-        map<int,int> u;
-        for(int i = 0; i < n; i++){
+        map<int, int> u;
+        for (int i = 0; i < n; i++) {
             u[v[i]]++;
-            if(u[v[i]] > 2){
+            if (u[v[i]] > 2) {
                 cout << "NO\n";
                 return;
             }
@@ -28,9 +31,10 @@ void solve(){
     cout << "YES\n";
 }
 
-int main(){
-    int testcases; cin >> testcases;
-    for(int i = 1; i <= testcases; i++){
+int main() {
+    int testcases;
+    cin >> testcases;
+    for (int i = 1; i <= testcases; i++) {
         printf("Case #%d: ", i);
         solve();
     }

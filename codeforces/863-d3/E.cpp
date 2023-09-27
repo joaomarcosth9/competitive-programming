@@ -7,12 +7,13 @@ using namespace std;
 #define db(x...)
 #endif
 
-int dig[] = {0,1,2,3,5,6,7,8,9};
+int dig[] = {0, 1, 2, 3, 5, 6, 7, 8, 9};
 
-void solve(){
-    long long n; cin >> n;
+void solve() {
+    long long n;
+    cin >> n;
     string res;
-    while(n){
+    while (n) {
         res += '0' + dig[n % 9];
         n /= 9;
     }
@@ -20,11 +21,14 @@ void solve(){
     cout << res << endl;
 }
 
-signed main(){
-    ios_base::sync_with_stdio(0);cin.tie(0);
+signed main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 1;
-    if(TC){ cin >> TC;
-        while(TC--) solve();
-    } else solve();
+    if (TC) {
+        cin >> TC;
+        while (TC--) solve();
+    } else
+        solve();
     return 0;
 }

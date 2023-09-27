@@ -2,12 +2,13 @@
 
 using namespace std;
 
-void solve(){
-    int a, s, d; cin >> a >> s >> d;
-    int mod = s-d;
+void solve() {
+    int a, s, d;
+    cin >> a >> s >> d;
+    int mod = s - d;
     int res = 0;
-    while(1){
-        if(a <= s){
+    while (1) {
+        if (a <= s) {
             res++;
             break;
         } else {
@@ -18,7 +19,7 @@ void solve(){
     cout << res << endl;
 }
 
-int main(){
+int main() {
     solve();
     return 0;
 }

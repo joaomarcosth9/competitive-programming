@@ -6,7 +6,8 @@ using namespace std;
 #else
 #define debug(...)
 #define endl '\n'
-#define cerr if (false) cerr
+#define cerr                                                                                                           \
+    if (false) cerr
 #endif
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 typedef long long ll;
@@ -23,12 +24,8 @@ struct UnionFind {
             p[i] = i, sz[i] = 1;
         }
     }
-    int find(int u) {
-        return u == p[u] ? u : p[u] = find(p[u]);
-    }
-    bool same(int u, int v) {
-        return find(u) == find(v);
-    }
+    int find(int u) { return u == p[u] ? u : p[u] = find(p[u]); }
+    bool same(int u, int v) { return find(u) == find(v); }
     void unite(int u, int v) {
         u = find(u), v = find(v);
         if (u == v) return;
@@ -43,7 +40,7 @@ void solve() {
     cin >> n >> m;
 
     vector<int> hh(n);
-    vector<pair<int,int>> h(n);
+    vector<pair<int, int>> h(n);
     vector<vector<int>> adj(n);
 
     for (int i = 0; i < n; i++) {
@@ -56,19 +53,22 @@ void solve() {
 
     debug(n);
     for (int i = 0; i < m; i++) {
-        int u, v; cin >> u >> v;
+        int u, v;
+        cin >> u >> v;
         u--, v--;
         debug(u, v);
         adj[u].emplace_back(v);
         adj[v].emplace_back(u);
     }
 
-    int q; cin >> q;
+    int q;
+    cin >> q;
     debug(q);
-    vector<vector<tuple<int,int,int,int>>> has(n);
+    vector<vector<tuple<int, int, int, int>>> has(n);
 
     for (int i = 0; i < q; i++) {
-        int u, v, e; cin >> u >> v >> e;
+        int u, v, e;
+        cin >> u >> v >> e;
         u--, v--;
         has[(n - 1) / 2].emplace_back(u, v, hh[u] + e, i);
     }
@@ -114,10 +114,12 @@ void solve() {
 }
 
 signed main() {
-    ios_base::sync_with_stdio(0); cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 1;
     auto start = chrono::steady_clock::now();
-    if (TC) { cin >> TC;
+    if (TC) {
+        cin >> TC;
         start = chrono::steady_clock::now();
         int TEST = 0;
         while (TEST < TC) {
@@ -125,11 +127,12 @@ signed main() {
             solve();
             ++TEST;
         }
-    } else solve();
+    } else
+        solve();
 #ifdef LOCAL_DEBUG
     auto end = chrono::steady_clock::now();
     auto diff = end - start;
     cerr << "\nTime taken: ";
-    cerr << chrono::duration <double, milli> (diff).count() << " ms" << endl;
+    cerr << chrono::duration<double, milli>(diff).count() << " ms" << endl;
 #endif
 }

@@ -1,9 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
-typedef long long ll; typedef pair<int,int> ii;
+typedef long long ll;
+typedef pair<int, int> ii;
 int testcases = 1;
-const int INF = 1.05e9; const ll INFLL = 4.5e18;
+const int INF = 1.05e9;
+const ll INFLL = 4.5e18;
 #define endl '\n'
 #ifdef LOCAL_DEBUG
 #include "debug.h"
@@ -12,15 +14,17 @@ const int INF = 1.05e9; const ll INFLL = 4.5e18;
 #define dbarr(x...)
 #endif
 
-void solve(){
-    int n; cin >> n;
+void solve() {
+    int n;
+    cin >> n;
     priority_queue<ll> pq;
     ll res = 0;
-    for(int i = 0; i < n; i++){
-        ll a; cin >> a;
-        if(a){
+    for (int i = 0; i < n; i++) {
+        ll a;
+        cin >> a;
+        if (a) {
             pq.push(a);
-        } else if(!pq.empty()){
+        } else if (!pq.empty()) {
             res += pq.top();
             pq.pop();
         }
@@ -28,12 +32,13 @@ void solve(){
     cout << res << endl;
 }
 
-signed main(){
+signed main() {
 #ifndef LOCAL_DEBUG
-    ios_base::sync_with_stdio(0);cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
 #endif
     int tsts = 1;
-    if(testcases) cin >> tsts;
-    while(tsts--) solve();
+    if (testcases) cin >> tsts;
+    while (tsts--) solve();
     return 0;
 }

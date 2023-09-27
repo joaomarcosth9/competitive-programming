@@ -6,16 +6,18 @@ using namespace std;
 const int MAX = 1.1e5;
 int arr[MAX];
 
-void solve(){
-    int n, k; cin >> n >> k;
-    for(int i = 0; i < n; i++){
-        int a, b; cin >> a >> b;
+void solve() {
+    int n, k;
+    cin >> n >> k;
+    for (int i = 0; i < n; i++) {
+        int a, b;
+        cin >> a >> b;
         arr[a] += b;
     }
     long long ss = 0;
-    for(int i = 0; i < MAX; i++){
+    for (int i = 0; i < MAX; i++) {
         ss += arr[i];
-        if(ss >= k){
+        if (ss >= k) {
             cout << i << endl;
             return;
         }

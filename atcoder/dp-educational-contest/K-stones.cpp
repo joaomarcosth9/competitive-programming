@@ -10,7 +10,8 @@ const int maxn = 1e2 + 5, maxa = 1e5 + 5;
 int a[maxn], mex[maxa];
 
 void solve() {
-    int n, k; cin >> n >> k;
+    int n, k;
+    cin >> n >> k;
     for (int i = 0; i < n; i++) {
         cin >> a[i];
     }
@@ -20,7 +21,7 @@ void solve() {
     for (int i = 1; i <= k; i++) {
         set<int> st;
         for (int j = 0; j < n; j++) {
-            if(a[j] > i) continue;
+            if (a[j] > i) continue;
             st.emplace(mex[i - a[j]]);
         }
         int search = 0;
@@ -38,10 +39,13 @@ void solve() {
 }
 
 signed main() {
-    ios_base::sync_with_stdio(0);cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 0;
-    if (TC) { cin >> TC;
+    if (TC) {
+        cin >> TC;
         while (TC--) solve();
-    } else solve();
+    } else
+        solve();
     return 0;
 }

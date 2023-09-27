@@ -2,22 +2,23 @@
 
 using namespace std;
 
-int notas[] = {0,0,0,0,0,0};
-int moedas[] = {0,0,0,0,0,0};
-double arr[] = {10000,5000,2000,1000,500,200};
-double arrm[] = {100,50,25,10,5,1};
+int notas[] = {0, 0, 0, 0, 0, 0};
+int moedas[] = {0, 0, 0, 0, 0, 0};
+double arr[] = {10000, 5000, 2000, 1000, 500, 200};
+double arrm[] = {100, 50, 25, 10, 5, 1};
 
-void solve(){
-    double n; cin >> n;
+void solve() {
+    double n;
+    cin >> n;
     double nu = n * 100;
-    for(int i = 0; i < 6; i++){
-        while(nu - arr[i] >= 0){
+    for (int i = 0; i < 6; i++) {
+        while (nu - arr[i] >= 0) {
             nu -= arr[i];
             notas[i]++;
         }
     }
-    for(int i = 0; i < 6; i++){
-        while(nu - arrm[i] >= 0){
+    for (int i = 0; i < 6; i++) {
+        while (nu - arrm[i] >= 0) {
             nu -= arrm[i];
             moedas[i]++;
         }
@@ -25,16 +26,16 @@ void solve(){
     cout << fixed;
     cout << setprecision(2);
     cout << "NOTAS:" << endl;
-    for (int i = 0; i < 6; i++){
-        cout << notas[i] << " nota(s) de R$ " << arr[i]/100 << endl;
+    for (int i = 0; i < 6; i++) {
+        cout << notas[i] << " nota(s) de R$ " << arr[i] / 100 << endl;
     }
     cout << "MOEDAS:" << endl;
-    for (int i = 0; i < 6; i++){
-        cout << moedas[i] << " moeda(s) de R$ " << arrm[i]/100 << endl;
+    for (int i = 0; i < 6; i++) {
+        cout << moedas[i] << " moeda(s) de R$ " << arrm[i] / 100 << endl;
     }
 }
 
-int main(){
+int main() {
     solve();
     return 0;
 }

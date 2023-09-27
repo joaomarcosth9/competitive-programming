@@ -12,7 +12,8 @@ int a[maxn];
 bool dp[maxn][512];
 
 void solve() {
-    int n; cin >> n;
+    int n;
+    cin >> n;
     for (int i = 0; i < n; i++) {
         cin >> a[i];
         for (int j = 0; j < 512; j++) {
@@ -27,17 +28,20 @@ void solve() {
         dp[i][0] = 1;
         for (int j = 1; j < 512; j++) {
             dp[i][j] = (dp[i - 1][j ^ a[i]]);
-            if(dp[i][j]) res = max(res, j);
+            if (dp[i][j]) res = max(res, j);
         }
     }
     cout << res << '\n';
 }
 
 signed main() {
-    ios_base::sync_with_stdio(0);cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 1;
-    if (TC) { cin >> TC;
+    if (TC) {
+        cin >> TC;
         while (TC--) solve();
-    } else solve();
+    } else
+        solve();
     return 0;
 }

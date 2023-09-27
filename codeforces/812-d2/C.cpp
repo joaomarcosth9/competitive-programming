@@ -1,16 +1,17 @@
 #include <bits/stdc++.h>
 
-#define _ ios_base::sync_with_stdio(0);cin.tie(0);
+#define _                                                                                                              \
+    ios_base::sync_with_stdio(0);                                                                                      \
+    cin.tie(0);
 #define endl '\n'
 
 using namespace std;
 
-void solve(){
+void solve() {}
 
-}
-
-int main(){ _
-    int tscf; cin >> tscf;
-    while(tscf--) solve();
+int main() {
+    _ int tscf;
+    cin >> tscf;
+    while (tscf--) solve();
     return 0;
 }

@@ -13,10 +13,10 @@ ll a[maxn];
 
 ll basis[64], sz = 0;
 
-void insertVector(ll u){
-    for(int i = 0; i < 63; i++){
-        if(!(u & (1ll << i))) continue;
-        if(!basis[i]){
+void insertVector(ll u) {
+    for (int i = 0; i < 63; i++) {
+        if (!(u & (1ll << i))) continue;
+        if (!basis[i]) {
             basis[i] = u;
             sz++;
             return;
@@ -25,30 +25,34 @@ void insertVector(ll u){
     }
 }
 
-ll binpow(ll b, ll e){
+ll binpow(ll b, ll e) {
     ll res = 1;
-    while(e){
-        if(e & 1) res = res * b % mod;
+    while (e) {
+        if (e & 1) res = res * b % mod;
         b = b * b % mod;
         e >>= 1;
     }
     return res;
 }
 
-void solve(){
-    int n; cin >> n;
-    for(int i = 0; i < n; i++){
+void solve() {
+    int n;
+    cin >> n;
+    for (int i = 0; i < n; i++) {
         cin >> a[i];
         insertVector(a[i]);
     }
-    cout << (binpow(2, n) - binpow(2, n-sz) + mod) % mod << '\n';
+    cout << (binpow(2, n) - binpow(2, n - sz) + mod) % mod << '\n';
 }
 
-signed main(){
-    ios_base::sync_with_stdio(0);cin.tie(0);
+signed main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 0;
-    if(TC){ cin >> TC;
-        while(TC--) solve();
-    } else solve();
+    if (TC) {
+        cin >> TC;
+        while (TC--) solve();
+    } else
+        solve();
     return 0;
 }

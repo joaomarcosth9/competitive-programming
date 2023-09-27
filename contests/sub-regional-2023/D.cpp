@@ -6,13 +6,14 @@ using namespace std;
 #else
 #define debug(...)
 #define endl '\n'
-#define cerr if (false) cerr
+#define cerr                                                                                                           \
+    if (false) cerr
 #endif
 #define eb emplace_back
 #define all(x) begin(x), end(x)
 #define rall(x) rbegin(x), rend(x)
-#define L1(res...) [&](const auto& x){ return res; }
-#define L2(res...) [&](const auto& x, const auto& y){ return res; }
+#define L1(res...) [&](const auto &x) { return res; }
+#define L2(res...) [&](const auto &x, const auto &y) { return res; }
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 typedef long long ll;
 typedef long double ld;
@@ -38,7 +39,8 @@ void fw(int l, int r) {
 
 void solve(int l, int r) {
     if (l == r) {
-        mat[l] = dis; return;
+        mat[l] = dis;
+        return;
     }
     int mid = (l + r) / 2;
 
@@ -55,12 +57,14 @@ void solve(int l, int r) {
 
 void solve() {
     cin >> n >> m;
-    dis = vector (n, vector<ll> (n, inf));
+    dis = vector(n, vector<ll>(n, inf));
     for (int i = 0; i < n; i++) dis[i][i] = 0;
 
     for (int i = 0; i < m; i++) {
-        int u, v, w; cin >> u >> v >> w;
-        u--; v--;
+        int u, v, w;
+        cin >> u >> v >> w;
+        u--;
+        v--;
         dis[u][v] = dis[v][u] = w;
         edges.eb(i, u, v, w);
     }
@@ -72,22 +76,26 @@ void solve() {
 
     vector<ll> res(m, inf);
     for (auto &[id, u, v, w] : edges) {
-        for (int i = 0; i < n; i++) if (i != v && i != u) {
-            res[id] = min(res[id], mat[u][v][i] + mat[v][u][i]);
-        }
+        for (int i = 0; i < n; i++)
+            if (i != v && i != u) {
+                res[id] = min(res[id], mat[u][v][i] + mat[v][u][i]);
+            }
     }
     for (auto u : res) cout << (u == inf ? -1 : u) << endl;
 }
 
 signed main() {
-    ios_base::sync_with_stdio(0); cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 0;
-    if (TC) { cin >> TC;
+    if (TC) {
+        cin >> TC;
         int TEST = 1;
         while (TEST <= TC) {
             cerr << "[Testcase " << TEST << "]" << endl;
             solve();
             ++TEST;
         }
-    } else solve();
+    } else
+        solve();
 }

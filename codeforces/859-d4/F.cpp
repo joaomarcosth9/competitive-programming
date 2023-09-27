@@ -7,80 +7,74 @@ using namespace std;
 #define db(x...)
 #endif
 
-void solve(){
-    int n, m, i, j, ii, jj; cin >> n >> m >> i >> j >> ii >> jj;
-    string dir; cin >> dir;
+void solve() {
+    int n, m, i, j, ii, jj;
+    cin >> n >> m >> i >> j >> ii >> jj;
+    string dir;
+    cin >> dir;
     i--, j--, ii--, jj--;
     /* vector<vector<int>> v(n, vector<int>(m, 0)); */
-    auto bottom = [&] () {
-        return i == n-1;
-    };
-    auto top = [&] (){
-        return i == 0;
-    };
-    auto left = [&] (){
-        return j == 0;
-    };
-    auto right = [&] (){
-        return j == m-1;
-    };
+    auto bottom = [&]() { return i == n  -  1; };
+    auto top = [&]() { return i == 0; };
+    auto left = [&]() { return j == 0; };
+    auto right = [&]() { return j == m  -  1; };
     int res = 0;
-    map<pair<pair<int,int>, string>, bool> vis;
-    if(i == ii && j == jj){
+    map<pair<pair<int, int>, string>, bool> vis;
+    if (i == ii && j == jj) {
         cout << res << endl;
         return;
     }
-    while(1){
+    while (1) {
         db(i, j, dir, ii, jj);
-        if(vis[make_pair(make_pair(i, j), dir)]){
+        if (vis[make_pair(make_pair(i, j), dir)]) {
             cout << -1 << endl;
             return;
         }
         vis[make_pair(make_pair(i, j), dir)] = 1;
 
-        if(dir == "UR"){
+        if (dir == "UR") {
             res++;
-            if(top() && right()){
+            if (top() && right()) {
                 dir = "DL";
-            } else if(top()){
+            } else if (top()) {
                 dir = "DR";
-            } else if(right()){
+            } else if (right()) {
                 dir = "UL";
             } else {
                 res--;
                 i--, j++;
             }
-        } else if(dir == "UL"){
+        } else if (dir == "UL") {
             res++;
-            if(top() && left()){
+            if (top() && left()) {
                 dir = "DR";
-            } else if(top()){
+            } else if (top()) {
                 dir = "DL";
-            } else if(left()){
+            } else if (left()) {
                 dir = "UR";
             } else {
                 res--;
                 i--, j--;
             }
-        } else if(dir == "DR"){
+        } else if (dir == "DR") {
             res++;
-            if(bottom() && right()){
+            if (bottom() && right()) {
                 dir = "UL";
-            } else if(bottom()){
+            } else if (bottom()) {
                 dir = "UR";
-            } else if(right()){
+            } else if (right()) {
                 dir = "DL";
             } else {
                 res--;
                 i++, j++;
             }
-        } else if(dir == "DL"){
+        } else if (dir == "DL") {
             res++;
-            if(bottom() && left()){
+            if (bottom() && left()) {
                 dir = "UR";
-            } else if(bottom()){
+            } else if (bottom()) {
                 dir = "UL";
-            } else if(left()){
+            } else if (left()) {
                 dir = "DR";
             } else {
                 res--;
@@ -88,18 +82,21 @@ void solve(){
             }
         }
 
-        if(i == ii && j == jj){
+        if (i == ii && j == jj) {
             cout << res << endl;
             return;
         }
     }
 }
 
-signed main(){
-    ios_base::sync_with_stdio(0);cin.tie(0);
+signed main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 1;
-    if(TC){ cin >> TC;
-        while(TC--) solve();
-    } else solve();
+    if (TC) {
+        cin >> TC;
+        while (TC--) solve();
+    } else
+        solve();
     return 0;
 }

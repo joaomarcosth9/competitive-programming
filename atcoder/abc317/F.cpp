@@ -51,15 +51,17 @@ ll dpp(int p, int l0, int r0, int mod0, int l1, int r1, int mod1, int l2, int r2
             int new_l2 = l2 && (L[2] >> p & 1) == u[2];
             int new_r2 = r2 && (R[2] >> p & 1) == u[2];
             int new_mod2 = (mod2 + mods2[2][p] * u[2]) % A[2];
-            ret = (ret + dpp(p - 1, new_l0, new_r0, new_mod0, new_l1, new_r1, new_mod1, new_l2, new_r2, new_mod2)) % mod;
+            ret =
+                (ret + dpp(p - 1, new_l0, new_r0, new_mod0, new_l1, new_r1, new_mod1, new_l2, new_r2, new_mod2)) % mod;
         }
     }
     return dp[p][l0][r0][mod0][l1][r1][mod1][l2][r2][mod2] = ret;
 }
 
-void solve(){
+void solve() {
     ll p = 1;
-    ll N; cin >> N;
+    ll N;
+    cin >> N;
     for (int i = 0; i < 3; i++) {
         L[i] = 1;
         R[i] = N;
@@ -80,8 +82,9 @@ void solve(){
     cout << u << endl;
 }
 
-signed main(){
-    ios_base::sync_with_stdio(0);cin.tie(0);
+signed main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     memset(dp, -1, sizeof(dp));
     solve();
 }

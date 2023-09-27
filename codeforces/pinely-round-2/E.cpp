@@ -6,13 +6,14 @@ using namespace std;
 #else
 #define debug(...)
 #define endl '\n'
-#define cerr if (false) cerr
+#define cerr                                                                                                           \
+    if (false) cerr
 #endif
 #define eb emplace_back
 #define all(x) begin(x), end(x)
 #define rall(x) rbegin(x), rend(x)
-#define L1(res...) [&](const auto& x){ return res; }
-#define L2(res...) [&](const auto& x, const auto& y){ return res; }
+#define L1(res...) [&](const auto &x) { return res; }
+#define L2(res...) [&](const auto &x, const auto &y) { return res; }
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 typedef long long ll;
 typedef long double ld;
@@ -21,7 +22,7 @@ typedef tuple<int, int, int> i3;
 #define int ll
 
 const int maxn = 200005;
-int n, m, k; 
+int n, m, k;
 int VIS = 0;
 bool vis[maxn];
 int a[maxn];
@@ -35,10 +36,13 @@ void dfs(int u, int mx) {
     assert(!vis[u]);
     vis[u] = 1;
     VIS += 1;
-    for (int v : adj[u]) if (!vis[v]) {
-        if (a[v] >= mx) dfs(v, a[v]);
-        else nroots.eb(v);
-    }
+    for (int v : adj[u])
+        if (!vis[v]) {
+            if (a[v] >= mx)
+                dfs(v, a[v]);
+            else
+                nroots.eb(v);
+        }
 }
 
 void solve() {
@@ -48,12 +52,14 @@ void solve() {
     }
     vector<int> root(n, 1);
     for (int i = 0; i < m; i++) {
-        int u, v; cin >> u >> v;
+        int u, v;
+        cin >> u >> v;
         u--, v--;
         root[v] = 0;
         adj[u].eb(v);
     }
-    for (int i = 0; i < n; i++) if (root[i]) roots.eb(i);
+    for (int i = 0; i < n; i++)
+        if (root[i]) roots.eb(i);
     bool first = 1;
     vector<int> valroots, valroots2;
     for (auto u : roots) {
@@ -97,8 +103,10 @@ void solve() {
                 nroots.eb(u);
                 continue;
             }
-            if (!first) dfs(u, a[u]);
-            else dfs(u, a[u]);
+            if (!first)
+                dfs(u, a[u]);
+            else
+                dfs(u, a[u]);
         }
         if (!first) mn = 0;
         first = 0;
@@ -117,9 +125,11 @@ void solve() {
 }
 
 signed main() {
-    ios_base::sync_with_stdio(0); cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 1;
-    if (TC) { cin >> TC;
+    if (TC) {
+        cin >> TC;
         int TEST = 1;
         while (TEST <= TC) {
             cerr << "[Testcase " << TEST << "]" << endl;
@@ -134,5 +144,6 @@ signed main() {
             nroots.clear();
             ++TEST;
         }
-    } else solve();
+    } else
+        solve();
 }

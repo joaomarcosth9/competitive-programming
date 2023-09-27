@@ -6,13 +6,14 @@ using namespace std;
 #else
 #define debug(...)
 #define endl '\n'
-#define cerr if (false) cerr
+#define cerr                                                                                                           \
+    if (false) cerr
 #endif
 #define eb emplace_back
 #define all(x) begin(x), end(x)
 #define rall(x) rbegin(x), rend(x)
-#define L1(res...) [&](const auto& x){ return res; }
-#define L2(res...) [&](const auto& x, const auto& y){ return res; }
+#define L1(res...) [&](const auto &x) { return res; }
+#define L2(res...) [&](const auto &x, const auto &y) { return res; }
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 typedef long long ll;
 typedef long double ld;
@@ -25,11 +26,9 @@ char grid[maxn][maxn];
 int no[maxn][maxn];
 int dis[maxn][maxn];
 
-bool valid(int i, int j) {
-    return i >= 0 && j >= 0 && j < m && i < n && !no[i][j]; 
-}
+bool valid(int i, int j) { return i >= 0 && j >= 0 && j < m && i < n && !no[i][j]; }
 
-ii moves[] = { {0, 1}, {0, -1}, {1, 0}, {-1, 0} };
+ii moves[] = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
 
 void bfs(int I, int J) {
     for (int i = 0; i < n; i++) {
@@ -45,12 +44,13 @@ void bfs(int I, int J) {
         auto [i, j] = q.front();
         q.pop();
         int w = dis[i][j];
-        for (auto [y, x] : moves) if (valid(y + i, x + j)) {
-            if (dis[y + i][x + j] > w + 1) {
-                dis[y + i][x + j] = w + 1;
-                q.emplace(y + i, x + j);
+        for (auto [y, x] : moves)
+            if (valid(y + i, x + j)) {
+                if (dis[y + i][x + j] > w + 1) {
+                    dis[y + i][x + j] = w + 1;
+                    q.emplace(y + i, x + j);
+                }
             }
-        }
     }
 }
 
@@ -60,8 +60,10 @@ void solve() {
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m; j++) {
             cin >> grid[i][j];
-            if (grid[i][j] == 'S') I = i, J = j;
-            else if (grid[i][j] == 'G') II = i, JJ = j;
+            if (grid[i][j] == 'S')
+                I = i, J = j;
+            else if (grid[i][j] == 'G')
+                II = i, JJ = j;
         }
     }
 
@@ -135,14 +137,17 @@ void solve() {
 }
 
 signed main() {
-    ios_base::sync_with_stdio(0); cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 0;
-    if (TC) { cin >> TC;
+    if (TC) {
+        cin >> TC;
         int TEST = 1;
         while (TEST <= TC) {
             cerr << "[Testcase " << TEST << "]" << endl;
             solve();
             ++TEST;
         }
-    } else solve();
+    } else
+        solve();
 }

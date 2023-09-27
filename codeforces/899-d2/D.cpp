@@ -5,14 +5,15 @@ using namespace std;
 #include "debug.h"
 #else
 #define debug(...)
-#define cerr if (false) cerr
+#define cerr                                                                                                           \
+    if (false) cerr
 #endif
 #define endl '\n'
 #define eb emplace_back
 #define all(x) begin(x), end(x)
 #define rall(x) rbegin(x), rend(x)
-#define L1(res...) [&](const auto& x){ return res; }
-#define L2(res...) [&](const auto& x, const auto& y){ return res; }
+#define L1(res...) [&](const auto &x) { return res; }
+#define L2(res...) [&](const auto &x, const auto &y) { return res; }
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 typedef long long ll;
 typedef long double ld;
@@ -30,10 +31,11 @@ int sz[maxn];
 
 void dfs(int u, int p = -1) {
     sz[u] = 1;
-    for (int v : adj[u]) if (v != p) {
-        dfs(v, u);
-        sz[u] += sz[v];
-    }
+    for (int v : adj[u])
+        if (v != p) {
+            dfs(v, u);
+            sz[u] += sz[v];
+        }
     if (p != -1) {
         COST += (a[u] ^ a[p]) * sz[u];
     }
@@ -46,17 +48,20 @@ void dfs2(int u, int p = -1) {
         res[u] -= sz[u] * (a[u] ^ a[p]);
         res[u] += up * (a[u] ^ a[p]);
     }
-    for (int v : adj[u]) if (v != p) {
-        dfs2(v, u);
-    }
+    for (int v : adj[u])
+        if (v != p) {
+            dfs2(v, u);
+        }
 }
 
 void solve() {
     cin >> n;
     for (int i = 0; i < n; i++) cin >> a[i];
     for (int i = 0; i < n - 1; i++) {
-        int u, v; cin >> u >> v;
-        u--; v--;
+        int u, v;
+        cin >> u >> v;
+        u--;
+        v--;
         adj[u].eb(v);
         adj[v].eb(u);
     }
@@ -69,10 +74,13 @@ void solve() {
 }
 
 signed main() {
-    ios_base::sync_with_stdio(0); cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 1;
-    if (TC) cin >> TC;
-    else TC += 1;
+    if (TC)
+        cin >> TC;
+    else
+        TC += 1;
     int TEST = 1;
     while (TEST <= TC) {
         cerr << "[Testcase " << TEST << "]" << endl;

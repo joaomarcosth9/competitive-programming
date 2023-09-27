@@ -8,24 +8,25 @@ using namespace std;
 #endif
 
 void solve() {
-    int n, k; cin >> n >> k;
+    int n, k;
+    cin >> n >> k;
     int res = 0;
     vector<int> v(n + 1);
-    for(int i = 1; i <= n; i++){
+    for (int i = 1; i <= n; i++) {
         int c = (i + k - 1) / k;
         int has = 0;
         debug(i, v);
-        for(int j = i; j > 0; j--){
+        for (int j = i; j > 0; j--) {
             has += v[j];
         }
-        for(int j = i; has < c; j--, has++){
+        for (int j = i; has < c; j--, has++) {
             v[j] = 1;
         }
         has = 0;
-        for(int j = n - i + 1; j <= n; j++){
+        for (int j = n - i + 1; j <= n; j++) {
             has += v[j];
         }
-        for(int j = n - i + 1; has < c; j++, has++){
+        for (int j = n - i + 1; has < c; j++, has++) {
             v[j] = 1;
         }
         debug(i, v);
@@ -34,10 +35,13 @@ void solve() {
 }
 
 signed main() {
-    ios_base::sync_with_stdio(0);cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 1;
-    if(TC){ cin >> TC;
-        while(TC--) solve();
-    } else solve();
+    if (TC) {
+        cin >> TC;
+        while (TC--) solve();
+    } else
+        solve();
     return 0;
 }

@@ -7,12 +7,12 @@ using namespace std;
 #define debug(...)
 #endif
 #define int long long
-long long mysqrt(long long u){
+long long mysqrt(long long u) {
     long long l = 1, r = u;
     long long ans = -1;
-    while(l <= r){
+    while (l <= r) {
         long long mid = (l + r) / 2;
-        if(mid * mid <= u){
+        if (mid * mid <= u) {
             ans = mid;
             l = mid + 1;
         } else {
@@ -23,12 +23,13 @@ long long mysqrt(long long u){
 }
 
 void solve() {
-    long long n, k; cin >> n >> k;
+    long long n, k;
+    cin >> n >> k;
     vector<long long> sqs(2 * n);
     int mark = -1;
-    for(long long i = 1; i <= (2 * n); i++){
+    for (long long i = 1; i <= (2 * n); i++) {
         sqs[i - 1] = i * i;
-        if(sqs[i - 1] == k){
+        if (sqs[i - 1] == k) {
             mark = i;
         }
     }
@@ -38,11 +39,13 @@ void solve() {
 }
 
 signed main() {
-    ios_base::sync_with_stdio(0);cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 0;
-    if (TC) { cin >> TC;
+    if (TC) {
+        cin >> TC;
         while (TC--) solve();
-    } else solve();
+    } else
+        solve();
     return 0;
 }
-

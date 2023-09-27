@@ -6,7 +6,8 @@ using namespace std;
 #else
 #define debug(...)
 #define endl '\n'
-#define cerr if (false) cerr
+#define cerr                                                                                                           \
+    if (false) cerr
 #endif
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 typedef long long ll;
@@ -15,7 +16,7 @@ typedef pair<int, int> ii;
 typedef tuple<int, int, int> i3;
 
 int OP;
-vector<pair<int,int>> ret;
+vector<pair<int, int>> ret;
 vector<ll> a;
 
 void add(int i, int j) {
@@ -27,7 +28,7 @@ void add(int i, int j) {
 void solve_pos() {
     int n = a.size();
     for (int i = 1; i < n; i++) {
-        while(a[i] < a[i - 1]) {
+        while (a[i] < a[i - 1]) {
             add(i, i - 1);
         }
     }
@@ -36,17 +37,18 @@ void solve_pos() {
 void solve_neg() {
     int n = a.size();
     for (int i = n - 2; i >= 0; i--) {
-        while(a[i] > a[i + 1]) {
+        while (a[i] > a[i + 1]) {
             add(i, i + 1);
         }
     }
 }
 
 void solve() {
-    int n; cin >> n;
+    int n;
+    cin >> n;
     ret.clear();
     OP = 0;
-    a = vector<ll> (n);
+    a = vector<ll>(n);
     for (ll &i : a) cin >> i;
     bool db = 1, all_neg = 1, all_pos = 1;
     all_neg &= a[0] <= 0;
@@ -77,7 +79,7 @@ void solve() {
     int mx = *max_element(begin(a), end(a));
     int mn = *min_element(begin(a), end(a));
     int cnt = 0;
-    for (int i = 0; i < n; i++){ 
+    for (int i = 0; i < n; i++) {
         cnt += a[i] > 0;
     }
     int neg = n - cnt;
@@ -131,10 +133,12 @@ void solve() {
 }
 
 signed main() {
-    ios_base::sync_with_stdio(0); cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 1;
     auto start = chrono::steady_clock::now();
-    if (TC) { cin >> TC;
+    if (TC) {
+        cin >> TC;
         start = chrono::steady_clock::now();
         int TEST = 0;
         while (TEST < TC) {
@@ -142,12 +146,12 @@ signed main() {
             solve();
             ++TEST;
         }
-    } else solve();
+    } else
+        solve();
 #ifdef LOCAL_DEBUG
     auto end = chrono::steady_clock::now();
     auto diff = end - start;
     cerr << "\nTime taken: ";
-    cerr << chrono::duration <double, milli> (diff).count() << " ms" << endl;
+    cerr << chrono::duration<double, milli>(diff).count() << " ms" << endl;
 #endif
 }
-

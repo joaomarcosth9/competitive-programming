@@ -8,7 +8,7 @@ using namespace std;
 #endif
 typedef long long ll;
 
-const int maxn = 2e5+5;
+const int maxn = 2e5 + 5;
 int v[maxn];
 
 namespace PollardRho {
@@ -17,9 +17,7 @@ namespace PollardRho {
     const int P = 1e6 + 9;
     ll seq[P];
     int primes[P], spf[P];
-    inline ll add_mod(ll x, ll y, ll m) {
-        return (x += y) < m ? x : x - m;
-    }
+    inline ll add_mod(ll x, ll y, ll m) { return (x += y) < m ? x : x - m; }
     inline ll mul_mod(ll x, ll y, ll m) {
         ll res = __int128_t(x) * y % m;
         return res;
@@ -39,7 +37,8 @@ namespace PollardRho {
         if (n <= 2 || ((n & 1) ^ 1)) return (n == 2);
         if (n < P) return spf[n] == n;
         ll c, d, s = 0, r = n - 1;
-        for (; !(r & 1); r >>= 1, s++) {}
+        for (; !(r & 1); r >>= 1, s++) {
+        }
         // each iteration is a round
         for (int i = 0; primes[i] < n && primes[i] < 32; i++) {
             c = pow_mod(primes[i], r, n);
@@ -83,9 +82,9 @@ namespace PollardRho {
         }
     }
     vector<int> factorize(int n) {
-        if (n == 1) return vector <int>();
-        if (miller_rabin(n)) return vector<int> {n};
-        vector <int> v, w;
+        if (n == 1) return vector<int>();
+        if (miller_rabin(n)) return vector<int>{n};
+        vector<int> v, w;
         while (n > 1 && n < P) {
             v.push_back(spf[n]);
             n /= spf[n];
@@ -98,7 +97,7 @@ namespace PollardRho {
         }
         return v;
     }
-}
+} // namespace PollardRho
 
 vector<int> get_divs(int n) {
     vector<int> facts = PollardRho::factorize(n);
@@ -111,7 +110,7 @@ vector<int> get_divs(int n) {
             facts2.back().second++;
         }
     }
-    for(auto& [_, e] : facts2) {
+    for (auto &[_, e] : facts2) {
         e >>= 1;
     }
     vector<int> divs;
@@ -130,33 +129,33 @@ vector<int> get_divs(int n) {
     return divs;
 }
 
-void solve(){
-    int n; cin >> n;
-    for(int i = 0; i < n; i++){
+void solve() {
+    int n;
+    cin >> n;
+    for (int i = 0; i < n; i++) {
         cin >> v[i];
     }
 
-    map<int,ll> freq;
-    for(int i = 0; i < n; i++){
+    map<int, ll> freq;
+    for (int i = 0; i < n; i++) {
         freq[v[i]]++;
     }
 
     ll res = 0;
 
-
-    for(auto [u, f] : freq){
+    for (auto [u, f] : freq) {
 
         auto divs = get_divs(u);
         db(u, divs);
 
-        if(f > 2) res += f * (f-1) * (f-2);
+        if (f > 2) res += f * (f - 1) * (f - 2);
 
-        for(auto b : divs){
-            if(b == 1) continue;
+        for (auto b : divs) {
+            if (b == 1) continue;
             int sq = b * b;
             auto f1 = freq.find(u / b);
             auto f2 = freq.find(u / sq);
-            if(f1 != freq.end() && f2 != freq.end()){
+            if (f1 != freq.end() && f2 != freq.end()) {
                 res += f * (f1->second) * (f2->second);
             }
         }
@@ -165,12 +164,15 @@ void solve(){
     cout << res << '\n';
 }
 
-signed main(){
-    ios_base::sync_with_stdio(0);cin.tie(0);
+signed main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 1;
     PollardRho::init();
-    if(TC){ cin >> TC;
-        while(TC--) solve();
-    } else solve();
+    if (TC) {
+        cin >> TC;
+        while (TC--) solve();
+    } else
+        solve();
     return 0;
 }

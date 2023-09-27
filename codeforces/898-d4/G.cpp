@@ -5,14 +5,15 @@ using namespace std;
 #include "debug.h"
 #else
 #define debug(...)
-#define cerr if (false) cerr
+#define cerr                                                                                                           \
+    if (false) cerr
 #endif
 #define endl '\n'
 #define eb emplace_back
 #define all(x) begin(x), end(x)
 #define rall(x) rbegin(x), rend(x)
-#define L1(res...) [&](const auto& x){ return res; }
-#define L2(res...) [&](const auto& x, const auto& y){ return res; }
+#define L1(res...) [&](const auto &x) { return res; }
+#define L2(res...) [&](const auto &x, const auto &y) { return res; }
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 typedef long long ll;
 typedef long double ld;
@@ -21,7 +22,8 @@ typedef tuple<int, int, int> i3;
 void out(bool ans) { cout << (ans ? "YES" : "NO") << endl; }
 
 void solve() {
-    string s; cin >> s;
+    string s;
+    cin >> s;
     int n = size(s);
     vector<int> pb;
     pb.eb(0);
@@ -31,9 +33,7 @@ void solve() {
         pref[i + 1] = pref[i] + (s[i] == 'A');
     }
     pb.eb(n - 1);
-    auto query = [&] (int l, int r) {
-        return pref[r + 1] - pref[l];
-    };
+    auto query = [&](int l, int r) { return pref[r + 1] - pref[l]; };
     bool pl = 1;
     int res = 0;
     int N = size(pb) - 2;
@@ -44,7 +44,7 @@ void solve() {
     }
     debug(L);
     debug(R);
-    vector<vector<int>> dp(N + 1, vector<int> (2, 2e9));
+    vector<vector<int>> dp(N + 1, vector<int>(2, 2e9));
     dp[0][0] = dp[0][1] = 0;
     for (int i = 0; i < N; i++) {
         dp[i + 1][0] = dp[i][0] + L[i];
@@ -54,9 +54,11 @@ void solve() {
 }
 
 signed main() {
-    ios_base::sync_with_stdio(0); cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 1;
-    if (TC) { cin >> TC;
+    if (TC) {
+        cin >> TC;
         int TEST = 1;
         while (TEST <= TC) {
             cerr << "[Testcase " << TEST << "]" << endl;
@@ -65,5 +67,6 @@ signed main() {
             /* cout << (solve() ? "YES" : "NO") << endl; */
             ++TEST;
         }
-    } else solve();
+    } else
+        solve();
 }

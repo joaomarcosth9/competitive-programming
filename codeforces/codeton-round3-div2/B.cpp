@@ -5,14 +5,15 @@ using namespace std;
 #include "debug.h"
 #else
 #define debug(...)
-#define cerr if (false) cerr
+#define cerr                                                                                                           \
+    if (false) cerr
 #endif
 #define endl '\n'
 #define eb emplace_back
 #define all(x) begin(x), end(x)
 #define rall(x) rbegin(x), rend(x)
-#define L1(res...) [&](const auto& x){ return res; }
-#define L2(res...) [&](const auto& x, const auto& y){ return res; }
+#define L1(res...) [&](const auto &x) { return res; }
+#define L2(res...) [&](const auto &x, const auto &y) { return res; }
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 typedef long long ll;
 typedef long double ld;
@@ -21,10 +22,11 @@ typedef tuple<int, int, int> i3;
 void out(bool ans) { cout << (ans ? "YES" : "NO") << endl; }
 
 void solve() {
-    int n, m; cin >> n >> m;
+    int n, m;
+    cin >> n >> m;
     vector<int> a(n), b(m);
-    for (int &i : a) cin >> i; 
-    for (int &i : b) cin >> i; 
+    for (int &i : a) cin >> i;
+    for (int &i : b) cin >> i;
 
     if (n % 2 == 0) {
         int mx = 0;
@@ -45,13 +47,14 @@ void solve() {
         for (int i = 0; i < n; i++) cx ^= a[i];
         cout << mx << " " << cx << endl;
     }
-
 }
 
 signed main() {
-    ios_base::sync_with_stdio(0); cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 1;
-    if (TC) { cin >> TC;
+    if (TC) {
+        cin >> TC;
         int TEST = 1;
         while (TEST <= TC) {
             cerr << "[Testcase " << TEST << "]" << endl;
@@ -60,5 +63,6 @@ signed main() {
             /* cout << (solve() ? "YES" : "NO") << endl; */
             ++TEST;
         }
-    } else solve();
+    } else
+        solve();
 }

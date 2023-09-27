@@ -18,7 +18,7 @@ auto solve() -> void {
     int bit = 1;
     while (bit <= 30) {
         int g = ask(res, bit);
-        if(g == (1 << bit)){
+        if (g == (1 << bit)) {
             res |= 1 << (bit - 1);
         }
         bit++;
@@ -27,10 +27,13 @@ auto solve() -> void {
 }
 
 auto main() -> signed {
-    ios_base::sync_with_stdio(0);cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 1;
-    if (TC) { cin >> TC;
+    if (TC) {
+        cin >> TC;
         while (TC--) solve();
-    } else solve();
+    } else
+        solve();
     return 0;
 }

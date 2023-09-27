@@ -8,14 +8,16 @@ using namespace std;
 #endif
 
 void solve() {
-    int n; cin >> n;
-    string s; cin >> s;
+    int n;
+    cin >> n;
+    string s;
+    cin >> s;
     int c1 = 0, c2 = 0;
-    for(auto u : s){
+    for (auto u : s) {
         c1 += u == '(';
         c2 += u != '(';
     }
-    if(c1 != c2){
+    if (c1 != c2) {
         cout << -1 << '\n';
         return;
     }
@@ -27,14 +29,14 @@ void solve() {
     int st2 = 0;
     vector<int> co(n, 2);
     int res = 1;
-    for(int i = 0; i < n; i++){
-        if(st2 && s[i] == '('){
+    for (int i = 0; i < n; i++) {
+        if (st2 && s[i] == '(') {
             st2--;
             continue;
         }
         st1 += s[i] == '(';
         st1 -= s[i] == ')';
-        if(st1 < 0){
+        if (st1 < 0) {
             res = 2;
             st2++;
             st1 = 0;
@@ -42,20 +44,23 @@ void solve() {
         }
         co[i] = 1;
     }
-    if(co == vector<int>(n, 2)){
+    if (co == vector<int>(n, 2)) {
         res = 1;
         co = vector<int>(n, 1);
     }
     cout << res << '\n';
-    for(auto u : co) cout << u << " ";
+    for (auto u : co) cout << u << " ";
     cout << '\n';
 }
 
 signed main() {
-    ios_base::sync_with_stdio(0);cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 1;
-    if(TC){ cin >> TC;
-        while(TC--) solve();
-    } else solve();
+    if (TC) {
+        cin >> TC;
+        while (TC--) solve();
+    } else
+        solve();
     return 0;
 }

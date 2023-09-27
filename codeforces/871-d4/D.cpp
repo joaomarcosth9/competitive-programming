@@ -8,19 +8,20 @@ using namespace std;
 #endif
 
 void solve() {
-    long long n, m; cin >> n >> m;
+    long long n, m;
+    cin >> n >> m;
     int fn = 0, fm = 0;
     int nn = n, mm = m;
-    while(nn % 3 == 0){
+    while (nn % 3 == 0) {
         fn++;
         nn /= 3;
     }
-    while(mm % 3 == 0){
+    while (mm % 3 == 0) {
         fm++;
         mm /= 3;
     }
     int t = 0;
-    while(fn > fm){
+    while (fn > fm) {
         n /= 3;
         fn--;
         t++;
@@ -28,8 +29,8 @@ void solve() {
     debug(n, m);
     debug(fn, fm);
     t++;
-    while(t--){
-        if(n == m){
+    while (t--) {
+        if (n == m) {
             cout << "YES" << '\n';
             return;
         }
@@ -39,10 +40,13 @@ void solve() {
 }
 
 signed main() {
-    ios_base::sync_with_stdio(0);cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 1;
-    if(TC){ cin >> TC;
-        while(TC--) solve();
-    } else solve();
+    if (TC) {
+        cin >> TC;
+        while (TC--) solve();
+    } else
+        solve();
     return 0;
 }

@@ -16,7 +16,7 @@ void solve() {
     ps[0] = 0;
     for (int i = 1; i <= n; i++) ps[i] = ps[i - 1] + L[i - 1];
     int l = k, r = k + 1;
-    vector<pair<long long, long long> > LG, RG;
+    vector<pair<long long, long long>> LG, RG;
     for (int i = k - 1; i >= 0; i--) {
         if (ps[i] <= ps[l] || i == 0) {
             long long worst = 0, cur = 0;
@@ -28,12 +28,12 @@ void solve() {
             l = i;
         }
     }
-    for(int i = 0; i < n; i++){
+    for (int i = 0; i < n; i++) {
         cout << V[i] << ' ';
     }
     cout << endl;
     cout << "LG\n";
-    for(auto [cur, worst] : LG){
+    for (auto [cur, worst] : LG) {
         cout << "[" << cur << ',' << worst << "] ";
     }
     cout << endl;
@@ -51,7 +51,7 @@ void solve() {
     reverse(LG.begin(), LG.end());
     reverse(RG.begin(), RG.end());
     cout << "RG\n";
-    for(auto [cur, worst] : RG){
+    for (auto [cur, worst] : RG) {
         cout << "[" << cur << ',' << worst << "] ";
     }
     cout << endl;
@@ -89,4 +89,3 @@ int main() {
     cin >> t;
     while (t--) solve();
 }
-

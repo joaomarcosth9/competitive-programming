@@ -10,7 +10,8 @@ const int maxn = 1e2 + 5, mod = 1e9 + 7;
 long long a[maxn];
 
 void solve() {
-    int n, k; cin >> n >> k;
+    int n, k;
+    cin >> n >> k;
     for (int i = 0; i < n; i++) {
         cin >> a[i];
     }
@@ -20,7 +21,7 @@ void solve() {
         int gap = a[i] + 1;
         for (int j = 0; j < min((int)res.size(), 100005); j++) {
             pref[j] = (pref[j] + res[j]);
-            if(j + gap < (int)pref.size()) pref[j + gap] = (pref[j + gap] - res[j]);
+            if (j + gap < (int)pref.size()) pref[j + gap] = (pref[j + gap] - res[j]);
         }
         vector<long long> newpoly;
         long long ac = 0;
@@ -35,10 +36,13 @@ void solve() {
 }
 
 signed main() {
-    ios_base::sync_with_stdio(0);cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 0;
-    if (TC) { cin >> TC;
+    if (TC) {
+        cin >> TC;
         while (TC--) solve();
-    } else solve();
+    } else
+        solve();
     return 0;
 }

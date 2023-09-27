@@ -2,11 +2,11 @@
 using namespace std;
 #define int long long
 
-const int MOD = 1e9+7, p = 2;
-const int MAXN = 3e5+5;
+const int MOD = 1e9 + 7, p = 2;
+const int MAXN = 3e5 + 5;
 int arr[MAXN], n;
 
-int inv_mod(int a){
+int inv_mod(int a) {
     int x, y;
     x = 1, y = 0;
     int x1 = 0, y1 = 1, a1 = a, b1 = MOD;
@@ -21,20 +21,20 @@ int inv_mod(int a){
     return x;
 }
 
-void add(int &a, int b){
+void add(int &a, int b) {
     a = (a + b) % MOD;
-    if(a < 0) a += MOD;
+    if (a < 0) a += MOD;
 }
-void mult(int &a, int b){
+void mult(int &a, int b) {
     a = (a * b) % MOD;
-    if(a < 0) a += MOD;
+    if (a < 0) a += MOD;
 }
 
-int bin_pow(int b, int e){
+int bin_pow(int b, int e) {
     int v = b;
     int res = 1;
-    while(e){
-        if(e & 1) mult(res, v);
+    while (e) {
+        if (e & 1) mult(res, v);
         mult(v, v);
         e >>= 1;
     }
@@ -43,50 +43,46 @@ int bin_pow(int b, int e){
 
 struct fenwick_hash {
     int ft[MAXN];
-    fenwick_hash(){
-        memset(ft, 0, sizeof(ft));
-    }
-    int query(int i){
+    fenwick_hash() { memset(ft, 0, sizeof(ft)); }
+    int query(int i) {
         int res = 0;
-        for(; i; i -= (i & -i)){
+        for (; i; i -= (i & -i)) {
             add(res, ft[i]);
         }
         return res;
     }
-    int query(int l, int r){
-        int res = query(r) - query(l-1);
+    int query(int l, int r) {
+        int res = query(r) - query(l - 1);
         int inv = inv_mod(bin_pow(p, l));
         mult(res, inv);
         return res;
     }
-    void update(int i){
+    void update(int i) {
         int val = bin_pow(p, i);
-        for(; i <= MAXN - 3; i += (i & -i)){
+        for (; i <= MAXN - 3; i += (i & -i)) {
             add(ft[i], val);
         }
     }
 };
 
-void solve(){
+void solve() {
     cin >> n;
-    for(int i = 0; i < n; i++){
+    for (int i = 0; i < n; i++) {
         cin >> arr[i];
     }
 
-    auto rev = [&] (int i){
-        return n - i + 1;
-    };
+    auto rev = [&](int i) { return n - i + 1; };
 
     fenwick_hash ft1, ft2;
 
-    for(int i = 0; i < n; i++){
+    for (int i = 0; i < n; i++) {
         ft1.update(arr[i]);
         ft2.update(rev(arr[i]));
 
         int k = min(arr[i] - 1, n - arr[i]);
         int l = arr[i] - k, r = arr[i] + k;
 
-        if(ft1.query(l, arr[i]-1) != ft2.query(rev(r), rev(arr[i]+1))){
+        if (ft1.query(l, arr[i] - 1) != ft2.query(rev(r), rev(arr[i] + 1))) {
             cout << "YES" << endl;
             return;
         }
@@ -94,8 +90,9 @@ void solve(){
     cout << "NO" << endl;
 }
 
-signed main(){
-    ios_base::sync_with_stdio(0);cin.tie(0);
+signed main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     solve();
     return 0;
 }

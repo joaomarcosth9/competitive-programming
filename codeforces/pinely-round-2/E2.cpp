@@ -6,13 +6,14 @@ using namespace std;
 #else
 #define debug(...)
 #define endl '\n'
-#define cerr if (false) cerr
+#define cerr                                                                                                           \
+    if (false) cerr
 #endif
 #define eb emplace_back
 #define all(x) begin(x), end(x)
 #define rall(x) rbegin(x), rend(x)
-#define L1(res...) [&](const auto& x){ return res; }
-#define L2(res...) [&](const auto& x, const auto& y){ return res; }
+#define L1(res...) [&](const auto &x) { return res; }
+#define L2(res...) [&](const auto &x, const auto &y) { return res; }
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 typedef long long ll;
 typedef long double ld;
@@ -21,7 +22,7 @@ typedef tuple<int, int, int> i3;
 #define int ll
 
 const int maxn = 200005;
-int n, m, k; 
+int n, m, k;
 bool vis[maxn];
 int a[maxn];
 vector<int> adj[maxn];
@@ -42,8 +43,10 @@ int dfs(int u, int mx, int time) {
             }
             continue;
         }
-        if (a[v] >= mx) ret = max(ret, dfs(v, a[v], time + (a[v] - mx)));
-        else ret = max(ret, dfs(v, a[v], time + (k - mx) + a[v]));
+        if (a[v] >= mx)
+            ret = max(ret, dfs(v, a[v], time + (a[v] - mx)));
+        else
+            ret = max(ret, dfs(v, a[v], time + (k - mx) + a[v]));
     }
     return dp[u] = ret;
 }
@@ -55,12 +58,14 @@ void solve() {
     }
     vector<int> root(n, 1);
     for (int i = 0; i < m; i++) {
-        int u, v; cin >> u >> v;
+        int u, v;
+        cin >> u >> v;
         u--, v--;
         root[v] = 0;
         adj[u].eb(v);
     }
-    for (int i = 0; i < n; i++) if (root[i]) roots.eb(i);
+    for (int i = 0; i < n; i++)
+        if (root[i]) roots.eb(i);
     bool first = 1;
     vector<int> valroots;
     for (auto u : roots) {
@@ -112,9 +117,11 @@ void solve() {
 }
 
 signed main() {
-    ios_base::sync_with_stdio(0); cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 1;
-    if (TC) { cin >> TC;
+    if (TC) {
+        cin >> TC;
         int TEST = 1;
         while (TEST <= TC) {
             cerr << "[Testcase " << TEST << "]" << endl;
@@ -128,5 +135,6 @@ signed main() {
             roots.clear();
             ++TEST;
         }
-    } else solve();
+    } else
+        solve();
 }

@@ -6,13 +6,14 @@ using namespace std;
 #else
 #define debug(...)
 #define endl '\n'
-#define cerr if (false) cerr
+#define cerr                                                                                                           \
+    if (false) cerr
 #endif
 #define eb emplace_back
 #define all(x) begin(x), end(x)
 #define rall(x) rbegin(x), rend(x)
-#define L1(res...) [&](const auto& x){ return res; }
-#define L2(res...) [&](const auto& x, const auto& y){ return res; }
+#define L1(res...) [&](const auto &x) { return res; }
+#define L2(res...) [&](const auto &x, const auto &y) { return res; }
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 typedef long long ll;
 typedef long double ld;
@@ -21,7 +22,8 @@ typedef tuple<int, int, int> i3;
 #define int ll
 
 void solve() {
-    int n; cin >> n;
+    int n;
+    cin >> n;
     vector<array<int, 3>> a(n);
     for (int i = 0; i < n; i++) {
         for (auto &j : a[i]) cin >> j;
@@ -34,7 +36,8 @@ void solve() {
             V += a[i][2];
             v.eb(2 * a[i][2]);
             w.eb((a[i][1] - a[i][0] + 1) / 2);
-        } else V -= a[i][2];
+        } else
+            V -= a[i][2];
     }
     if (V <= 0) {
         cout << 0 << endl;
@@ -46,7 +49,7 @@ void solve() {
     debug(N);
     debug(v);
     debug(w);
-    vector dp(N + 1, vector<int> (V + 100001, INF));
+    vector dp(N + 1, vector<int>(V + 100001, INF));
     dp[0][0] = 0;
     for (int i = 1; i <= N; i++) {
         for (j = 0; j <= V + 100000; j++) {
@@ -62,18 +65,20 @@ void solve() {
         res = min(res, (ll)dp[N][i]);
     }
     cout << res << endl;
-
 }
 
 signed main() {
-    ios_base::sync_with_stdio(0); cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 0;
-    if (TC) { cin >> TC;
+    if (TC) {
+        cin >> TC;
         int TEST = 1;
         while (TEST <= TC) {
             cerr << "[Testcase " << TEST << "]" << endl;
             solve();
             ++TEST;
         }
-    } else solve();
+    } else
+        solve();
 }

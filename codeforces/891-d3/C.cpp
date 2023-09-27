@@ -6,7 +6,8 @@ using namespace std;
 #else
 #define debug(...)
 #define endl '\n'
-#define cerr if (false) cerr
+#define cerr                                                                                                           \
+    if (false) cerr
 #endif
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 typedef long long ll;
@@ -14,17 +15,16 @@ typedef long double ld;
 typedef pair<int, int> ii;
 typedef tuple<int, int, int> i3;
 
-int f(int x) {
-    return (x * (x - 1)) / 2;
-}
+int f(int x) { return (x * (x - 1)) / 2; }
 
 void solve() {
-    int n; cin >> n;
+    int n;
+    cin >> n;
     int N = f(n);
     vector<int> b(N);
     for (int &i : b) cin >> i;
     vector<int> a;
-    map<int,int,greater<int>> freq;
+    map<int, int, greater<int>> freq;
     for (auto i : b) freq[i]++;
     debug(freq);
     int added = 0;
@@ -44,10 +44,12 @@ void solve() {
 }
 
 signed main() {
-    ios_base::sync_with_stdio(0); cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 1;
     auto start = chrono::steady_clock::now();
-    if (TC) { cin >> TC;
+    if (TC) {
+        cin >> TC;
         start = chrono::steady_clock::now();
         int TEST = 0;
         while (TEST < TC) {
@@ -56,11 +58,12 @@ signed main() {
             ++TEST;
             cerr << endl;
         }
-    } else solve();
+    } else
+        solve();
 #ifdef LOCAL_DEBUG
     auto end = chrono::steady_clock::now();
     auto diff = end - start;
     cerr << "\nTime taken: ";
-    cerr << chrono::duration <double, milli> (diff).count() << " ms" << endl;
+    cerr << chrono::duration<double, milli>(diff).count() << " ms" << endl;
 #endif
 }

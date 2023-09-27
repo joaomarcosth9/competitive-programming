@@ -8,12 +8,13 @@ using namespace std;
 #endif
 typedef long double ld;
 
-void solve(){
-    ld R, k, d; cin >> R >> k >> d;
+void solve() {
+    ld R, k, d;
+    cin >> R >> k >> d;
     ld r = R * k;
     ld PI = acos(-1);
-    ld Ac = PI*(R*R - r*r);
-    ld x = 2 * (r * sin(PI/3));
+    ld Ac = PI * (R * R - r * r);
+    ld x = 2 * (r * sin(PI / 3));
     ld At = x * x * sqrt(3) / 4;
     At = 3 * At / 4;
     ld Af = At + Ac;
@@ -22,11 +23,14 @@ void solve(){
     cout << setprecision(10) << fixed << res << '\n';
 }
 
-signed main(){
-    ios_base::sync_with_stdio(0);cin.tie(0);
+signed main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 0;
-    if(TC){ cin >> TC;
-        while(TC--) solve();
-    } else solve();
+    if (TC) {
+        cin >> TC;
+        while (TC--) solve();
+    } else
+        solve();
     return 0;
 }

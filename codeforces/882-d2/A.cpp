@@ -10,7 +10,8 @@ const int maxn = 100;
 int a[maxn], b[maxn];
 
 void solve() {
-    int n, k; cin >> n >> k;
+    int n, k;
+    cin >> n >> k;
     for (int i = 0; i < n; i++) {
         cin >> a[i];
     }
@@ -23,10 +24,13 @@ void solve() {
 }
 
 signed main() {
-    ios_base::sync_with_stdio(0);cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 1;
-    if (TC) { cin >> TC;
+    if (TC) {
+        cin >> TC;
         while (TC--) solve();
-    } else solve();
+    } else
+        solve();
     return 0;
 }

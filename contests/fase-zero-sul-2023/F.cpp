@@ -10,44 +10,47 @@ using namespace std;
 typedef long long ll;
 
 vector<int> suffix_array(string s) {
-	s += "$";
-	int n = s.size(), N = max(n, 260);
-	vector<int> sa(n), ra(n);
-	for(int i = 0; i < n; i++) sa[i] = i, ra[i] = s[i];
+    s += "$";
+    int n = s.size(), N = max(n, 260);
+    vector<int> sa(n), ra(n);
+    for (int i = 0; i < n; i++) sa[i] = i, ra[i] = s[i];
 
-	for(int k = 0; k < n; k ? k *= 2 : k++) {
-		vector<int> nsa(sa), nra(n), cnt(N);
+    for (int k = 0; k < n; k ? k *= 2 : k++) {
+        vector<int> nsa(sa), nra(n), cnt(N);
 
-		for(int i = 0; i < n; i++) nsa[i] = (nsa[i]-k+n)%n, cnt[ra[i]]++;
-		for(int i = 1; i < N; i++) cnt[i] += cnt[i-1];
-		for(int i = n-1; i+1; i--) sa[--cnt[ra[nsa[i]]]] = nsa[i];
+        for (int i = 0; i < n; i++) nsa[i] = (nsa[i] - k + n) % n, cnt[ra[i]]++;
+        for (int i = 1; i < N; i++) cnt[i] += cnt[i - 1];
+        for (int i = n - 1; i + 1; i--) sa[--cnt[ra[nsa[i]]]] = nsa[i];
 
-		for(int i = 1, r = 0; i < n; i++) nra[sa[i]] = r += ra[sa[i]] !=
-			ra[sa[i-1]] or ra[(sa[i]+k)%n] != ra[(sa[i-1]+k)%n];
-		ra = nra;
-		if (ra[sa[n-1]] == n-1) break;
-	}
-	return vector<int>(sa.begin()+1, sa.end());
+        for (int i = 1, r = 0; i < n; i++)
+            nra[sa[i]] = r += ra[sa[i]] != ra[sa[i - 1]] or ra[(sa[i] + k) % n] != ra[(sa[i - 1] + k) % n];
+        ra = nra;
+        if (ra[sa[n - 1]] == n - 1) break;
+    }
+    return vector<int>(sa.begin() + 1, sa.end());
 }
 
 vector<int> kasai(string s, vector<int> sa) {
-	int n = s.size(), k = 0;
-	vector<int> ra(n), lcp(n);
-	for (int i = 0; i < n; i++) ra[sa[i]] = i;
+    int n = s.size(), k = 0;
+    vector<int> ra(n), lcp(n);
+    for (int i = 0; i < n; i++) ra[sa[i]] = i;
 
-	for (int i = 0; i < n; i++, k -= !!k) {
-		if (ra[i] == n-1) { k = 0; continue; }
-		int j = sa[ra[i]+1];
-		while (i+k < n and j+k < n and s[i+k] == s[j+k]) k++;
-		lcp[ra[i]] = k;
-	}
-	return lcp;
+    for (int i = 0; i < n; i++, k -= !!k) {
+        if (ra[i] == n - 1) {
+            k = 0;
+            continue;
+        }
+        int j = sa[ra[i] + 1];
+        while (i + k < n and j + k < n and s[i + k] == s[j + k]) k++;
+        lcp[ra[i]] = k;
+    }
+    return lcp;
 }
 
-const int maxn = 2e5 + 5; 
+const int maxn = 2e5 + 5;
 int lg[maxn];
 vector<int> arr1, arr2, rnk1, rnk2, lcp1, lcp2;
-string s, pa; 
+string s, pa;
 
 struct sparsetable {
     vector<vector<int>> st;
@@ -74,14 +77,14 @@ struct sparsetable {
 sparsetable st1, st2;
 
 int main() {
-    ios_base::sync_with_stdio(0); 
-    cin.tie(0); 
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
 
     lg[1] = 0;
-    for (int i = 2; i < maxn; i++) 
-        lg[i] = lg[i >> 1] + 1;
+    for (int i = 2; i < maxn; i++) lg[i] = lg[i >> 1] + 1;
 
-    int n, m; cin >> n >> m;
+    int n, m;
+    cin >> n >> m;
     cin >> s >> pa;
     string ss = s + "B" + pa;
     arr1 = suffix_array(ss);
@@ -91,10 +94,8 @@ int main() {
 
     debug(arr1, arr1.size());
     debug(arr2);
-    for (int i = 0; i < n + m + 1; i++)
-        rnk1[arr1[i]] = i;
-    for (int i = 0; i < m; i++)
-        rnk2[arr2[i]] = i;
+    for (int i = 0; i < n + m + 1; i++) rnk1[arr1[i]] = i;
+    for (int i = 0; i < m; i++) rnk2[arr2[i]] = i;
 
     lcp1 = kasai(ss, arr1);
     lcp2 = kasai(pa, arr2);
@@ -110,7 +111,7 @@ int main() {
     st1.build(lcp1);
     st2.build(lcp2);
 
-    auto count1 = [&] (int l, int r) {
+    auto count1 = [&](int l, int r) {
         int where = rnk1[n + 1 + l];
         int len = r - l + 1;
         // lcp1[i] = lcp(sa[i], sa[i + 1]);
@@ -140,7 +141,7 @@ int main() {
         return (R - L + 1);
     };
 
-    auto count2 = [&] (int l, int r) {
+    auto count2 = [&](int l, int r) {
         int where = rnk2[l];
         int len = r - l + 1;
         // lcp2[i] = lcp(sa[i], sa[i + 1]);
@@ -170,11 +171,13 @@ int main() {
         return (R - L + 1);
     };
 
-    int q; cin >> q; 
+    int q;
+    cin >> q;
     while (q--) {
-        int l, r; cin >> l >> r;
-        l--; r--;
+        int l, r;
+        cin >> l >> r;
+        l--;
+        r--;
         cout << count1(l, r) - count2(l, r) << endl;
     }
-
 }

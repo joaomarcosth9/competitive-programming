@@ -14,20 +14,21 @@ string w3 = "OOO";
 void solve() {
     vector<string> jogo(3);
     for (int i = 0; i < 3; i++) {
-        string s; cin >> s;
+        string s;
+        cin >> s;
         jogo[i] = s;
     }
     for (int i = 0; i < 3; i++) {
         string s = jogo[i];
-        if(s == w1){
+        if (s == w1) {
             cout << "+" << '\n';
             return;
         }
-        if(s == w2){
+        if (s == w2) {
             cout << "X" << '\n';
             return;
         }
-        if(s == w3){
+        if (s == w3) {
             cout << "O" << '\n';
             return;
         }
@@ -37,15 +38,15 @@ void solve() {
         for (int j = 0; j < 3; j++) {
             s.push_back(jogo[j][i]);
         }
-        if(s == w1){
+        if (s == w1) {
             cout << "+" << '\n';
             return;
         }
-        if(s == w2){
+        if (s == w2) {
             cout << "X" << '\n';
             return;
         }
-        if(s == w3){
+        if (s == w3) {
             cout << "O" << '\n';
             return;
         }
@@ -54,15 +55,15 @@ void solve() {
     for (int j = 0; j < 3; j++) {
         s.push_back(jogo[j][j]);
     }
-    if(s == w1){
+    if (s == w1) {
         cout << "+" << '\n';
         return;
     }
-    if(s == w2){
+    if (s == w2) {
         cout << "X" << '\n';
         return;
     }
-    if(s == w3){
+    if (s == w3) {
         cout << "O" << '\n';
         return;
     }
@@ -70,15 +71,15 @@ void solve() {
     for (int j = 0; j < 3; j++) {
         s.push_back(jogo[j][2 - j]);
     }
-    if(s == w1){
+    if (s == w1) {
         cout << "+" << '\n';
         return;
     }
-    if(s == w2){
+    if (s == w2) {
         cout << "X" << '\n';
         return;
     }
-    if(s == w3){
+    if (s == w3) {
         cout << "O" << '\n';
         return;
     }
@@ -86,10 +87,13 @@ void solve() {
 }
 
 signed main() {
-    ios_base::sync_with_stdio(0);cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 1;
-    if (TC) { cin >> TC;
+    if (TC) {
+        cin >> TC;
         while (TC--) solve();
-    } else solve();
+    } else
+        solve();
     return 0;
 }

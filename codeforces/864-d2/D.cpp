@@ -7,27 +7,28 @@ using namespace std;
 #define db(x...)
 #endif
 
-const int maxn = 2e5+5;
+const int maxn = 2e5 + 5;
 int n, q;
 long long arr[maxn], sz[maxn], par[maxn];
 vector<int> adj[maxn];
-set<pair<long long,int>> adj2[maxn];
+set<pair<long long, int>> adj2[maxn];
 long long imp[maxn];
 
-pair<long long, long long> dfs(int u, int p = -1){
+pair<long long, long long> dfs(int u, int p = -1) {
     par[u] = p;
     imp[u] = arr[u];
     sz[u] = -1;
-    for(int v : adj[u]) if(v != p) {
-        auto [_imp, _sz] = dfs(v, u);
-        imp[u] += _imp;
-        sz[u] += _sz;
-    }
+    for (int v : adj[u])
+        if (v != p) {
+            auto [_imp, _sz] = dfs(v, u);
+            imp[u] += _imp;
+            sz[u] += _sz;
+        }
     return {imp[u], sz[u]};
 }
 
-void rotate(int u){
-    if(adj2[u].empty()) return;
+void rotate(int u) {
+    if (adj2[u].empty()) return;
     auto [szson, sonu] = *(adj2[u].begin());
     // sonu is the heavy son of u
 
@@ -52,38 +53,43 @@ void rotate(int u){
     par[sonu] = oldparu;
 }
 
-void solve(){
+void solve() {
     cin >> n >> q;
-    for(int i = 0; i < n; i++) cin >> arr[i];
-    for(int i = 0; i < n-1; i++){
-        int u, v; cin >> u >> v;
+    for (int i = 0; i < n; i++) cin >> arr[i];
+    for (int i = 0; i < n - 1; i++) {
+        int u, v;
+        cin >> u >> v;
         u--, v--;
         adj[u].emplace_back(v);
         adj[v].emplace_back(u);
     }
     dfs(0);
-    for(int i = 1; i < n; i++){
+    for (int i = 1; i < n; i++) {
         adj2[par[i]].emplace(sz[i], i);
     }
-    for(int i = 0; i < n; i++){
+    for (int i = 0; i < n; i++) {
         db(i, adj2[i]);
     }
-    while(q--){
-        int t, x; cin >> t >> x;
+    while (q--) {
+        int t, x;
+        cin >> t >> x;
         x--;
-        if(t == 1){
+        if (t == 1) {
             cout << imp[x] << endl;
-        } else if(t == 2){
+        } else if (t == 2) {
             rotate(x);
         }
     }
 }
 
-signed main(){
-    ios_base::sync_with_stdio(0);cin.tie(0);
+signed main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 0;
-    if(TC){ cin >> TC;
-        while(TC--) solve();
-    } else solve();
+    if (TC) {
+        cin >> TC;
+        while (TC--) solve();
+    } else
+        solve();
     return 0;
 }

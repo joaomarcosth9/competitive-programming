@@ -6,7 +6,8 @@ using namespace std;
 #else
 #define debug(...)
 #define endl '\n'
-#define cerr if (false) cerr
+#define cerr                                                                                                           \
+    if (false) cerr
 #endif
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 typedef long long ll;
@@ -14,7 +15,7 @@ typedef long double ld;
 typedef pair<int, int> ii;
 typedef tuple<int, int, int> i3;
 
-ld dist2(ii& a, ii& b) {
+ld dist2(ii &a, ii &b) {
     ll dx = a.first - b.first;
     ll dy = a.second - b.second;
     return sqrt((dx * dx) + (dy * dy));
@@ -22,7 +23,8 @@ ld dist2(ii& a, ii& b) {
 ll p2[50];
 
 void solve() {
-    int n; cin >> n;
+    int n;
+    cin >> n;
 
     vector<ii> a(n);
 
@@ -31,7 +33,7 @@ void solve() {
     }
 
     vector dp(n, vector<ld>(40, 1e18));
-    dp[0] = vector<ld> (40, 0);
+    dp[0] = vector<ld>(40, 0);
 
     // ate o checkpoint i usando j skips
 
@@ -53,17 +55,18 @@ void solve() {
     }
 
     cout << setprecision(20) << fixed << ans << endl;
-
 }
 
 signed main() {
-    ios_base::sync_with_stdio(0); cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     for (int i = 0; i < 50; i++) {
         p2[i] = (1ll << i);
     }
     int TC = 0;
     auto start = chrono::steady_clock::now();
-    if (TC) { cin >> TC;
+    if (TC) {
+        cin >> TC;
         start = chrono::steady_clock::now();
         int TEST = 0;
         while (TEST < TC) {
@@ -72,11 +75,12 @@ signed main() {
             ++TEST;
             cerr << endl;
         }
-    } else solve();
+    } else
+        solve();
 #ifdef LOCAL_DEBUG
     auto end = chrono::steady_clock::now();
     auto diff = end - start;
     cerr << "\nTime taken: ";
-    cerr << chrono::duration <double, milli> (diff).count() << " ms" << endl;
+    cerr << chrono::duration<double, milli>(diff).count() << " ms" << endl;
 #endif
 }

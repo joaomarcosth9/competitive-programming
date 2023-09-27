@@ -13,11 +13,11 @@ const int maxn = 1e5 + 5, maxa = 1e6 + 5;
 const ll mod[] = {(ll)1e9 + 9, 998244353}, p = 31;
 ll pot[maxa][2], invpot[maxa][2];
 
-ll binpow(ll b, ll e){
+ll binpow(ll b, ll e) {
     ll modulo = e + 2;
     ll res = 1;
     while (e) {
-        if(e & 1) res = res * b % modulo;
+        if (e & 1) res = res * b % modulo;
         b = b * b % modulo;
         e >>= 1;
     }
@@ -26,9 +26,9 @@ ll binpow(ll b, ll e){
 
 string a[maxn], b[maxn];
 vector<ll> ha[maxn][2], hb[maxn][2];
-map<ll, map<int,bool>> hasA, hasB; // strings que eu tenho no set
-map<ll, map<int,bool>> diffA, diffB; // diferencas que eu tenho no set
-map<ll, map<int,bool>> notA, notB; // strings q nao sao reposta
+map<ll, map<int, bool>> hasA, hasB;   // strings que eu tenho no set
+map<ll, map<int, bool>> diffA, diffB; // diferencas que eu tenho no set
+map<ll, map<int, bool>> notA, notB;   // strings q nao sao reposta
 
 vector<ll> queryA(int i, int l, int r) {
     l++, r++;
@@ -47,7 +47,8 @@ vector<ll> queryB(int i, int l, int r) {
 }
 
 void solve() {
-    int n, m; cin >> n >> m;
+    int n, m;
+    cin >> n >> m;
     for (int i = 0; i < n; i++) {
         cin >> a[i];
     }
@@ -89,7 +90,7 @@ void solve() {
     }
     for (int i = 0; i < n; i++) {
         int len = a[i].size();
-        for (int r = 0; r < len - 1; r++){
+        for (int r = 0; r < len - 1; r++) {
             auto pref = queryA(i, 0, r);
             auto suff = queryA(i, r + 1, len - 1);
             if (hasA[pref[0]][0] && hasA[pref[1]][1]) {
@@ -100,7 +101,7 @@ void solve() {
     }
     for (int i = 0; i < m; i++) {
         int len = b[i].size();
-        for (int r = 0; r < len - 1; r++){
+        for (int r = 0; r < len - 1; r++) {
             auto pref = queryB(i, 0, r);
             auto suff = queryB(i, r + 1, len - 1);
             if (hasB[pref[0]][0] && hasB[pref[1]][1]) {
@@ -112,7 +113,7 @@ void solve() {
     for (int i = 0; i < n; i++) {
         int len = a[i].size();
         auto me = queryA(i, 0, len - 1);
-        for (int r = 0; r < len - 1; r++){
+        for (int r = 0; r < len - 1; r++) {
             auto pref = queryA(i, 0, r);
             debug(pref);
             auto suff = queryA(i, r + 1, len - 1);
@@ -130,7 +131,7 @@ void solve() {
     for (int i = 0; i < m; i++) {
         int len = b[i].size();
         auto me = queryB(i, 0, len - 1);
-        for (int r = 0; r < len - 1; r++){
+        for (int r = 0; r < len - 1; r++) {
             auto pref = queryB(i, 0, r);
             auto suff = queryB(i, r + 1, len - 1);
             if (hasB[pref[0]][0] && hasB[pref[1]][1] && diffA[suff[0]][0] && diffA[suff[1]][1]) {
@@ -158,7 +159,8 @@ void solve() {
 }
 
 signed main() {
-    ios_base::sync_with_stdio(0);cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     pot[0][0] = pot[0][1] = 1;
     pot[1][0] = pot[1][1] = p;
     debug(mod[0], mod[1]);

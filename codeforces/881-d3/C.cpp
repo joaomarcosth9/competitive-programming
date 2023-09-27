@@ -8,9 +8,10 @@ using namespace std;
 #endif
 
 void solve() {
-    long long n; cin >> n;
+    long long n;
+    cin >> n;
     long long res = 0;
-    while(n){
+    while (n) {
         res += n;
         n >>= 1;
     }
@@ -18,10 +19,13 @@ void solve() {
 }
 
 signed main() {
-    ios_base::sync_with_stdio(0);cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 1;
-    if (TC) { cin >> TC;
+    if (TC) {
+        cin >> TC;
         while (TC--) solve();
-    } else solve();
+    } else
+        solve();
     return 0;
 }

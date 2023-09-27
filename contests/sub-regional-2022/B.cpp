@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-const int mod = 1e9+7;
+const int mod = 1e9 + 7;
 typedef long long ll;
 
 ll L[3], R[3];
@@ -52,7 +52,7 @@ ll dpp(int p, int l0, int r0, int l1, int r1, int l2, int r2) {
     return dp[p][l0][r0][l1][r1][l2][r2] = ret;
 }
 
-void solve(){
+void solve() {
     ll p = 1;
     for (int i = 0; i < 3; i++) {
         cin >> L[i] >> R[i];
@@ -63,8 +63,9 @@ void solve(){
     cout << (u * inv(p)) % mod << endl;
 }
 
-signed main(){
-    ios_base::sync_with_stdio(0);cin.tie(0);
+signed main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     memset(dp, -1, sizeof(dp));
     solve();
 }

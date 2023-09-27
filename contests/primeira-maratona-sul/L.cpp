@@ -1,45 +1,62 @@
 #include <bits/stdc++.h>
-using namespace std; 
+using namespace std;
 #define endl '\n'
 
-//debug
-void __print(int x) {cerr << x;}
-void __print(long x) {cerr << x;}
-void __print(long long x) {cerr << x;}
-void __print(unsigned x) {cerr << x;}
-void __print(unsigned long x) {cerr << x;}
-void __print(unsigned long long x) {cerr << x;}
-void __print(float x) {cerr << x;}
-void __print(double x) {cerr << x;}
-void __print(long double x) {cerr << x;}
-void __print(char x) {cerr << '\'' << x << '\'';}
-void __print(const char *x) {cerr << '\"' << x << '\"';}
-void __print(const string &x) {cerr << '\"' << x << '\"';}
-void __print(bool x) {cerr << (x ? "true" : "false");}
-template<typename T, typename V>
-void __print(const pair<T, V> &x) {cerr << '{'; __print(x.first); cerr << ','; __print(x.second); cerr << '}';}
-template<typename T>
-void __print(const T &x) {int f = 0; cerr << '{'; for (auto &i: x) cerr << (f++ ? "," : ""), __print(i); cerr << "}";}
-void _print() {cerr << "]\n";}
-template <typename T, typename... V>
-void _print(T t, V... v) {__print(t); if (sizeof...(v)) cerr << ", "; _print(v...);}
+// debug
+void __print(int x) { cerr << x; }
+void __print(long x) { cerr << x; }
+void __print(long long x) { cerr << x; }
+void __print(unsigned x) { cerr << x; }
+void __print(unsigned long x) { cerr << x; }
+void __print(unsigned long long x) { cerr << x; }
+void __print(float x) { cerr << x; }
+void __print(double x) { cerr << x; }
+void __print(long double x) { cerr << x; }
+void __print(char x) { cerr << '\'' << x << '\''; }
+void __print(const char *x) { cerr << '\"' << x << '\"'; }
+void __print(const string &x) { cerr << '\"' << x << '\"'; }
+void __print(bool x) { cerr << (x ? "true" : "false"); }
+template <typename T, typename V> void __print(const pair<T, V> &x) {
+    cerr << '{';
+    __print(x.first);
+    cerr << ',';
+    __print(x.second);
+    cerr << '}';
+}
+template <typename T> void __print(const T &x) {
+    int f = 0;
+    cerr << '{';
+    for (auto &i : x) cerr << (f++ ? "," : ""), __print(i);
+    cerr << "}";
+}
+void _print() { cerr << "]\n"; }
+template <typename T, typename... V> void _print(T t, V... v) {
+    __print(t);
+    if (sizeof...(v)) cerr << ", ";
+    _print(v...);
+}
 #ifndef ONLINE_JUDGE
-#define debug(x...) cerr << "[" << #x << "] = ["; _print(x)
+#define debug(x...)                                                                                                    \
+    cerr << "[" << #x << "] = [";                                                                                      \
+    _print(x)
 #else
 #define debug(x...)
 #endif
 #ifndef ONLINE_JUDGE
-#define debarr(arr, n) cerr << "arr: ["; forn(i, n) cerr << arr[i] << (i == n-1 ? "" : ", "); cerr << "]" << endl;
+#define debarr(arr, n)                                                                                                 \
+    cerr << "arr: [";                                                                                                  \
+    forn(i, n) cerr << arr[i] << (i == n - 1 ? "" : ", ");                                                             \
+    cerr << "]" << endl;
 #else
 #define debarr(x...)
 #endif
 
 // -------------------- = -----------------------
 
-typedef long long ll; 
-template<typename T> using pqmin = priority_queue<T, vector<T>, greater<T>>;
-template<typename T> using pqmax = priority_queue<T>; 
-typedef pair<int, int> pii; 
+typedef long long ll;
+template <typename T> using pqmin = priority_queue<T, vector<T>, greater<T>>;
+template <typename T> using pqmax = priority_queue<T>;
+typedef pair<int, int> pii;
 using pll = pair<ll, ll>;
 using ld = long double;
 template <typename T> using vc = vector<T>;
@@ -59,8 +76,8 @@ using vpi = vc<pii>;
 #define rev(x) reverse(all(x))
 
 #define forn(i, n) for (int i = 0; i < n; i++)
-#define fora(i, a, b) for (int i = a; i <= b; i++) 
-#define rofn(i, n) for (int i = n-1; i >= 0; i--) 
+#define fora(i, a, b) for (int i = a; i <= b; i++)
+#define rofn(i, n) for (int i = n - 1; i >= 0; i--)
 #define rofa(i, a, b) for (int i = a; i >= b; i--)
 #define rep(n) forn(__rep_i_problem_dont_use_this_varible__, n)
 
@@ -81,47 +98,44 @@ struct custom_hash {
     }
 };
 
-
-
 int main() {
-    ios_base::sync_with_stdio(0); 
-    cin.tie(0); 
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
 
-    int n; cin >> n;
-    long double l, q; cin >> l >> q; 
+    int n;
+    cin >> n;
+    long double l, q;
+    cin >> l >> q;
 
-    vector<string> names(n); 
+    vector<string> names(n);
     for (int i = 0; i < n; i++) {
-        cin >> names[i]; 
-    } 
+        cin >> names[i];
+    }
 
-    int ln = round(l*10); 
-    int qn = round(q*10); 
+    int ln = round(l * 10);
+    int qn = round(q * 10);
 
-    if((ln % qn) == 0){
-        string res = to_string(qn); 
+    if ((ln % qn) == 0) {
+        string res = to_string(qn);
         if (res.size() == 2) {
-            string ti = "."; 
-            res.insert(1, ti); 
+            string ti = ".";
+            res.insert(1, ti);
         } else {
-            string ti = "0."; 
-            res.insert(0, ti); 
-        } 
+            string ti = "0.";
+            res.insert(0, ti);
+        }
         cout << names[(ln / qn - 1 + n) % n] << " " << res << endl;
         return 0;
     }
 
-    string res = to_string(ln%qn); 
+    string res = to_string(ln % qn);
     if (res.size() == 2) {
-        string ti = "."; 
-        res.insert(1, ti); 
+        string ti = ".";
+        res.insert(1, ti);
     } else {
-        string ti = "0."; 
-        res.insert(0, ti); 
-    } 
+        string ti = "0.";
+        res.insert(0, ti);
+    }
 
-    cout << names[(ln/qn)%n] << " " << res << endl;
+    cout << names[(ln / qn) % n] << " " << res << endl;
 }
-
-
-

@@ -6,9 +6,8 @@ using namespace std;
 #else
 #define debug(...)
 #define endl '\n'
-#define cerr                                                                   \
-	if (false)                                                                 \
-	cerr
+#define cerr                                                                                                           \
+    if (false) cerr
 #endif
 #define eb emplace_back
 #define all(x) begin(x), end(x)
@@ -33,134 +32,123 @@ stack<int> S;
 int comp[MAX]; // componente conexo de cada vertice
 
 void dfs(int k) {
-	vis[k] = 1;
-	for (int i = 0; i < (int)g[k].size(); i++)
-		if (!vis[g[k][i]])
-			dfs(g[k][i]);
+    vis[k] = 1;
+    for (int i = 0; i < (int)g[k].size(); i++)
+        if (!vis[g[k][i]]) dfs(g[k][i]);
 
-	S.push(k);
+    S.push(k);
 }
 
 void scc(int k, int c) {
-	vis[k] = 1;
-	sz[c] += 1;
-	comp[k] = c;
-	nodos[c].eb(k);
-	if (a[k] < mn[c]) {
-		nodomn[c] = k;
-		mn[c] = a[k];
-	}
-	for (int i = 0; i < (int)gi[k].size(); i++)
-		if (!vis[gi[k][i]])
-			scc(gi[k][i], c);
+    vis[k] = 1;
+    sz[c] += 1;
+    comp[k] = c;
+    nodos[c].eb(k);
+    if (a[k] < mn[c]) {
+        nodomn[c] = k;
+        mn[c] = a[k];
+    }
+    for (int i = 0; i < (int)gi[k].size(); i++)
+        if (!vis[gi[k][i]]) scc(gi[k][i], c);
 }
 
 void kosaraju() {
-	for (int i = 0; i < n; i++)
-		vis[i] = 0;
-	for (int i = 0; i < n; i++)
-		if (!vis[i])
-			dfs(i);
+    for (int i = 0; i < n; i++) vis[i] = 0;
+    for (int i = 0; i < n; i++)
+        if (!vis[i]) dfs(i);
 
-	for (int i = 0; i < n; i++)
-		vis[i] = 0;
-	while (S.size()) {
-		int u = S.top();
-		S.pop();
-		if (!vis[u]) {
-			assert(mn[u] == INF);
-			scc(u, u);
-		}
-	}
+    for (int i = 0; i < n; i++) vis[i] = 0;
+    while (S.size()) {
+        int u = S.top();
+        S.pop();
+        if (!vis[u]) {
+            assert(mn[u] == INF);
+            scc(u, u);
+        }
+    }
 }
 
 void dfs3(int u) {
-	vis3[u] = 1;
-	for (auto v : gi[u])
-		if (!vis3[v] && comp[v] == comp[u]) {
-			dfs3(v);
-		}
-	res.eb(u);
+    vis3[u] = 1;
+    for (auto v : gi[u])
+        if (!vis3[v] && comp[v] == comp[u]) {
+            dfs3(v);
+        }
+    res.eb(u);
 }
 
 void process(int u) {
-	vis[u] = 1;
-	debug(nodos[u]);
-	if (sz[u] == 1) {
-		res.eb(nodos[u][0]);
-		return;
-	}
-	dfs3(nodomn[u]);
+    vis[u] = 1;
+    debug(nodos[u]);
+    if (sz[u] == 1) {
+        res.eb(nodos[u][0]);
+        return;
+    }
+    dfs3(nodomn[u]);
 }
 
 vector<int> toposort;
 void dfs2(int u) {
-	vis[u] = 1;
-	for (int v : g[u])
-		if (!vis[v]) {
-			dfs2(v);
-		}
-	if (!vis2[comp[u]])
-		toposort.eb(comp[u]);
-	vis2[comp[u]] = 1;
+    vis[u] = 1;
+    for (int v : g[u])
+        if (!vis[v]) {
+            dfs2(v);
+        }
+    if (!vis2[comp[u]]) toposort.eb(comp[u]);
+    vis2[comp[u]] = 1;
 }
 
 void solve() {
-	cin >> n;
+    cin >> n;
 
-	toposort.clear();
-	for (int i = 0; i <= n; i++)
-		mn[i] = INF;
+    toposort.clear();
+    for (int i = 0; i <= n; i++) mn[i] = INF;
 
-	for (int i = 0; i < n; i++) {
-		int u;
-		cin >> u;
-		u--;
-		g[i].eb(u);
-		gi[u].eb(i);
-	}
-	for (int i = 0; i < n; i++) {
-		cin >> a[i];
-	}
-	kosaraju();
-	for (int i = 0; i < n; i++)
-		vis[i] = 0;
-	for (int i = 0; i < n; i++) {
-		if (!vis2[comp[i]])
-			dfs2(i);
-	}
-	reverse(all(toposort));
-	for (int i = 0; i < (int)toposort.size(); i++) {
-		process(toposort[i]);
-	}
-	for (auto u : res)
-		cout << u + 1 << " ";
-	cout << endl;
+    for (int i = 0; i < n; i++) {
+        int u;
+        cin >> u;
+        u--;
+        g[i].eb(u);
+        gi[u].eb(i);
+    }
+    for (int i = 0; i < n; i++) {
+        cin >> a[i];
+    }
+    kosaraju();
+    for (int i = 0; i < n; i++) vis[i] = 0;
+    for (int i = 0; i < n; i++) {
+        if (!vis2[comp[i]]) dfs2(i);
+    }
+    reverse(all(toposort));
+    for (int i = 0; i < (int)toposort.size(); i++) {
+        process(toposort[i]);
+    }
+    for (auto u : res) cout << u + 1 << " ";
+    cout << endl;
 }
 
 signed main() {
-	ios_base::sync_with_stdio(0);
-	cin.tie(0);
-	int TC = 1;
-	if (TC) {
-		cin >> TC;
-		int TEST = 1;
-		while (TEST <= TC) {
-			cerr << "[Testcase " << TEST << "]" << endl;
-			solve();
-			for (int i = 0; i <= n; i++) {
-				g[i].clear();
-				gi[i].clear();
-				nodos[i].clear();
-				vis[i] = vis2[i] = vis3[i] = comp[i] = a[i] = sz[i] = 0;
-				nodomn[i] = -1;
-				mn[i] = INF;
-			}
-			res.clear();
-			while (S.size())
-				S.pop();
-			++TEST;
-		}
-	} else
-		solve();
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    int TC = 1;
+    if (TC) {
+        cin >> TC;
+        int TEST = 1;
+        while (TEST <= TC) {
+            cerr << "[Testcase " << TEST << "]" << endl;
+            solve();
+            for (int i = 0; i <= n; i++) {
+                g[i].clear();
+                gi[i].clear();
+                nodos[i].clear();
+                vis[i] = vis2[i] = vis3[i] = comp[i] = a[i] = sz[i] = 0;
+                nodomn[i] = -1;
+                mn[i] = INF;
+            }
+            res.clear();
+            while (S.size()) S.pop();
+            ++TEST;
+        }
+    } else
+        solve();
 }

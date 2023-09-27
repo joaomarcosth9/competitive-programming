@@ -8,12 +8,12 @@ using namespace std;
 #endif
 typedef long long ll;
 
-ll ssqrt(__int128_t n){
+ll ssqrt(__int128_t n) {
     ll L = 1, R = 1e3;
     __int128_t ans = -1;
     while (L <= R) {
         __int128_t mid = (L + R) / 2;
-        if(mid * mid * mid * mid * mid * mid <= n){
+        if (mid * mid * mid * mid * mid * mid <= n) {
             ans = mid;
             L = mid + 1;
         } else {
@@ -23,12 +23,12 @@ ll ssqrt(__int128_t n){
     return (ll)ans + 2;
 }
 
-ll qsqrt(__int128_t n){
+ll qsqrt(__int128_t n) {
     ll L = 1, R = 1e5;
     __int128_t ans = -1;
     while (L <= R) {
         __int128_t mid = (L + R) / 2;
-        if(mid * mid * mid * mid * mid <= n){
+        if (mid * mid * mid * mid * mid <= n) {
             ans = mid;
             L = mid + 1;
         } else {
@@ -38,12 +38,12 @@ ll qsqrt(__int128_t n){
     return (ll)ans + 2;
 }
 
-ll fsqrt(__int128_t n){
+ll fsqrt(__int128_t n) {
     ll L = 1, R = 1e5;
     __int128_t ans = -1;
     while (L <= R) {
         __int128_t mid = (L + R) / 2;
-        if(mid * mid * mid * mid <= n){
+        if (mid * mid * mid * mid <= n) {
             ans = mid;
             L = mid + 1;
         } else {
@@ -53,12 +53,12 @@ ll fsqrt(__int128_t n){
     return (ll)ans + 2;
 }
 
-ll mycbrt(ll n){
+ll mycbrt(ll n) {
     ll L = 1, R = 1e6;
     ll ans = -1;
     while (L <= R) {
         ll mid = (L + R) / 2;
-        if(mid * mid * mid <= n){
+        if (mid * mid * mid <= n) {
             ans = mid;
             L = mid + 1;
         } else {
@@ -68,12 +68,12 @@ ll mycbrt(ll n){
     return ans + 2;
 }
 
-ll mysqrt(ll n){
+ll mysqrt(ll n) {
     ll L = 1, R = 1e9;
     ll ans = -1;
     while (L <= R) {
         ll mid = (L + R) / 2;
-        if(mid * mid <= n){
+        if (mid * mid <= n) {
             ans = mid;
             L = mid + 1;
         } else {
@@ -86,7 +86,8 @@ ll mysqrt(ll n){
 int mx = 380;
 
 void solve() {
-    ll N; cin >> N;
+    ll N;
+    cin >> N;
     __int128_t n = N;
     ll sq = mysqrt(n);
     ll cb = mycbrt(n);
@@ -95,51 +96,51 @@ void solve() {
     ll sxq = ssqrt(n);
     for (__int128_t i = sq; i > 1; i--) {
         __int128_t ac = 1 + i + (i * i);
-        if(ac == n){
+        if (ac == n) {
             cout << "YES" << '\n';
             return;
         }
-        if(ac < n){
+        if (ac < n) {
             break;
         }
     }
     for (__int128_t i = cb; i > 1; i--) {
         __int128_t ac = 1 + i + (i * i) + (i * i * i);
-        if(ac == n){
+        if (ac == n) {
             cout << "YES" << '\n';
             return;
         }
-        if(ac < n){
+        if (ac < n) {
             break;
         }
     }
     for (__int128_t i = fq; i > 1; i--) {
         __int128_t ac = 1 + i + (i * i) + (i * i * i) + (i * i * i * i);
-        if(ac == n){
+        if (ac == n) {
             cout << "YES" << '\n';
             return;
         }
-        if(ac < n){
+        if (ac < n) {
             break;
         }
     }
     for (__int128_t i = qq; i > 1; i--) {
         __int128_t ac = 1 + i + (i * i) + (i * i * i) + (i * i * i * i) + (i * i * i * i * i);
-        if(ac == n){
+        if (ac == n) {
             cout << "YES" << '\n';
             return;
         }
-        if(ac < n){
+        if (ac < n) {
             break;
         }
     }
     for (__int128_t i = sxq; i > 1; i--) {
         __int128_t ac = 1 + i + (i * i) + (i * i * i) + (i * i * i * i) + (i * i * i * i * i) + (i * i * i * i * i * i);
-        if(ac == n){
+        if (ac == n) {
             cout << "YES" << '\n';
             return;
         }
-        if(ac < n){
+        if (ac < n) {
             break;
         }
     }
@@ -149,21 +150,24 @@ void solve() {
         for (int it = 0; it < 60; it++) {
             ac += pot;
             pot *= i;
-            if(ac == n) {
+            if (ac == n) {
                 cout << "YES" << '\n';
                 return;
             }
-            if(ac > n || pot > n || pot < 0) break;
+            if (ac > n || pot > n || pot < 0) break;
         }
     }
     cout << "NO" << '\n';
 }
 
 signed main() {
-    ios_base::sync_with_stdio(0);cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 1;
-    if (TC) { cin >> TC;
+    if (TC) {
+        cin >> TC;
         while (TC--) solve();
-    } else solve();
+    } else
+        solve();
     return 0;
 }

@@ -7,14 +7,15 @@ using namespace std;
 #define db(x...)
 #endif
 
-void solve(){
-    int n, k; cin >> n >> k;
- 
-    vector<pair<int,int>> segs(n);
-    for(int i = 0; i < n; i++){
+void solve() {
+    int n, k;
+    cin >> n >> k;
+
+    vector<pair<int, int>> segs(n);
+    for (int i = 0; i < n; i++) {
         cin >> segs[i].first;
     }
-    for(int i = 0; i < n; i++){
+    for (int i = 0; i < n; i++) {
         cin >> segs[i].second;
     }
 
@@ -22,10 +23,10 @@ void solve(){
 
     sort(begin(segs), end(segs));
 
-    for(auto [l, r] : segs) total += r - l + 1;
+    for (auto [l, r] : segs) total += r - l + 1;
 
-    if(total < k){
-        cout << -1 << '\n'; 
+    if (total < k) {
+        cout << -1 << '\n';
         return;
     }
 
@@ -35,12 +36,12 @@ void solve(){
 
     long long res = LLONG_MAX;
 
-    for(int i = 0; i < n; i++){
+    for (int i = 0; i < n; i++) {
         auto [l, r] = segs[i];
         auto len = r - l + 1;
         pq.emplace(len);
         sum += len;
-        while(sum >= k){
+        while (sum >= k) {
             long long cost = pq.size() * 2 + r - (sum - k);
             res = min(res, cost);
             auto _len = pq.top();
@@ -50,14 +51,16 @@ void solve(){
     }
 
     cout << res << '\n';
-
 }
 
-signed main(){
-    ios_base::sync_with_stdio(0);cin.tie(0);
+signed main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 1;
-    if(TC){ cin >> TC;
-        while(TC--) solve();
-    } else solve();
+    if (TC) {
+        cin >> TC;
+        while (TC--) solve();
+    } else
+        solve();
     return 0;
 }

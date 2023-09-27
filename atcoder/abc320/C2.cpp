@@ -5,14 +5,15 @@ using namespace std;
 #include "debug.h"
 #else
 #define debug(...)
-#define cerr if (false) cerr
+#define cerr                                                                                                           \
+    if (false) cerr
 #endif
 #define endl '\n'
 #define eb emplace_back
 #define all(x) begin(x), end(x)
 #define rall(x) rbegin(x), rend(x)
-#define L1(res...) [&](const auto& x){ return res; }
-#define L2(res...) [&](const auto& x, const auto& y){ return res; }
+#define L1(res...) [&](const auto &x) { return res; }
+#define L2(res...) [&](const auto &x, const auto &y) { return res; }
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 #define int ll
 typedef long long ll;
@@ -110,11 +111,13 @@ int main() {
 
 void solve() {
     int n = 3;
-    int m; cin >> m;
+    int m;
+    cin >> m;
     vector<string> a(n);
 
     for (int i = 0; i < n; i++) cin >> a[i];
-    for (int i = 0; i < n; i++) for (auto &c : a[i]) c -= '0';
+    for (int i = 0; i < n; i++)
+        for (auto &c : a[i]) c -= '0';
 
     ll best = 1e18;
 
@@ -141,7 +144,8 @@ void solve() {
 
         map<int, ii> compr;
 
-        for (int j = 0; j < n; j++) for (auto &x : res[j]) compr[x] = {1, x};
+        for (int j = 0; j < n; j++)
+            for (auto &x : res[j]) compr[x] = {1, x};
         int IT = n + 2;
 
         for (auto &[k, v] : compr) {
@@ -174,14 +178,16 @@ void solve() {
                     if (id <= (n + 1) + mid) {
                         d.add_edge(j + 1, id, 1);
                         maxu = max(maxu, val);
-                    } else break;
+                    } else
+                        break;
                 }
             }
             ll test = d.max_flow(0, N + 1);
             if (test == n) {
                 ans = maxu;
                 r = mid - 1;
-            } else l = mid + 1;
+            } else
+                l = mid + 1;
         }
         debug(ans);
 
@@ -190,15 +196,16 @@ void solve() {
         // [val] nodes on the right
 
         best = min(best, ans);
-
     }
     cout << (best == 1e18 ? -1 : best) << endl;
 }
 
 signed main() {
-    ios_base::sync_with_stdio(0); cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 0;
-    if (TC) { cin >> TC;
+    if (TC) {
+        cin >> TC;
         int TEST = 1;
         while (TEST <= TC) {
             cerr << "[Testcase " << TEST << "]" << endl;
@@ -207,6 +214,6 @@ signed main() {
             /* cout << (solve() ? "YES" : "NO") << endl; */
             ++TEST;
         }
-    } else solve();
+    } else
+        solve();
 }
-

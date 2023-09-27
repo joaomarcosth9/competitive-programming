@@ -9,9 +9,10 @@ using namespace std;
 #define int long long
 
 void solve() {
-    int n; cin >> n;
+    int n;
+    cin >> n;
     vector<int> a(n);
-    for(int &i : a) cin >> i;
+    for (int &i : a) cin >> i;
     sort(begin(a), end(a));
     /* vector<int> pref(n + 1); */
     /* for(int i = 1; i <= n; i++){ */
@@ -26,16 +27,16 @@ void solve() {
     int res = INT_MAX;
     debug(a);
 
-    auto test = [&] (int val) {
+    auto test = [&](int val) {
         bool ans = 1;
         int last = a[0];
         int troca = 0;
         debug(val);
 
-        for(int i = 0; i < n; i++){
+        for (int i = 0; i < n; i++) {
             int time = (a[i] - last + 1) / 2;
             debug(i, time);
-            if(time <= val) continue;
+            if (time <= val) continue;
             last = a[i];
             troca++;
         }
@@ -50,10 +51,10 @@ void solve() {
     int ans = INT_MAX;
 
     test(12);
-    
-    while(L <= R){
+
+    while (L <= R) {
         int mid = (L + R) / 2;
-        if(test(mid)){
+        if (test(mid)) {
             ans = mid;
             R = mid - 1;
         } else {
@@ -62,14 +63,16 @@ void solve() {
     }
 
     cout << ans << '\n';
-
 }
 
 signed main() {
-    ios_base::sync_with_stdio(0);cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 1;
-    if(TC){ cin >> TC;
-        while(TC--) solve();
-    } else solve();
+    if (TC) {
+        cin >> TC;
+        while (TC--) solve();
+    } else
+        solve();
     return 0;
 }

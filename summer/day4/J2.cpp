@@ -11,40 +11,42 @@ using namespace std;
 #define num first
 #define den second
 const int INF = 1e14;
-typedef pair<int,int> frac;
+typedef pair<int, int> frac;
 // m, Y, X
-typedef tuple<frac,frac,frac> line;
+typedef tuple<frac, frac, frac> line;
 
-void simplify(frac& a){
-    if(a.den == 0){
+void simplify(frac &a) {
+    if (a.den == 0) {
         a.num = INF;
-    } else if(a.num == 0) {
+    } else if (a.num == 0) {
         a.den = INF;
     } else {
         int g = gcd(a.num, a.den);
         a.num /= g, a.den /= g;
-        if(a.den < 0){
+        if (a.den < 0) {
             a.num = -a.num, a.den = -a.den;
         }
     }
 }
 
 frac mul(frac a, frac b) {
-    if(a.num == INF || a.den == INF) return a;
-    else if(b.num == INF || b.den == INF) return b;
+    if (a.num == INF || a.den == INF)
+        return a;
+    else if (b.num == INF || b.den == INF)
+        return b;
     a.num *= b.num;
     a.den *= b.den;
     simplify(a);
     return a;
 }
 
-frac mul(frac a, int b) {
-    return mul(a, {b,1});
-}
+frac mul(frac a, int b) { return mul(a, {b, 1}); }
 
 frac add(frac a, frac b) {
-    if(a.num == INF || b.den == INF) return a;
-    else if(a.den == INF || b.num == INF) return b;
+    if (a.num == INF || b.den == INF)
+        return a;
+    else if (a.den == INF || b.num == INF)
+        return b;
     b.num *= a.den;
     a.num *= b.den;
     a.den *= b.den;
@@ -53,12 +55,10 @@ frac add(frac a, frac b) {
     return a;
 }
 
-frac add(frac a, int b){
-    return add(a, {b,1});
-}
+frac add(frac a, int b) { return add(a, {b, 1}); }
 
-frac inv(frac& a){
-    if(a.num == INF || a.den == INF){
+frac inv(frac &a) {
+    if (a.num == INF || a.den == INF) {
         return {a.den, a.num};
     }
     auto ret = frac(a.den, a.num);
@@ -66,13 +66,13 @@ frac inv(frac& a){
     return ret;
 }
 
-line create(int x, int y, int xx, int yy){
-    frac m = frac(y-yy, x-xx);
+line create(int x, int y, int xx, int yy) {
+    frac m = frac(y - yy, x - xx);
     simplify(m);
     frac Y = add(mul(m, -x), y);
     simplify(Y);
     frac X;
-    if(m.num != INF){
+    if (m.num != INF) {
         X = mul(mul(Y, -1), inv(m));
         simplify(X);
     } else {
@@ -81,23 +81,25 @@ line create(int x, int y, int xx, int yy){
     return {m, Y, X};
 }
 
-void solve(){
-    int n; cin >> n;
+void solve() {
+    int n;
+    cin >> n;
     set<line> lines;
-    for(int i = 0; i < n; i++){
-        int x, y, xx, yy; cin >> x >> y >> xx >> yy;
-        auto l = create(x,y,xx,yy);
-        db(x,y,xx,yy);
+    for (int i = 0; i < n; i++) {
+        int x, y, xx, yy;
+        cin >> x >> y >> xx >> yy;
+        auto l = create(x, y, xx, yy);
+        db(x, y, xx, yy);
         db(l);
         lines.insert(l);
     }
     db(lines.size());
-    for(auto l : lines){
+    for (auto l : lines) {
         db(l);
     }
     map<frac, int> freq;
     long long res = 0;
-    for(auto l : lines){
+    for (auto l : lines) {
         auto [m, _, __] = l;
         res += freq[mul(inv(m), -1)];
         freq[m] += 1;
@@ -105,12 +107,14 @@ void solve(){
     cout << res << endl;
 }
 
-signed main(){
-    ios_base::sync_with_stdio(0);cin.tie(0);
+signed main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 1;
-    if(TC){ cin >> TC;
-        while(TC--) solve();
-    } else solve();
+    if (TC) {
+        cin >> TC;
+        while (TC--) solve();
+    } else
+        solve();
     return 0;
 }
-

@@ -10,14 +10,15 @@ const int maxn = 2e5 + 5;
 int a[maxn];
 
 void solve() {
-    int n; cin >> n;
+    int n;
+    cin >> n;
     int res = INT_MAX;
     for (int i = 0; i < n; i++) {
         cin >> a[i];
         res &= a[i];
     }
     debug(res);
-    if(res > 0){
+    if (res > 0) {
         cout << 1 << '\n';
         return;
     } else {
@@ -25,7 +26,7 @@ void solve() {
         int cand = INT_MAX;
         for (int i = 0; i < n; i++) {
             cand &= a[i];
-            if(cand == 0){
+            if (cand == 0) {
                 g++;
                 cand = INT_MAX;
             }
@@ -35,10 +36,13 @@ void solve() {
 }
 
 signed main() {
-    ios_base::sync_with_stdio(0);cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 1;
-    if (TC) { cin >> TC;
+    if (TC) {
+        cin >> TC;
         while (TC--) solve();
-    } else solve();
+    } else
+        solve();
     return 0;
 }

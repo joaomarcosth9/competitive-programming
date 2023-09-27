@@ -15,9 +15,7 @@ namespace PollardRho {
     const int P = 1e7 + 9;
     ll seq[P];
     int primes[P], spf[P];
-    inline ll add_mod(ll x, ll y, ll m) {
-        return (x += y) < m ? x : x - m;
-    }
+    inline ll add_mod(ll x, ll y, ll m) { return (x += y) < m ? x : x - m; }
     inline ll mul_mod(ll x, ll y, ll m) {
         ll res = __int128(x) * y % m;
         return res;
@@ -37,7 +35,8 @@ namespace PollardRho {
         if (n <= 2 || ((n & 1) ^ 1)) return (n == 2);
         if (n < P) return spf[n] == n;
         ll c, d, s = 0, r = n - 1;
-        for (; !(r & 1); r >>= 1, s++) {}
+        for (; !(r & 1); r >>= 1, s++) {
+        }
         // each iteration is a round
         for (int i = 0; primes[i] < n && primes[i] < 32; i++) {
             c = pow_mod(primes[i], r, n);
@@ -81,9 +80,9 @@ namespace PollardRho {
         }
     }
     vector<ll> factorize(ll n) {
-        if (n == 1) return vector <ll>();
-        if (miller_rabin(n)) return vector<ll> {n};
-        vector <ll> v, w;
+        if (n == 1) return vector<ll>();
+        if (miller_rabin(n)) return vector<ll>{n};
+        vector<ll> v, w;
         while (n > 1 && n < P) {
             v.push_back(spf[n]);
             n /= spf[n];
@@ -96,39 +95,43 @@ namespace PollardRho {
         }
         return v;
     }
-}
+} // namespace PollardRho
 
-void solve(){
-    int n; cin >> n;
-    vector<ll> a(n); for(ll &u : a) cin >> u;
+void solve() {
+    int n;
+    cin >> n;
+    vector<ll> a(n);
+    for (ll &u : a) cin >> u;
 
-    map<ll,int> freq;
+    map<ll, int> freq;
 
-    for(ll u : a) {
+    for (ll u : a) {
         auto temp = PollardRho::factorize(u);
-        for(auto f : temp) freq[f]++;
+        for (auto f : temp) freq[f]++;
     }
-
 
     ll res = 0;
     ll rest = 0;
 
-    for(auto [f, fq] : freq){
+    for (auto [f, fq] : freq) {
         res += fq / 2;
         rest += fq & 1;
     }
 
-    res += rest/3;
+    res += rest / 3;
 
     cout << res << '\n';
 }
 
-signed main(){
-    ios_base::sync_with_stdio(0);cin.tie(0);
+signed main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 1;
     PollardRho::init();
-    if(TC){ cin >> TC;
-        while(TC--) solve();
-    } else solve();
+    if (TC) {
+        cin >> TC;
+        while (TC--) solve();
+    } else
+        solve();
     return 0;
 }

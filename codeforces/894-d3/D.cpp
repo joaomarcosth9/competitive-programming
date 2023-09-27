@@ -6,13 +6,14 @@ using namespace std;
 #else
 #define debug(...)
 #define endl '\n'
-#define cerr if (false) cerr
+#define cerr                                                                                                           \
+    if (false) cerr
 #endif
 #define eb emplace_back
 #define all(x) begin(x), end(x)
 #define rall(x) rbegin(x), rend(x)
-#define L1(res...) [&](const auto& x){ return res; }
-#define L2(res...) [&](const auto& x, const auto& y){ return res; }
+#define L1(res...) [&](const auto &x) { return res; }
+#define L2(res...) [&](const auto &x, const auto &y) { return res; }
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 typedef __int128_t ll;
 typedef long double ld;
@@ -27,7 +28,7 @@ void solve() {
         return;
     }
     ll a = A;
-    ll l = 1, r = (ll) 1e12;
+    ll l = 1, r = (ll)1e12;
     ll ans = -1;
     ll delta = -1;
     while (l <= r) {
@@ -43,18 +44,21 @@ void solve() {
     }
     assert(ans != (ll)-1);
     long long res = ans;
-    cout << res + (long long) delta << endl;
+    cout << res + (long long)delta << endl;
 }
 
 signed main() {
-    ios_base::sync_with_stdio(0); cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 1;
-    if (TC) { cin >> TC;
+    if (TC) {
+        cin >> TC;
         int TEST = 1;
         while (TEST <= TC) {
             cerr << "[Testcase " << TEST << "]" << endl;
             solve();
             ++TEST;
         }
-    } else solve();
+    } else
+        solve();
 }

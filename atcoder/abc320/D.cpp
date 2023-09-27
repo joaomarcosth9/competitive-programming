@@ -5,14 +5,15 @@ using namespace std;
 #include "debug.h"
 #else
 #define debug(...)
-#define cerr if (false) cerr
+#define cerr                                                                                                           \
+    if (false) cerr
 #endif
 #define endl '\n'
 #define eb emplace_back
 #define all(x) begin(x), end(x)
 #define rall(x) rbegin(x), rend(x)
-#define L1(res...) [&](const auto& x){ return res; }
-#define L2(res...) [&](const auto& x, const auto& y){ return res; }
+#define L1(res...) [&](const auto &x) { return res; }
+#define L2(res...) [&](const auto &x, const auto &y) { return res; }
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 typedef long long ll;
 typedef long double ld;
@@ -46,15 +47,19 @@ struct pt {
 };
 
 void solve() {
-    int n, m; cin >> n >> m;
+    int n, m;
+    cin >> n >> m;
     vector<pt> a(n, pt(-1e18, -1e18));
     a[0] = pt(0, 0);
     vector<vector<i3>> adj(n);
 
     for (int i = 0; i < m; i++) {
-        int u, v; cin >> u >> v;
-        u--; v--;
-        ll dx, dy; cin >> dx >> dy;
+        int u, v;
+        cin >> u >> v;
+        u--;
+        v--;
+        ll dx, dy;
+        cin >> dx >> dy;
         adj[u].eb(v, dx, dy);
         adj[v].eb(u, -dx, -dy);
     }
@@ -69,23 +74,27 @@ void solve() {
         if (vis[u]) continue;
         vis[u] = 1;
         auto [x, y] = a[u];
-        for (auto [v, dx, dy] : adj[u]) if (!vis[v]) {
-            a[v] = pt(x + dx, y + dy);
-            q.emplace(v);
-        }
+        for (auto [v, dx, dy] : adj[u])
+            if (!vis[v]) {
+                a[v] = pt(x + dx, y + dy);
+                q.emplace(v);
+            }
     }
 
     for (int i = 0; i < n; i++) {
-        if (a[i].x == (long long)-1e18) cout << "undecidable" << endl;
-        else cout << a[i] << endl;
+        if (a[i].x == (long long)-1e18)
+            cout << "undecidable" << endl;
+        else
+            cout << a[i] << endl;
     }
-
 }
 
 signed main() {
-    ios_base::sync_with_stdio(0); cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 0;
-    if (TC) { cin >> TC;
+    if (TC) {
+        cin >> TC;
         int TEST = 1;
         while (TEST <= TC) {
             cerr << "[Testcase " << TEST << "]" << endl;
@@ -94,5 +103,6 @@ signed main() {
             /* cout << (solve() ? "YES" : "NO") << endl; */
             ++TEST;
         }
-    } else solve();
+    } else
+        solve();
 }

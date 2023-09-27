@@ -1,6 +1,8 @@
 #include <bits/stdc++.h>
 
-#define _ ios_base::sync_with_stdio(0);cin.tie(0);
+#define _                                                                                                              \
+    ios_base::sync_with_stdio(0);                                                                                      \
+    cin.tie(0);
 #define endl '\n'
 
 using namespace std;
@@ -12,30 +14,30 @@ const int MAX = 1e2;
 int n, M[MAX][MAX], R[MAX][MAX];
 
 void rotate(int M[MAX][MAX]) {
-    for(int i = 0; i < n; i++){
-        for(int j = 0; j < n; j++){
-            R[i][j] = M[n-j-1][i];
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            R[i][j] = M[n - j - 1][i];
         }
     }
-    for(int i = 0; i < n; i++){
-        for(int j = 0; j < n; j++){
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
             M[i][j] = R[i][j];
         }
     }
     memset(R, 0, sizeof(R));
 }
 
-void solve(){
+void solve() {
     cin >> n;
-    for(int i = 0; i < n; i++){
-        for(int j = 0; j < n; j++){
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
             cin >> M[i][j];
         }
     }
     rotate(M);
     cout << "90" << endl;
-    for(int i = 0; i < n; i++){
-        for(int j = 0; j < n; j++){
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
             cout << M[i][j] << ' ';
         }
         cout << endl;
@@ -43,8 +45,8 @@ void solve(){
     cout << endl;
     rotate(M);
     cout << "180" << endl;
-    for(int i = 0; i < n; i++){
-        for(int j = 0; j < n; j++){
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
             cout << M[i][j] << ' ';
         }
         cout << endl;
@@ -52,8 +54,8 @@ void solve(){
     cout << endl;
     rotate(M);
     cout << "270" << endl;
-    for(int i = 0; i < n; i++){
-        for(int j = 0; j < n; j++){
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
             cout << M[i][j] << ' ';
         }
         cout << endl;
@@ -61,9 +63,10 @@ void solve(){
     cout << endl;
 }
 
-int main(){ _
-    int testcases; cin >> testcases;
-    for (int i = 0; i < testcases; i++){
+int main() {
+    _ int testcases;
+    cin >> testcases;
+    for (int i = 0; i < testcases; i++) {
         solve();
     }
     return 0;

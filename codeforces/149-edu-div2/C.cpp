@@ -8,38 +8,44 @@ using namespace std;
 #endif
 
 void solve() {
-    string s; cin >> s;
+    string s;
+    cin >> s;
     int n = s.size();
     vector<int> vis(n);
-    if(s == string(n, '?')){
+    if (s == string(n, '?')) {
         cout << string(n, '0') << '\n';
         return;
     }
     char fst = -1;
     int ifst = -1;
-    for(int i = 0; i < n; i++){
-        if(s[i] != '?') {
+    for (int i = 0; i < n; i++) {
+        if (s[i] != '?') {
             fst = s[i];
             ifst = i;
             break;
         }
     }
-    for(int i = 0; i < ifst; i++){
+    for (int i = 0; i < ifst; i++) {
         s[i] = fst;
     }
     char lst = -1;
-    for(int i = 0; i < n; i++){
-        if(s[i] != '?') lst = s[i];
-        else s[i] = lst;
+    for (int i = 0; i < n; i++) {
+        if (s[i] != '?')
+            lst = s[i];
+        else
+            s[i] = lst;
     }
     cout << s << '\n';
 }
 
 signed main() {
-    ios_base::sync_with_stdio(0);cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 1;
-    if(TC){ cin >> TC;
-        while(TC--) solve();
-    } else solve();
+    if (TC) {
+        cin >> TC;
+        while (TC--) solve();
+    } else
+        solve();
     return 0;
 }

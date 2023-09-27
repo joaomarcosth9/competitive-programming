@@ -7,8 +7,9 @@ using namespace std;
 #define db(x...)
 #endif
 
-void solve(){
-    int n; cin >> n;
+void solve() {
+    int n;
+    cin >> n;
     int res = 0;
 
     int um = 0;
@@ -17,23 +18,27 @@ void solve(){
 
     int us = 0;
 
-    for(int i = 0; i <= n; i++){
+    for (int i = 0; i <= n; i++) {
         int a;
-        if(i < n) cin >> a;
-        else a = 2;
+        if (i < n)
+            cin >> a;
+        else
+            a = 2;
         db(a);
-        if(a == 1){
+        if (a == 1) {
             pigs++;
             us++;
-            if(fr) fr--;
-            else res++;
+            if (fr)
+                fr--;
+            else
+                res++;
             db(res, fr, pigs);
-        } else if (a == 2){
-            if(pigs == 0) continue;
-            if(pigs & 1){
-                us = (pigs+1) >> 1;
+        } else if (a == 2) {
+            if (pigs == 0) continue;
+            if (pigs & 1) {
+                us = (pigs + 1) >> 1;
             } else {
-                us = (pigs >> 1)+1;
+                us = (pigs >> 1) + 1;
             }
             fr = res - us;
             db(res, fr, pigs);
@@ -42,11 +47,14 @@ void solve(){
     cout << res << endl;
 }
 
-signed main(){
-    ios_base::sync_with_stdio(0);cin.tie(0);
+signed main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int TC = 1;
-    if(TC){ cin >> TC;
-        while(TC--) solve();
-    } else solve();
+    if (TC) {
+        cin >> TC;
+        while (TC--) solve();
+    } else
+        solve();
     return 0;
 }
