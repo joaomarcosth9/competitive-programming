@@ -1,124 +1,72 @@
 #include <bits/stdc++.h>
-#define endl '\n' 
+using namespace std;
 
-using namespace std; 
+#ifdef LOCAL_DEBUG
+#include "debug.h"
+#else
+#define debug(...)
+#endif
 
-typedef long long ll; 
-typedef vector<int> vi; 
-typedef priority_queue<int, vector<int>, greater<int>> pqg;  
-typedef pair<int, int> pii; 
-
-#define pb push_back
-#define eb emplace_back
-#define fill(arr, n) for (int i = 0; i < sizeof(arr)/sizeof(arr[0]); i++) {arr[i] = n; } 
-#define F0R(i, n) for(int i = 0; i < n; i++)
-#define R0F(i, n) for(int i = n; i >= 0; i--)
-#define FOR(i, a, n) for (int i = a; i <= n; i++) 
-#define ROF(i, a, n) for (int i = n; i>= a; i--)
-
-int min(int x, int y, int z) { return min(min(x, y), z); }
-
-int leve(string& str1, string& str2, int m, int n)
-{
-    // If first string is empty, the only option is to
-    // insert all characters of second string into first
-    if (m == 0)
-        return n;
-
-    // If second string is empty, the only option is to
-    // remove all characters of first string
-    if (n == 0)
-        return m;
-
-    // If last characters of two strings are same, nothing
-    // much to do. Ignore last characters and get count for
-    // remaining strings.
-    if (str1[m - 1] == str2[n - 1])
-        return leve(str1, str2, m - 1, n - 1);
-
-    // If last characters are not same, consider all three
-    // operations on last character of first string,
-    // recursively compute minimum cost for all three
-    // operations and take minimum of three values.
-    return 1
-           + min(leve(str1, str2, m, n - 1), // Insert
-                 leve(str1, str2, m - 1, n), // Remove
-                 leve(str1, str2, m - 1,
-                          n - 1) // Replace
-             );
-}
-
-
-char s[25];
-char a[25]; 
-double res[10]; 
-
-void solve() {
+void solve(){
     int n; cin >> n;
-    while (n--) {
-        string ss; cin >> ss; 
-
-        vector<string> A; 
-        vector<int> ig; 
-        for (int i = 0; i < 5; i++) {
-            string sss; cin >> sss; 
-            A.pb(sss); 
-            if (sss == ss) {
-                ig.pb(i); 
-            } 
-        } 
-        if (ig.size()) {
-            for (int ii : ig) {
-                res[ii] += 1.0; 
-            } 
-        } 
-        else {
-            vector<int> dis; 
-            for (int i = 0; i < (int)A.size(); i++) {
-                dis.pb(leve(ss, A[i], (int)ss.size(), (int)A[i].size())); 
-            } 
-
-            int minn = INT_MAX; 
-            for (int i = 0; i < (int)dis.size(); i++) {
-                minn = min(minn, dis[i]); 
-            } 
-
-            vector<int> gg; 
-            for (int i = 0; i < (int)dis.size(); i++) {
-                if (dis[i] == minn) {
-                    gg.pb(i); 
-                } 
-            } 
-            for (int aa : gg) {
-                res[aa] += 0.5; 
-            } 
-        } 
-    } 
-
-    double maxx = -1.0; 
-    for (int i = 0; i < 5; i++) {
-        maxx = max(maxx, res[i]); 
-    } 
-
-    printf("%.1lf\n", maxx); 
-    vector<int> ress; 
-    for (int i = 0; i < 5; i++) {
-        if (res[i] == maxx) {
-            ress.pb(i+1); 
-        } 
-    } 
-    for (int i = 0; i < (int)ress.size(); i++) {
-        cout << ress[i]; 
-        if (i != (int)ress.size()-1) {
-            cout << " "; 
-        } 
-    } 
-    cout << endl;
+    vector<int> res(5);
+    for(int i = 0; i < n; i++){
+        string s; cin >> s;
+        vector<string> t(5);
+        bool eq = 0;
+        for(int j = 0; j < 5; j++){
+            cin >> t[j];
+            if(s == t[j]){
+                eq = 1;
+                res[j] += 2;
+            }
+        }
+        if(eq) continue;
+        vector<int> dpp(5);
+        int minn = 1e9;
+        for(int j = 0; j < 5; j++){
+            int u = s.size();
+            auto& r = t[j];
+            int v = r.size();
+            vector<vector<int>> dp(u + 1, vector<int>(v + 1, 0));
+            for(int k = 1; k <= u; k++) dp[k][0] = k;
+            for(int l = 1; l <= v; l++) dp[0][l] = l;
+            for(int k = 1; k <= u; k++){
+                for(int l = 1; l <= v; l++){
+                    if(s[k-1] == r[l-1]){
+                        dp[k][l] = dp[k-1][l-1];
+                    } else {
+                        dp[k][l] = min({dp[k-1][l], dp[k][l-1], dp[k-1][l-1]}) + 1;
+                    }
+                }
+            }
+            dpp[j] = dp[u][v];
+            minn = min(minn, dpp[j]);
+        }
+        for(int j = 0; j < 5; j++){
+            if(dpp[j] == minn){
+                res[j]++;
+            }
+        }
+    }
+    int mx = *max_element(begin(res), end(res));
+    cout << setprecision(1) << fixed << double(mx)/ 2.0 << '\n';
+    vector<int> RES;
+    for(int i = 0; i < 5; i++){
+        if(res[i] == mx){
+            RES.emplace_back(i+1);
+        }
+    }
+    for(int i = 0; i < (int)RES.size(); i++){
+        cout << RES[i] << " \n"[i == (int)RES.size()-1];
+    }
 }
 
-
-int main() {
-    solve(); 
-    return 0; 
+signed main(){
+    ios_base::sync_with_stdio(0);cin.tie(0);
+    int TC = 0;
+    if(TC){ cin >> TC;
+        while(TC--) solve();
+    } else solve();
+    return 0;
 }
-

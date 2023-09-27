@@ -1,44 +1,61 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int temtestcase = 0;
-const int INF = 1.05e9;
-const long long LINF = 4.5e18;
-using ll = long long;
-using vi = vector<int>;
-using ii = pair<int,int>;
-using vii = vector<ii>;
-template <typename T> using pql = priority_queue<T>;
-template <typename T> using pqg = priority_queue<T, vector<T>, greater<T>>;
-#define mp make_pair
-#define fst first
-#define snd second
-#define all(x) begin(x), end(x)
-#define rall(x) rbegin(x), rend(x)
-#define sor(x) sort(all(x)) 
-#define rsor(x) sort(rall(x)) 
-#define pb push_back
-#define eb emplace_back
-#define FOR(i,x,y) for(int i = x; i < y; i++)
-#define ROF(i,x,y) for(int i = x-1; i >= y; i--)
-#define FO(x) FOR(i,0,x)
-#define OF(x) ROF(i,x,0)
-#define endl '\n'
+#ifdef LOCAL_DEBUG
+#include "debug.h"
+#else
+#define debug(...)
+#endif
+typedef long long ll;
+#define int ll
 
-void solve(){
-    ll n; cin >> n;
-
+int gtr(pair<int,int> b, pair<int,int> a){
+    a.first *= b.second;
+    b.first *= a.second;
+    if(b.first > a.first) return 1;
+    if(b.first == a.first) return -1;
+    return 0;
 }
 
-int main(){
-#ifndef LOCAL_DEBUG   
-    ios_base::sync_with_stdio(0);cin.tie(0);
-#endif
-    int tsts = 1;
-    if(temtestcase) cin >> tsts;
-    for(int Testcase = 1; Testcase <= tsts; Testcase++){
-        /* clog << db(Testcase) << endl; */
-        solve();
+void solve() {
+    int n; cin >> n;
+
+    if(n <= 8){
+        cout << n - 1 << '\n';
+    } else if(n <= 20){
+        cout << n - 4 << '\n';
+    } else {
+        if(n % 4 == 0){
+            cout << (n - 4) / 4 << '\n';
+        } else {
+            int best = n - 4;
+            pair<int,int> res {1, 2};
+            for(int i = 5; i * i <= n; i++){
+                int nn = n;
+                int qt = 0, nd = 0;
+                while(nn){
+                    int dig = nn % i;
+                    qt += dig == 4;
+                    nd++;
+                    nn /= i;
+                }
+                pair<int,int> curr {qt, nd};
+                int resp = gtr(curr, res);
+                if(resp == 1 || (resp == -1 && res != make_pair(1ll, 2ll))){
+                    res = curr;
+                    best = i;
+                }
+            }
+            cout << best << '\n';
+        }
     }
+}
+
+signed main() {
+    ios_base::sync_with_stdio(0);cin.tie(0);
+    int TC = 0;
+    if(TC){ cin >> TC;
+        while(TC--) solve();
+    } else solve();
     return 0;
 }

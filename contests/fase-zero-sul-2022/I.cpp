@@ -10,13 +10,13 @@ typedef long long ll;
 pair<ll,ll> atek(ll k){
     ll restemp = 1, i = 0;
     for(;; i++){
-        ll neww = (9*(ll)pow(10,i))*(i+1);
+        ll neww = (9*(ll)pow(10ll,i))*(i+1);
         if(restemp + neww < k){
             restemp += neww;
         } else break;
     }
     ll algarismo = ((k-restemp) % (i+1));
-    return {(k - restemp)/(i+1) + (ll)(pow(10,i)), algarismo};
+    return {(k - restemp)/(i+1) + (ll)(pow(10ll,i)), algarismo};
 }
 
 const ll MAX = 2e5+500;
@@ -58,7 +58,7 @@ void solve(){
     }
     ll ress = stringtoll(temp);
     ll maxx = ress;
-    ll k10 = (ll)pow(10,k-1);
+    ll k10 = (ll)pow(10ll,k-1);
     for(int i = 1; i+k-1 < (int)res.size(); i++){
         ll tp = ress - (k10 * (res[i-1]-'0'));
         tp *= 10;

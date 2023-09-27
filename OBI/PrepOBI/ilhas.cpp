@@ -32,13 +32,21 @@ void solve(){
         Adj[a].push_back({c,b});
         Adj[b].push_back({c,a});
     }
+    for(int i = 1; i <= n; i++){
+        cout << i << ": ";
+        for(auto a : Adj[i]){
+            cout << a.second << " ";
+        }
+        cout << endl;
+    }
     int u; cin >> u;
     dijkstra(u, n, Adj);
     int minn = INT_MAX;
     int maxx = INT_MIN;
-    for(int i = 1; i <= n; i++){
-        minn = min(minn, (i != u ? dist[i] : minn));
-        maxx = max(maxx, (i != u ? dist[i] : maxx));
+    for(int i = 1; i <= n; i++) if(i != u) {
+        cout << i << " " << dist[i] << endl;
+        minn = min(minn, dist[i]);
+        maxx = max(maxx, dist[i]);
     }
     cout << maxx - minn << endl;
 }

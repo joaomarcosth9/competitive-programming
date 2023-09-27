@@ -5,68 +5,35 @@ const int INF = 1.05e9;
 const int MAX = 1e5;
 const long long LINF = 4.5e18;
 typedef long long ll;
-typedef vector<int> vi;
-typedef pair<int,int> pi;
-#define endl '\n'
-#define print_op(...) ostream& operator<<(ostream& out, const __VA_ARGS__& u)
-#define db(val) "["#val" = "<<(val)<<"] "
-#define CONCAT_(x, y) x##y
-#define CONCAT(x, y) CONCAT_(x, y)
-#ifdef LOCAL_DEBUG   
-#   define _   
-#   define clog cerr << setw(__db_level * 2) << setfill(' ') << "" << setw(0)
-#   define DB() debug_block CONCAT(dbbl, __LINE__)
-    int __db_level = 0;
-    struct debug_block {
-        debug_block() { clog << "{" << endl; ++__db_level; }
-        ~debug_block() { --__db_level; clog << "}" << endl; }
-    };
-#else
-#   define _ ios_base::sync_with_stdio(0);cin.tie(0);
-#   define clog cerr << setw(__db_level * 2) << setfill(' ') << "" << setw(0)
-#   define clog if (0) cerr
-#   define DB(...)
-#endif
-template<class U, class V> print_op(pair<U, V>) {
-    return out << "(" << u.first << ", " << u.second << ")";
-}
-template<class Con, class = decltype(begin(declval<Con>()))>
-typename enable_if<!is_same<Con, string>::value, ostream&>::type
-operator<<(ostream& out, const Con& con) { 
-    out << "{";
-    for (auto beg = con.begin(), it = beg; it != con.end(); ++it)
-        out << (it == beg ? "" : ", ") << *it;
-    return out << "}";
-}
-template<size_t i, class T> ostream& print_tuple_utils(ostream& out, const T& tup) {
-    if constexpr(i == tuple_size<T>::value) return out << ")"; 
-    else return print_tuple_utils<i + 1, T>(out << (i ? ", " : "(") << get<i>(tup), tup); 
-}
-template<class ...U> print_op(tuple<U...>) {
-    return print_tuple_utils<0, tuple<U...>>(out, u);
-}
 
 typedef tuple<ll,ll,ll,ll> l4;
 
 void solve(){
     int n, q; cin >> n >> q;
     vector<pair<ll,ll>> v(n);
-    vector<ll> s(n);
+    vector<vector<ll>> pref(1002, vector<ll> (1002));
+    vector<vector<ll>> s(1002, vector<ll> (1002));
     for(int i = 0; i < n; i++){
         auto& [a,b] = v[i];
         cin >> a >> b;
-        s[i] = a*b;
+        s[a][b] += a * b;
     }
-    vector<l4> qs(q);
+    for(int i = 1; i < 1002; i++){
+        for(int j = 1; j < 1002; j++){
+            pref[i][j] = pref[i-1][j]+pref[i][j-1]-pref[i-1][j-1]+s[i][j];
+        }
+    }
     for(int i = 0; i < q; i++){
-        auto& [a,b,c,d] = qs[i];
+        ll a,b,c,d;
         cin >> a >> b >> c >> d;
-        ll a1 = a * b;
-        ll a2 = c * d;
+        a = min(a, c);
+        b = min(b, d);
+        cout << pref[c-1][d-1]-pref[c-1][b]-pref[a][d-1]+pref[a][b] << endl;
     }
 }
 
-int main(){ _
+int main(){
+    ios_base::sync_with_stdio(0);cin.tie(0);
     int tsts; cin >> tsts;
     for(int Testcase = 1; Testcase <= tsts; Testcase++){
         /* clog << db(Testcase) << endl; */

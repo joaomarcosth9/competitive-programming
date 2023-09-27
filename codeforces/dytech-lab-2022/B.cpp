@@ -45,8 +45,6 @@ void solve(){
         }
     }
     int res = 0;
-    while( fst < r ){
-    }
     cout << res << endl;
 }
 

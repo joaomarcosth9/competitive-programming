@@ -9,10 +9,6 @@ void solve(){
     double n; cin >> n;
     n *= 10;
     int aaa = round(n);
-    // mf = (ms*6 + ne*4)/10
-    // 5.0 = (ms*6 + ne*4)/10
-    // 50 = (ms*6 + ne*4)
-    // (50 - 6*ms)4 = ne
     double ne = (500-6*aaa)/4;
     cout << setprecision(1) << fixed;
     cout << ne/10 << endl;
