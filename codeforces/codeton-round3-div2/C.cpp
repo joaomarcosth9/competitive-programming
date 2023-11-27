@@ -5,95 +5,86 @@ using namespace std;
 #include "debug.h"
 #else
 #define debug(...)
-#define cerr                                                                                                           \
-    if (false) cerr
+#define cerr if (false) cerr
 #endif
 #define endl '\n'
 #define eb emplace_back
 #define all(x) begin(x), end(x)
 #define rall(x) rbegin(x), rend(x)
-#define L1(res...) [&](const auto &x) { return res; }
-#define L2(res...) [&](const auto &x, const auto &y) { return res; }
+#define L1(res...) [&](const auto& x){ return res; }
+#define L2(res...) [&](const auto& x, const auto& y){ return res; }
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 typedef long long ll;
 typedef long double ld;
 typedef pair<int, int> ii;
 typedef tuple<int, int, int> i3;
-void out(bool ans) { cout << (ans ? "YES" : "NO") << endl; }
-#define int ll
 
 void solve() {
-    int n, k;
-    cin >> n >> k;
-    vector<int> a(n);
-    vector<int> freq(k + 1);
-    for (int i = 0; i < n; i++) cin >> a[i];
-#ifdef LOCAL_DEBUG
-    vector mat(n, vector<int>(n));
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            cout << min(a[i], a[j]) << " ";
+    int n; cin >> n;
+    vector<int> a(n), b(n);
+    string s; cin >> s;
+    for (int i = 0; i < n; i++) a[i] = s[i] == '1';
+    cin >> s;
+    for (int i = 0; i < n; i++) b[i] = s[i] == '1';
+    a.insert(begin(a), 0);
+    b.insert(begin(b), 0);
+    b.emplace_back(0);
+    a.emplace_back(0);
+    debug(a, b);
+    int last1 = 0;
+    bool inone = 0;
+    vector<ii> op;
+    for (int i = 1; i <= n + 1; i++) {
+        if (a[i]) {
+            if (!inone) {
+                inone = 1;
+                last1 = i;
+            }
+        } else {
+            if (inone) {
+                op.eb(last1, i - 1);
+                inone = 0;
+            }
         }
-        cout << endl;
     }
-#endif
-
-    for (int i = 0; i < n; i++) {
-        freq[a[i]]++;
+    vector<int> B(n + 5);
+    for (auto [l, r] : op) {
+        B[1]++;
+        B[l]--;
+        B[r + 1]++;
     }
-
-    vector<int> pref(n, INT_MIN), suff(n, INT_MIN);
-    pref[0] = a[0];
-    for (int i = 1; i < n; i++) {
-        pref[i] = max(pref[i - 1], a[i]);
+    int ac = 0;
+    for (int i = 1; i <= n; i++) {
+        ac = (ac + B[i]) % 2;
+        if (ac) b[i] ^= 1;
     }
-    suff[n - 1] = a[n - 1];
-    for (int i = n - 2; i >= 0; i--) {
-        suff[i] = max(suff[i + 1], a[i]);
+    if (all_of(begin(b) + 1, begin(b) + n, L1(x == 1))) {
+        op.eb(1, 1);
+        for (int i = 2; i <= n; i++) b[i] ^= 1;
+        op.eb(2, n);
+        b[1] ^= 1;
+        op.eb(1, n);
     }
-    for (int i = 1; i <= k; i++) {
-        if (freq[i] == 0) {
-            cout << 0 << " ";
-            continue;
-        }
-        int first = -1, last = -1;
-        int l = 0, r = n - 1;
-        while (l <= r) {
-            int mid = (l + r) / 2;
-            if (pref[mid] >= i) {
-                first = mid;
-                r = mid - 1;
-            } else
-                l = mid + 1;
-        }
-        l = 0, r = n - 1;
-        while (l <= r) {
-            int mid = (l + r) / 2;
-            if (suff[mid] >= i) {
-                last = mid;
-                l = mid + 1;
-            } else
-                r = mid - 1;
-        }
-        cout << (last - first + 1) * 2 << " ";
+    if (any_of(all(b), L1(x == 1))) {
+        cout << "NO" << endl;
+        return;
     }
-    cout << endl;
+    cout << "YES" << endl;
+    cout << size(op) << endl;
+    for (auto [l, r] : op) cout << l << " " << r << endl;
 }
 
 signed main() {
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
+    ios_base::sync_with_stdio(0); cin.tie(0);
     int TC = 1;
-    if (TC) {
-        cin >> TC;
-        int TEST = 1;
-        while (TEST <= TC) {
-            cerr << "[Testcase " << TEST << "]" << endl;
-            solve();
-            /* cout << solve() << endl; */
-            /* cout << (solve() ? "YES" : "NO") << endl; */
-            ++TEST;
-        }
-    } else
+    if (TC) cin >> TC;
+    else TC += 1;
+    int TEST = 1;
+    while (TEST <= TC) {
+        cerr << "[Testcase " << TEST << "]" << endl;
         solve();
+        /* cout << solve() << endl; */
+        /* cout << (solve() ? "YES" : "NO") << endl; */
+        TEST += 1;
+    }
 }

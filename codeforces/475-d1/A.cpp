@@ -1,0 +1,325 @@
+#include "bits/stdc++.h"
+using namespace std;
+
+#ifdef LOCAL_DEBUG
+#include "debug.h"
+#else
+#define debug(...)
+#define cerr if (false) cerr
+#endif
+#define endl '\n'
+#define eb emplace_back
+#define all(x) begin(x), end(x)
+#define rall(x) rbegin(x), rend(x)
+#define L1(res...) [&](const auto& x){ return res; }
+#define L2(res...) [&](const auto& x, const auto& y){ return res; }
+mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
+typedef long long ll;
+typedef long double ld;
+typedef pair<int, int> ii;
+typedef tuple<int, int, int> i3;
+
+template <typename T> T inverse(T a, T m) {
+    T u = 0, v = 1;
+    while (a != 0) {
+        T t = m / a;
+        m -= t * a;
+        swap(a, m);
+        u -= t * v;
+        swap(u, v);
+    }
+    assert(m == 1);
+    return u;
+}
+template <typename T> class Modular {
+  public:
+    using Type = typename decay<decltype(T::value)>::type;
+    constexpr Modular() : value() {}
+    template <typename U> Modular(const U &x) { value = normalize(x); }
+    template <typename U> static Type normalize(const U &x) {
+        Type v;
+        if (-mod() <= x && x < mod())
+            v = static_cast<Type>(x);
+        else
+            v = static_cast<Type>(x % mod());
+        if (v < 0) v += mod();
+        return v;
+    }
+    const Type &operator()() const { return value; }
+    template <typename U> explicit operator U() const { return static_cast<U>(value); }
+    constexpr static Type mod() { return T::value; }
+    Modular &operator+=(const Modular &other) {
+        if ((value += other.value) >= mod()) value -= mod();
+        return *this;
+    }
+    Modular &operator-=(const Modular &other) {
+        if ((value -= other.value) < 0) value += mod();
+        return *this;
+    }
+    template <typename U> Modular &operator+=(const U &other) { return *this += Modular(other); }
+    template <typename U> Modular &operator-=(const U &other) { return *this -= Modular(other); }
+    template <typename U> Modular &operator^=(const U &other) { return *this = power(*this, other); }
+    Modular &operator++() { return *this += 1; }
+    Modular &operator--() { return *this -= 1; }
+    Modular operator++(int) {
+        Modular result(*this);
+        *this += 1;
+        return result;
+    }
+    Modular operator--(int) {
+        Modular result(*this);
+        *this -= 1;
+        return result;
+    }
+    Modular operator-() const { return Modular(-value); }
+    template <typename U = T>
+    typename enable_if<is_same<typename Modular<U>::Type, int>::value, Modular>::type &operator*=(const Modular &rhs) {
+#ifdef _WIN32
+        uint64_t x = static_cast<int64_t>(value) * static_cast<int64_t>(rhs.value);
+        uint32_t xh = static_cast<uint32_t>(x >> 32), xl = static_cast<uint32_t>(x), d, m;
+        asm("divl %4; \n\t" : "=a"(d), "=d"(m) : "d"(xh), "a"(xl), "r"(mod()));
+        value = m;
+#else
+        value = normalize(static_cast<int64_t>(value) * static_cast<int64_t>(rhs.value));
+#endif
+        return *this;
+    }
+    template <typename U = T>
+    typename enable_if<is_same<typename Modular<U>::Type, long long>::value, Modular>::type &
+    operator*=(const Modular &rhs) {
+        long long q = static_cast<long long>(static_cast<long double>(value) * rhs.value / mod());
+        value = normalize(value * rhs.value - q * mod());
+        return *this;
+    }
+    template <typename U = T>
+    typename enable_if<!is_integral<typename Modular<U>::Type>::value, Modular>::type &operator*=(const Modular &rhs) {
+        value = normalize(value * rhs.value);
+        return *this;
+    }
+    Modular &operator/=(const Modular &other) { return *this *= Modular(inverse(other.value, mod())); }
+    friend const Type &abs(const Modular &x) { return x.value; }
+    template <typename U> friend bool operator==(const Modular<U> &lhs, const Modular<U> &rhs);
+    template <typename U> friend bool operator<(const Modular<U> &lhs, const Modular<U> &rhs);
+    template <typename V, typename U> friend V &operator>>(V &stream, Modular<U> &number);
+
+  private:
+    Type value;
+};
+template <typename T> bool operator==(const Modular<T> &lhs, const Modular<T> &rhs) { return lhs.value == rhs.value; }
+template <typename T, typename U> bool operator==(const Modular<T> &lhs, U rhs) { return lhs == Modular<T>(rhs); }
+template <typename T, typename U> bool operator==(U lhs, const Modular<T> &rhs) { return Modular<T>(lhs) == rhs; }
+template <typename T> bool operator!=(const Modular<T> &lhs, const Modular<T> &rhs) { return !(lhs == rhs); }
+template <typename T, typename U> bool operator!=(const Modular<T> &lhs, U rhs) { return !(lhs == rhs); }
+template <typename T, typename U> bool operator!=(U lhs, const Modular<T> &rhs) { return !(lhs == rhs); }
+template <typename T> bool operator<(const Modular<T> &lhs, const Modular<T> &rhs) { return lhs.value < rhs.value; }
+template <typename T> Modular<T> operator+(const Modular<T> &lhs, const Modular<T> &rhs) {
+    return Modular<T>(lhs) += rhs;
+}
+template <typename T, typename U> Modular<T> operator+(const Modular<T> &lhs, U rhs) { return Modular<T>(lhs) += rhs; }
+template <typename T, typename U> Modular<T> operator^(const Modular<T> &lhs, U rhs) { return Modular<T>(lhs) ^= rhs; }
+template <typename T, typename U> Modular<T> operator+(U lhs, const Modular<T> &rhs) { return Modular<T>(lhs) += rhs; }
+template <typename T> Modular<T> operator-(const Modular<T> &lhs, const Modular<T> &rhs) {
+    return Modular<T>(lhs) -= rhs;
+}
+template <typename T, typename U> Modular<T> operator-(const Modular<T> &lhs, U rhs) { return Modular<T>(lhs) -= rhs; }
+template <typename T, typename U> Modular<T> operator-(U lhs, const Modular<T> &rhs) { return Modular<T>(lhs) -= rhs; }
+template <typename T> Modular<T> operator*(const Modular<T> &lhs, const Modular<T> &rhs) {
+    return Modular<T>(lhs) *= rhs;
+}
+template <typename T, typename U> Modular<T> operator*(const Modular<T> &lhs, U rhs) { return Modular<T>(lhs) *= rhs; }
+template <typename T, typename U> Modular<T> operator*(U lhs, const Modular<T> &rhs) { return Modular<T>(lhs) *= rhs; }
+template <typename T> Modular<T> operator/(const Modular<T> &lhs, const Modular<T> &rhs) {
+    return Modular<T>(lhs) /= rhs;
+}
+template <typename T, typename U> Modular<T> operator/(const Modular<T> &lhs, U rhs) { return Modular<T>(lhs) /= rhs; }
+template <typename T, typename U> Modular<T> operator/(U lhs, const Modular<T> &rhs) { return Modular<T>(lhs) /= rhs; }
+template <typename T, typename U> Modular<T> power(const Modular<T> &a, const U &b) {
+    assert(b >= 0);
+    Modular<T> x = a, res = 1;
+    U p = b;
+    while (p > 0) {
+        if (p & 1) res *= x;
+        x *= x;
+        p >>= 1;
+    }
+    return res;
+}
+template <typename T> bool IsZero(const Modular<T> &number) { return number() == 0; }
+template <typename T> string to_string(const Modular<T> &number) { return to_string(number()); }
+template <typename U, typename T> U &operator<<(U &stream, const Modular<T> &number) { return stream << number(); }
+template <typename U, typename T> U &operator>>(U &stream, Modular<T> &number) {
+    typename common_type<typename Modular<T>::Type, long long>::type x;
+    stream >> x;
+    number.value = Modular<T>::normalize(x);
+    return stream;
+}
+
+const int mod = (int)1e9 + 9;
+using mint = Modular<std::integral_constant<decay<decltype(mod)>::type, mod>>;
+
+template<typename T> struct matrix {
+    int n, m;
+    vector<vector<T>> a;
+    matrix(int n, int m) : n(n), m(m), a(n, vector<T>(m)) {}
+    matrix(int n) : matrix(n, n) {}
+    matrix(const vector<vector<T>>& a) : n(a.size()), m(a[0].size()), a(a) {}
+    matrix(const matrix& o) : matrix(o.a) {}
+    matrix& operator=(const matrix& o) { a = o.a; n = o.n; m = o.m; return *this; }
+    matrix& operator=(const vector<vector<T>>& o) { a = o; n = o.size(); m = o[0].size(); return *this; }
+    vector<T>& operator[](int i) { return a[i]; }
+    const vector<T>& operator[](int i) const { return a[i]; }
+    matrix operator+(const matrix& o) const {
+        assert(n == o.n && m == o.m);
+        matrix res(n, m);
+        for (int i = 0; i < n; i++) for (int j = 0; j < m; j++) res[i][j] = a[i][j] + o[i][j];
+        return res;
+    }
+    matrix operator-(const matrix& o) const {
+        assert(n == o.n && m == o.m);
+        matrix res(n, m);
+        for (int i = 0; i < n; i++) for (int j = 0; j < m; j++) res[i][j] = a[i][j] - o[i][j];
+        return res;
+    }
+    matrix operator*(const matrix& o) const {
+        assert(m == o.n);
+        matrix res(n, o.m);
+        for (int i = 0; i < n; i++) for (int j = 0; j < o.m; j++) for (int k = 0; k < m; k++) res[i][j] += a[i][k] * o[k][j];
+        return res;
+    }
+    matrix operator*(const T& o) const {
+        matrix res(n, m);
+        for (int i = 0; i < n; i++) for (int j = 0; j < m; j++) res[i][j] = a[i][j] * o;
+        return res;
+    }
+    matrix operator/(const T& o) const {
+        matrix res(n, m);
+        for (int i = 0; i < n; i++) for (int j = 0; j < m; j++) res[i][j] = a[i][j] / o;
+        return res;
+    }
+    matrix& operator+=(const matrix& o) { return *this = *this + o; }
+    matrix& operator-=(const matrix& o) { return *this = *this - o; }
+    matrix& operator*=(const matrix& o) { return *this = *this * o; }
+    matrix& operator*=(const T& o) { return *this = *this * o; }
+    matrix& operator/=(const T& o) { return *this = *this / o; }
+    matrix operator^(ll p) const {
+        assert(n == m);
+        matrix res(n);
+        matrix b = *this;
+        for (int i = 0; i < n; i++) res[i][i] = 1;
+        while (p) {
+            if (p & 1) res *= b;
+            b *= b;
+            p >>= 1;
+        }
+        return res;
+    }
+    matrix& operator^=(ll p) { return *this = *this ^ p; }
+    matrix operator-() const { return *this * -1; }
+    matrix operator+() const { return *this; }
+    friend ostream& operator<<(ostream& os, const matrix& o) {
+        for (int i = 0; i < o.n; i++) {
+            for (int j = 0; j < o.m; j++) os << o[i][j] << " \n"[j + 1 == o.m];
+        }
+        return os;
+    }
+    friend istream& operator>>(istream& is, matrix& o) {
+        for (int i = 0; i < o.n; i++) for (int j = 0; j < o.m; j++) is >> o[i][j];
+        return is;
+    }
+    friend bool operator==(const matrix& u, const matrix& v) { return u.a == v.a; }
+    friend bool operator!=(const matrix& u, const matrix& v) { return u.a != v.a; }
+    friend matrix transpose(const matrix& o) {
+        matrix res(o.m, o.n);
+        for (int i = 0; i < o.n; i++) for (int j = 0; j < o.m; j++) res[j][i] = o[i][j];
+        return res;
+    }
+    friend matrix pow(const matrix& o, ll p) { return o ^ p; }
+    friend T det2(const matrix& o) { // only for 2x2
+        assert(o.n == 2 && o.m == 2);
+        return o[0][0] * o[1][1] - o[0][1] * o[1][0];
+    }
+    friend T det3(const matrix& o) { // only for 3x3
+        assert(o.n == 3 && o.m == 3);
+        return o[0][0] * o[1][1] * o[2][2] + o[0][1] * o[1][2] * o[2][0] + o[0][2] * o[1][0] * o[2][1] - o[0][0] * o[1][2] * o[2][1] - o[0][1] * o[1][0] * o[2][2] - o[0][2] * o[1][1] * o[2][0];
+    }
+    friend matrix inv2(const matrix& o) { // only for 2x2
+        assert(o.n == 2 && o.m == 2);
+        matrix res = o;
+        T det = det2(o);
+        /* assert(det != 0); */
+        res[0][0] = o[1][1] / det;
+        res[1][1] = o[0][0] / det;
+        res[0][1] = -o[0][1] / det;
+        res[1][0] = -o[1][0] / det;
+        return res;
+    }
+    friend matrix inv3(const matrix& o) { // only for 3x3
+        assert(o.n == 3 && o.m == 3);
+        matrix res = o;
+        T det = det3(o);
+        /* assert(det != 0); */
+        res[0][0] = (o[1][1] * o[2][2] - o[1][2] * o[2][1]) / det;
+        res[0][1] = (o[0][2] * o[2][1] - o[0][1] * o[2][2]) / det;
+        res[0][2] = (o[0][1] * o[1][2] - o[0][2] * o[1][1]) / det;
+        res[1][0] = (o[1][2] * o[2][0] - o[1][0] * o[2][2]) / det;
+        res[1][1] = (o[0][0] * o[2][2] - o[0][2] * o[2][0]) / det;
+        res[1][2] = (o[0][2] * o[1][0] - o[0][0] * o[1][2]) / det;
+        res[2][0] = (o[1][0] * o[2][1] - o[1][1] * o[2][0]) / det;
+        res[2][1] = (o[0][1] * o[2][0] - o[0][0] * o[2][1]) / det;
+        res[2][2] = (o[0][0] * o[1][1] - o[0][1] * o[1][0]) / det;
+        return res;
+    }
+    friend T det(const matrix& o) {
+        assert(o.n == o.m);
+        if (o.n == 1) return o[0][0];
+        if (o.n == 2) return det2(o);
+        if (o.n == 3) return det3(o);
+        assert(false);
+    }
+    friend matrix inv(const matrix& o) {
+        assert(o.n == o.m);
+        if (o.n == 1) return vector<vector<T>> {{1 / o[0][0]}};
+        if (o.n == 2) return inv2(o);
+        if (o.n == 3) return inv3(o);
+        assert(false);
+    }
+};
+
+void solve() {
+    int n, a, b; cin >> n >> a >> b;
+    int k; cin >> k;
+    string s; cin >> s;
+    mint res = 0;
+    mint A = a, B = b;
+    mint C = (B ^ k) / (A ^ k);
+    int K = (n + 1) / k;
+    matrix<mint> rec = vector<vector<mint>> {
+        {C, 0},
+        {1, 1}
+    };
+    rec ^= K;
+    for (int i = 0; i < k; i++) {
+        matrix<mint> base = vector<vector<mint>> {
+            {(A ^ (n - i)) * (B ^ i)},
+            {0}
+        };
+        if (s[i] == '+') res += (rec * base)[1][0];
+        else res -= (rec * base)[1][0];
+    }
+    cout << res << endl;
+}
+
+signed main() {
+    ios_base::sync_with_stdio(0); cin.tie(0);
+    int TC = 0;
+    if (TC) cin >> TC;
+    else TC += 1;
+    int TEST = 1;
+    while (TEST <= TC) {
+        cerr << "[Testcase " << TEST << "]" << endl;
+        solve();
+        /* cout << solve() << endl; */
+        /* cout << (solve() ? "Yes" : "No") << endl; */
+        TEST += 1;
+    }
+}

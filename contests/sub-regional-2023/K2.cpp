@@ -1,0 +1,155 @@
+#include "bits/stdc++.h"
+using namespace std;
+
+#ifdef LOCAL_DEBUG
+#include "debug.h"
+#else
+#define debug(...)
+#define cerr if (false) cerr
+#endif
+#define endl '\n'
+#define eb emplace_back
+#define all(x) begin(x), end(x)
+#define rall(x) rbegin(x), rend(x)
+#define L1(res...) [&](const auto& x){ return res; }
+#define L2(res...) [&](const auto& x, const auto& y){ return res; }
+mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
+typedef long long ll;
+typedef long double ld;
+typedef pair<int, int> ii;
+typedef tuple<int, int, int> i3;
+
+// NTT
+//
+// Precisa do mint (primitivas de aritmetica modular)
+//
+// O(n log (n))
+
+const int MOD = 998244353;
+const int mod = MOD;
+
+ll binpow(ll b, ll e) {
+    ll ret = 1;
+    while (e) {
+        if (e & 1) ret = ret * b % mod;
+        b = b * b % mod;
+        e >>= 1;
+    }
+    return ret;
+}
+
+ll invmod(ll u) { return binpow(u, mod - 2); }
+
+void ntt(vector<ll> &a, bool rev) {
+    int n = a.size();
+    auto b = a;
+    assert(!(n & (n - 1)));
+    ll g = 1;
+    while ((binpow(g, ((MOD - 1) / 2))) == 1) g += 1;
+    if (rev) g = invmod(g);
+
+    for (int step = n / 2; step; step /= 2) {
+        ll w = binpow(g, ((MOD - 1) / (n / step)));
+        ll wn = 1;
+        for (int i = 0; i < n / 2; i += step) {
+            for (int j = 0; j < step; j++) {
+                ll u = a[2 * i + j];
+                ll v = (wn * a[2 * i + j + step]) % MOD;
+                b[i + j] = (u + v) % MOD;
+                b[i + n / 2 + j] = (u - v + MOD) % MOD;
+            }
+            wn = wn * w % MOD;
+        }
+        swap(a, b);
+    }
+    if (rev) {
+        auto n1 = invmod(n);
+        for (auto &x : a) x = (x * n1) % MOD;
+    }
+}
+
+vector<ll> convolution(vector<ll> &a, vector<ll> &b) {
+    vector<ll> l(a.begin(), a.end()), r(b.begin(), b.end());
+    int N = l.size() + r.size() - 1, n = 1;
+    while (n <= N) n *= 2;
+    l.resize(n);
+    r.resize(n);
+    ntt(l, false);
+    ntt(r, false);
+    for (int i = 0; i < n; i++) l[i] = (l[i] * r[i]) % MOD;
+    ntt(l, true);
+    l.resize(N);
+    vector<ll> ret(l.size());
+    for (int i = 0; i < N; i++) ret[i] = l[i];
+    return ret;
+}
+
+const int maxn = 1e5 + 10;
+int n, k;
+vector<ll> t, p, res;
+vector<ll> A, B, K;
+ll fat[maxn], invfat[maxn], pk[maxn];
+
+void compute() {
+    pk[0] = fat[0] = 1;
+    for (int i = 1; i < maxn; i++) pk[i] = pk[i - 1] * k % mod;
+    for (int i = 1; i < maxn; i++) fat[i] = fat[i - 1] * i % mod;
+    invfat[maxn - 1] = binpow(fat[maxn - 1], mod - 2);
+    for (int i = maxn - 2; i >= 0; i--) invfat[i] = invfat[i + 1] * (i + 1) % mod;
+}
+
+void solve() {
+    cin >> n >> k;
+    n++;
+
+    compute();
+
+    t.resize(n); p.resize(n);
+    res.resize(n); A.resize(n); B.resize(n);
+    K.resize(n);
+
+    for (int i = 0; i < n; i++) cin >> t[i];
+    for (int i = 0; i < n; i++) t[i] = t[i] * fat[i] % mod;
+    for (int i = 0; i < n; i++) cin >> p[i];
+    for (int i = 0; i < n; i++) p[i] = p[i] * fat[i] % mod;
+
+    for (int i = 0; i < n; i++) {
+        K[n-1-i] = pk[i] * invfat[i] % mod;
+    }
+
+    A = convolution(t, K);
+
+    debug(A);
+
+    for (int i = 0; i < n; i++) A[i] = A[n-1+i] * invfat[i] % mod;
+
+    for (int i = 0; i < n; i++) if ((i & 1) == (n & 1)) K[i] = -K[i];
+
+    B = convolution(p, K);
+
+    for (int i = 0; i < n; i++) B[i] = B[n-1+i] * invfat[i] % mod;
+
+    debug(B);
+
+    for (int i = 0; i < n; i++) res[i] = (A[i] + B[i] + mod) % mod;
+
+    for (auto u : res) cout << u << " ";
+    cout << endl;
+
+}
+
+signed main() {
+    ios_base::sync_with_stdio(0); cin.tie(0);
+    int TC = 0;
+    if (TC) cin >> TC;
+    else TC += 1;
+    int TEST = 1;
+    while (TEST <= TC) {
+        cerr << "[Testcase " << TEST << "]" << endl;
+        solve();
+        /* cout << solve() << endl; */
+        /* cout << (solve() ? "YES" : "NO") << endl; */
+        TEST += 1;
+    }
+}
+

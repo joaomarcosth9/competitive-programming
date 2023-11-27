@@ -22,14 +22,30 @@ typedef tuple<int, int, int> i3;
 void out(bool ans) { cout << (ans ? "YES" : "NO") << endl; }
 
 void solve() {
-    int n;
-    cin >> n;
-    vector<int> a(n);
+    int n, m;
+    cin >> n >> m;
+    vector<int> a(n), b(m);
     for (int &i : a) cin >> i;
-    vector dp(n + 1, vector<bool>(n + 1));
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j <= n; j++) {
-        }
+    for (int &i : b) cin >> i;
+
+    if (n % 2 == 0) {
+        int mx = 0;
+        for (int i = 0; i < n; i++) mx ^= a[i];
+        int v = 0;
+        for (int i = 0; i < m; i++) v |= b[i];
+        for (int i = 0; i < n; i++) a[i] |= v;
+        int cx = 0;
+        for (int i = 0; i < n; i++) cx ^= a[i];
+        cout << cx << " " << mx << endl;
+    } else {
+        int mx = 0;
+        for (int i = 0; i < n; i++) mx ^= a[i];
+        int v = 0;
+        for (int i = 0; i < m; i++) v |= b[i];
+        for (int i = 0; i < n; i++) a[i] |= v;
+        int cx = 0;
+        for (int i = 0; i < n; i++) cx ^= a[i];
+        cout << mx << " " << cx << endl;
     }
 }
 

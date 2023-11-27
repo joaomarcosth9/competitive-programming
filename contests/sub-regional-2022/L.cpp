@@ -87,17 +87,13 @@ namespace vt {
             virt[parent].emplace_back(v[i], d);
             if (nodes.find(v[i]) == nodes.end()) {
                 nodes.insert(v[i]);
-                if (arr[v[i]] != _color)
-                    diff++;
-                else
-                    qt++;
+                if (arr[v[i]] != _color) diff++;
+                else qt++;
             }
             if (nodes.find(parent) == nodes.end()) {
                 nodes.insert(parent);
-                if (arr[parent] != _color)
-                    diff++;
-                else
-                    qt++;
+                if (arr[parent] != _color) diff++;
+                else qt++;
             }
         }
         return v[0];

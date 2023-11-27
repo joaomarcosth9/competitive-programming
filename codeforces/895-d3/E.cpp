@@ -20,39 +20,42 @@ typedef long double ld;
 typedef pair<int, int> ii;
 typedef tuple<int, int, int> i3;
 #define int ll
-vector<int> u;
-vector<int> pref;
 
-int queryP(int l, int r) {
-    l++;
-    r++;
-    assert(r < (int)pref.size());
-    return pref[r] ^ pref[l - 1];
-}
+struct node {
+    int x0, x1;
+    node() : x0(0), x1(0) { }
+    node(int u, char c) : x0(0), x1(0) {
+        if (c - '0') x1 = u;
+        else x0 = u;
+    }
+    node(node &l, node &r) {
+        x0 = l.x0 ^ r.x0;
+        x1 = l.x1 ^ r.x1;
+    }
+};
 
-#include <cstdio>
-const int neutral = 0; // comp(x, neutral) = x
-#define comp(a, b) ((a) ^ (b))
+const node neutral = node();
 
 class SegmentTree {
   private:
-    vector<int> st, lazy;
+    vector<node> st;
+    vector<int> lazy;
     int size;
 #define left(p) (p << 1)
 #define right(p) ((p << 1) + 1)
     void build(int p, int l, int r, vector<int> &A, string &s) {
         if (l == r) {
-            st[p] = (s[l] == '1' ? A[l] : 0);
+            st[p] = node(A[l], s[l]);
             return;
         }
         int m = (l + r) / 2;
         build(left(p), l, m, A, s);
         build(right(p), m + 1, r, A, s);
-        st[p] = comp(st[left(p)], st[right(p)]);
+        st[p] = node(st[left(p)], st[right(p)]);
     }
     void push(int p, int l, int r) {
         if (lazy[p] & 1) {
-            st[p] ^= queryP(l, r);
+            swap(st[p].x1, st[p].x0);
         }
         if (l != r) {
             lazy[right(p)] += lazy[p] & 1;
@@ -62,8 +65,7 @@ class SegmentTree {
     }
     void update(int p, int l, int r, int a, int b, int k) {
         push(p, l, r);
-        if (a > r || b < l)
-            return;
+        if (a > r || b < l) return;
         else if (l >= a && r <= b) {
             lazy[p] ^= 1;
             push(p, l, r);
@@ -72,16 +74,16 @@ class SegmentTree {
         int m = (l + r) / 2;
         update(left(p), l, m, a, b, k);
         update(right(p), m + 1, r, a, b, k);
-        st[p] = comp(st[left(p)], st[right(p)]);
+        st[p] = node(st[left(p)], st[right(p)]);
     }
-    int query(int p, int l, int r, int a, int b) {
+    node query(int p, int l, int r, int a, int b) {
         push(p, l, r);
         if (a > r || b < l) return neutral;
         if (l >= a && r <= b) return st[p];
         int m = (l + r) / 2;
-        int p1 = query(left(p), l, m, a, b);
-        int p2 = query(right(p), m + 1, r, a, b);
-        return comp(p1, p2);
+        node p1 = query(left(p), l, m, a, b);
+        node p2 = query(right(p), m + 1, r, a, b);
+        return node(p1, p2);
     }
 
   public:
@@ -91,21 +93,15 @@ class SegmentTree {
         lazy.assign(4 * size, 0);
         build(1, 0, size - 1, a, s);
     }
-    int query(int a, int b) { return query(1, 0, size - 1, a, b); }
+    node query(int a, int b) { return query(1, 0, size - 1, a, b); }
     void update(int a, int b, int k) { update(1, 0, size - 1, a, b, k); }
 };
 
 void solve() {
-    int n;
-    cin >> n;
-    u.assign(n, 0);
-    pref.assign(n + 1, 0);
+    int n; cin >> n;
+    vector<int> u(n);
     for (int i = 0; i < n; i++) cin >> u[i];
-    for (int i = 0; i < n; i++) {
-        pref[i + 1] = pref[i] ^ u[i];
-    }
-    string s;
-    cin >> s;
+    string s; cin >> s;
 
     SegmentTree seg(u, s);
     int q;
@@ -117,16 +113,12 @@ void solve() {
             int g;
             cin >> g;
             // XOR de todos que s[i] == g;
-            if (g)
-                cout << seg.query(0, n - 1) << " ";
-            else
-                cout << (seg.query(0, n - 1) ^ queryP(0, n - 1)) << " ";
+            if (g) cout << seg.query(0, n - 1).x1 << " ";
+            else cout << seg.query(0, n - 1).x0 << " ";
         } else {
             int l, r;
             cin >> l >> r;
-            l--;
-            r--;
-            // flipar s[l, ..., r];
+            l--; r--;
             seg.update(l, r, 1);
         }
     }
