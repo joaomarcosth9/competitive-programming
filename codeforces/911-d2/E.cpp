@@ -109,12 +109,6 @@ void solve() {
         }
     }
 
-    for (int i = 0; i < n; i++) {
-        cout << i << ": ";
-        for (auto v : adj[i]) cout << v << " ";
-        cout << endl;
-    }
-
     toposort.clear();
 
     for (int i = 0; i < n; i++) vis[i] = 0;

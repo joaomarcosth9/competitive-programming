@@ -1,3 +1,4 @@
+#pragma GCC optimize("O3")
 #include "bits/stdc++.h"
 using namespace std;
 
@@ -19,93 +20,66 @@ typedef long double ld;
 typedef pair<int, int> ii;
 typedef tuple<int, int, int> i3;
 
-template<typename T> struct SegmentTree {
-    struct Node {
-        T val;
-        Node() : val(0) {} // neutral node
-        Node(T val) : val(val) {}
-        Node(const Node& l, const Node& r) : val(l.val + r.val) {} // merge
-        friend ostream& operator<<(ostream& os, const Node& node) {
-            return os << node.val;
-        }
-        explicit operator T() const {
-            return val;
-        }
-    };
-    int N;
-    vector<T> arr;
-    vector<Node> tree;
-    void build() {
-        for (int i = 0; i < N; i++) tree[i + N] = Node(arr[i]);
-        for (int i = N - 1; i > 0; i--) tree[i] = Node(tree[i * 2], tree[i * 2 + 1]);
+const int maxn = 1e6 + 5;
+int A[maxn], B[2 * maxn], res[maxn], n;
+vector<int> st[4 * maxn];
+
+#define left(p) (p << 1)
+#define right(p) ((p << 1) + 1)
+
+void build(int p, int l, int r) { // O(n)
+    st[p].assign(r - l + 1, 0);
+    if (l == r) {
+        st[p][0] = B[l];
+        return;
     }
-    SegmentTree(int N) : N(N) {
-        tree.resize(2 * N);
-    }
-    SegmentTree(const vector<T> arr) : N(arr.size()), arr(begin(arr), end(arr)) {
-        tree.resize(2 * N);
-        build();
-    }
-    Node query(int l, int r) {
-        if (r < 0) return Node();
-        if (l > r) return Node();
-        if (l >= N) return Node();
-        Node resl = Node(), resr = Node();
-        for (l += N, r += N + 1; l < r; l /= 2, r /= 2) {
-            if (l & 1) resl = Node(resl, tree[l++]);
-            if (r & 1) resr = Node(tree[--r], resr);
-        }
-        return Node(resl, resr);
-    }
-    void update(int i, T val, bool replace) {
-        tree[i += N] = replace ? Node(val) : Node(tree[i].val + val);
-        for (i /= 2; i > 0; i /= 2) tree[i] = Node(tree[i * 2], tree[i * 2 + 1]);
-    }
-    void updateSum(int i, T val) {
-        update(i, val, false);
-    }
-    void updateSet(int i, T val) {
-        update(i, val, true);
-    }
-};
+    int pl = left(p), pr = right(p), m = (l + r) / 2;
+    build(pl, l, m);
+    build(pr, m + 1, r);
+    merge(st[pl].begin(), st[pl].end(), st[pr].begin(), st[pr].end(), st[p].begin());
+}
+
+int query(int p, int l, int r, int i, int j, int a, int b) {
+    if (j < l || i > r) return 0;
+    if (i <= l && j >= r)
+        return upper_bound(st[p].begin(), st[p].end(), b) - lower_bound(st[p].begin(), st[p].end(), a);
+    int m = (l + r) / 2;
+    return query(left(p), l, m, i, j, a, b) + query(2 * p + 1, m + 1, r, i, j, a, b);
+}
+
+int query(int i, int j, int a, int b) { return query(1, 0, n - 1, i, j, a, b); }
 
 void solve() {
-    int n; cin >> n;
+    cin >> n;
 
-    vector<int> a(2 * n);
-
-    for (int i = 0; i < n; i++) cin >> a[i];
-    for (int i = 0; i < n; i++) a[i]--;
-    for (int i = 0; i < n; i++) a[i + n] = a[i];
-
-    vector<int> res(n);
-
-    SegmentTree<int> seg(2 * n);
-
-    vector<vector<int>> pos(n + 1);
+    for (int i = 0; i < n; i++) cin >> A[i];
+    for (int i = 0; i < n; i++) A[i]--;
 
     for (int i = 0; i < n; i++) {
-        int diff = a[i] - i;
-        if (diff < 0) diff += n;
-        pos[diff].eb(i);
-    }
-
-    for (int now = 0; now <= n; now++) {
-        if (pos[now].empty()) continue;
-        debug(now, pos[now]);
-        for (auto i : pos[now]) {
-            int l = i + 1, r = i + now;
-            debug(i, a[i], l, r);
-            int done = seg.query(l, r).val;
-            seg.updateSet(i, 1);
-            seg.updateSet(i + n, 1);
-            res[a[i]] = now - done;
+        if (A[i] < i) {
+            B[i] = A[i] + n;
+            B[i + n] = A[i];
+        } else {
+            B[i] = A[i];
+            B[i + n] = A[i] + n;
         }
-        for (int j = 0; j < 2 * n; j++) cout << seg.query(j, j).val << " \n"[j == 2 * n - 1];
     }
 
-    for (int i = 0; i < n; i++) cout << res[i] << " \n"[i == n - 1];
+    build(1, 0, n - 1);
 
+    for (int i = 0; i < n; i++) {
+        /* int l = i + 1, r = A[i] - 1 + n * (A[i] < i); */
+        /* res[A[i]] = A[i] - i - query(l, r, l, r); */
+        /* if (A[i] < i) res[A[i]] += n; */
+        if (A[i] < i) {
+
+        } else {
+
+        }
+    }
+
+    for (int i = 0; i < n; i++) cout << res[i] << " ";
+    cout << endl;
 }
 
 signed main() {

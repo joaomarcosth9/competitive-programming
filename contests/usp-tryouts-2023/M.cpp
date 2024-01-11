@@ -46,7 +46,7 @@ array<pair<ld, ld>, 2> points(circle a, circle b) {
              {a.x + a.r * cos(phi - theta), a.y + a.r * sin(phi - theta)}}};
     //
     //
-    // COMPREENDER ISTO !!!!!!!!!!!!!
+    // COMPREENDIDO!!!
     //
     //
 }
