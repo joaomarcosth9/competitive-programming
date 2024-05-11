@@ -1,0 +1,2 @@
+#!/bin/bash
+g++-13 -O2 -Wall -Wextra -Wconversion -Wfatal-errors $1 && ./a.out

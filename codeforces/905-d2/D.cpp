@@ -41,17 +41,14 @@ void solve() {
     for (int i = 0; i < n; i++) cin >> b[i];
     sort(all(b));
     auto base = res(a, b);
-    int l = 1, r = m;
-    int ans = -1;
-    while (l <= r) {
+    int l = 0, r = m + 1;
+    int w = (1LL << __lg(r - l - 1));
+    while (r - l > 1) {
         int mid = midpoint(l, r);
         a[0] = mid;
-        if (res(a, b) == base) {
-            ans = mid;
-            l = mid + 1;
-        } else r = mid - 1;
+        (res(a, b) == base ? l : r) = mid;
     }
-    cout << (ll)(ans) * base + (ll)(m - ans) * (base + 1) << endl;
+    cout << (ll)l * base + (ll)(m - l) * (base + 1) << endl;
 }
 
 signed main() {

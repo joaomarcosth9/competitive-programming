@@ -58,16 +58,15 @@ void solve() {
         adj[v].emplace_back(u);
     }
     int L = 1, R = n;
-    int k = -1;
     while (L <= R) {
         long long mid = (L + R) / 2;
         if (mid * mid <= n) {
-            k = mid;
             L = mid + 1;
         } else {
             R = mid - 1;
         }
     }
+    int k = L - 1;
     if (k < 3 || k * k != n || m != k * (k + 1)) {
         cout << "NO" << endl;
         return;

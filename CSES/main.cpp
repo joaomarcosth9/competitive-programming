@@ -1,81 +1,124 @@
 #include <bits/stdc++.h>
 using namespace std;
- 
+
 #ifdef LOCAL_DEBUG
 #include "debug.h"
 #else
 #define debug(...)
 #endif
-const int MAX = 1e7 + 10;
- 
+#define endl '\n'
+using ll = long long;
+
+struct sat2 {
+    int n;
+    vector<vector<int>> g, gt;
+    vector<bool> used;
+    vector<int> order, comp;
+    vector<bool> assignment;
+
+    // number of variables
+    sat2(int _n) {
+        n = 2 * (_n + 5);
+        g.assign(n, vector<int>());
+        gt.assign(n, vector<int>());
+    }
+    void add_impl(int v, int u, bool v_sign, bool u_sign) {
+        g[2 * v + v_sign].push_back(2 * u + u_sign);
+        g[2 * u + !u_sign].push_back(2 * v + !v_sign);
+        gt[2 * u + u_sign].push_back(2 * v + v_sign);
+        gt[2 * v + !v_sign].push_back(2 * u + !u_sign);
+    }
+    void add_eq(int u, int v) {
+        add_impl(u, v, 0, 0);
+        add_impl(u, v, 1, 1);
+    }
+    void add_diff(int u, int v) {
+        add_impl(u, v, 0, 1);
+        add_impl(u, v, 1, 0);
+    }
+    void dfs1(int v) {
+        used[v] = true;
+        for (int u : g[v]) {
+            if (!used[u]) {
+                dfs1(u);
+            }
+        }
+        order.push_back(v);
+    }
+    void dfs2(int v, int cl) {
+        comp[v] = cl;
+        for (int u : gt[v]) {
+            if (comp[u] == -1) {
+                dfs2(u, cl);
+            }
+        }
+    }
+    bool solve() {
+        order.clear();
+        used.assign(n, false);
+        for (int i = 0; i < n; ++i) {
+            if (!used[i]) {
+                dfs1(i);
+            }
+        }
+
+        comp.assign(n, -1);
+        for (int i = 0, j = 0; i < n; ++i) {
+            int v = order[n - i - 1];
+            if (comp[v] == -1) {
+                dfs2(v, j++);
+            }
+        }
+
+        assignment.assign(n / 2, false);
+        for (int i = 0; i < n; i += 2) {
+            if (comp[i] == comp[i + 1]) {
+                return false;
+            }
+            assignment[i / 2] = comp[i] > comp[i + 1];
+        }
+        return true;
+    }
+};
+
 void solve() {
-    int n, x; cin >> n >> x;
-    int u = n / 2, v = (n + 1) / 2;
-    vector<int> a(u), b(v);
-    for(int i = 0; i < u; i++){
+    int n, m; cin >> n >> m;
+
+    sat2 sat(m);
+
+    vector<int> a(n);
+    for (int i = 0; i < n; i++) {
         cin >> a[i];
     }
-    for(int i = 0; i < v; i++){
-        cin >> b[i];
-    }
+    vector<vector<int>> s(n);
 
-    vector<int> freq;
-    vector<pair<int, int>> freq2;
-
-    for(int i = 0; i < (1 << u); i++){
-        long long c = 0;
-        for(int j = 0; j < u; j++){
-            if(i & (1 << j)){
-                c += a[j];
-            }
+    for (int i = 0; i < m; i++) {
+        int k; cin >> k;
+        for (int j = 0; j < k; j++) {
+            int u; cin >> u;
+            u--;
+            s[u].push_back(i);
         }
-        if(c > x) continue;
-        freq.emplace_back(c);
     }
 
-    if (freq.empty()) {
-        cout << 0 << endl;
-        return;
-    }
-
-    sort(begin(freq), end(freq));
-
-    freq2.emplace_back(freq[0], 1);
-
-    for (int i = 1; i < (int)freq.size(); i++) {
-        if (freq[i] == freq2.back().first) {
-            freq2.back().second++;
+    for (int i = 0; i < n; i++) {
+        if (a[i] == 0) {
+            sat.add_diff(s[i][0], s[i][1]);
         } else {
-            freq2.emplace_back(freq[i], 1);
+            sat.add_eq(s[i][0], s[i][1]);
         }
     }
 
-    long long res = 0;
-
-    for(int i = 0; i < (1 << v); i++){
-        long long c = 0;
-        for(int j = 0; j < v; j++){
-            if(i & (1 << j)){
-                c += b[j];
-            }
-        }
-        if (c > x) continue;
-        int t = x - c;
-        auto [k, f] = *lower_bound(begin(freq2), end(freq2), make_pair(t, 0));
-        if (k == t) {
-            res += f;
-        }
+    if (!sat.solve()) {
+        cout << "NO" << endl;
+    } else {
+        cout << "YES" << endl;
     }
-
-    cout << res << '\n';
-
 }
- 
-signed main() {
-    ios_base::sync_with_stdio(0);cin.tie(0);
-    int TC = 0;
-    if (TC) { cin >> TC;
-        while (TC--) solve();
-    } else solve();
-    return 0;
+
+int32_t main() {
+    cin.tie(0)->sync_with_stdio(0);
+    solve();
+    /* cout << solve() << endl; */
+    /* cout << (solve() ? "Yes" : "No") << endl; */
 }

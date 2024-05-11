@@ -6,13 +6,15 @@ using namespace std;
 #else
 #define debug(...)
 #endif
+#define endl '\n'
+using ll = long long;
 
 void solve() {
     int n, m;
     cin >> n >> m;
 
     vector<vector<int>> adj(n);
-    vector<int> house(n);
+    vector<vector<int>> lives(n);
 
     for (int i = 0; i < m; i++) {
         int u, v;
@@ -22,9 +24,10 @@ void solve() {
         adj[v].emplace_back(u);
     }
 
-    vector<vector<int>> lives(n);
+    int f; cin >> f;
+    vector<int> house(f);
 
-    for (int i = 1; i < n; i++) {
+    for (int i = 0; i < f; i++) {
         int h;
         cin >> h;
         h--;
@@ -35,35 +38,81 @@ void solve() {
     int k;
     cin >> k;
 
-    vector<bool> nocar(n);
+    vector<int> conv(f, -1);
+
     for (int i = 0; i < k; i++) {
-        int f;
-        cin >> f;
-        f--;
-        nocar[f] = 1;
+        int u;
+        cin >> u;
+        u--;
+        conv[u] = i;
     }
 
-    vector<vector<int>> masks(n);
+    vector dis(n, vector<int> (1 << k, -1));
 
-    queue<int> q;
-    q.emplace(0);
+    queue<tuple<int, int, int>> q;
+    q.emplace(0, 0, 0);
 
     while (!q.empty()) {
-        int u = q.front();
+        auto [d, u, msk] = q.front();
         q.pop();
+        if (dis[u][msk] != -1) continue;
+        dis[u][msk] = d;
         for (int v : adj[u]) {
+            if (dis[v][msk] != -1) continue;
+            q.emplace(d + 1, v, msk);
+        }
+
+        for (auto v : lives[u]) {
+            if (conv[v] == -1) continue;
+            msk |= (1 << conv[v]);
+        }
+        if (dis[u][msk] != -1) continue;
+        dis[u][msk] = d;
+
+        for (int v : adj[u]) {
+            if (dis[v][msk] != -1) continue;
+            q.emplace(d + 1, v, msk);
         }
     }
+
+    vector<int> done(1 << k);
+    done[0] = 1;
+
+    for (int l = 0; l < f; l++) if (conv[l] == -1) {
+        int i = house[l];
+        int mn = INT_MAX;
+        for (int j = 0; j < (1 << k); j++) {
+            if (dis[i][j] == -1) continue;
+            mn = min(mn, dis[i][j]);
+        }
+        auto ndone = done;
+        for (int j = 0; j < (1 << k); j++) {
+            if (dis[i][j] == -1) continue;
+            if (dis[i][j] == mn) {
+                for (int msk = 0; msk < (1 << k); msk++) {
+                    ndone[msk | j] |= done[msk];
+                }
+            }
+        }
+        swap(done, ndone);
+    }
+
+    int res = k;
+    for (int i = 0; i < (1 << k); i++) {
+        if (done[i]) {
+            res = min(res, k - __builtin_popcount(i));
+        }
+    }
+
+    cout << res << endl;
 }
 
-signed main() {
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
-    int TC = 1;
-    if (TC) {
-        cin >> TC;
-        while (TC--) solve();
-    } else
+int32_t main() {
+    cin.tie(0)->sync_with_stdio(0);
+    int TC; cin >> TC;
+    while (TC--) {
         solve();
-    return 0;
+        /* cout << solve() << endl; */
+        /* cout << (solve() ? "Yes" : "No") << endl; */
+    }
 }

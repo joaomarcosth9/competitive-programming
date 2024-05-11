@@ -6,54 +6,68 @@ using namespace std;
 #include "debug.h"
 #else
 #define debug(...)
-#define endl '\n'
-#define cerr                                                                                                           \
-    if (false) cerr
 #endif
 
+#define endl '\n'
 typedef long long ll;
 #define LINF ((int)1e9 + 500)
 #define int ll
 
-template <ll MI = ll(-1e9), ll MA = ll(1e9)> struct LichaoTree {
-    struct line {
-        ll a, b;
-        array<int, 2> ch;
-        line(ll a_ = 0, ll b_ = -LINF) : a(a_), b(b_), ch({-1, -1}) {}
-        ll operator()(ll x) { return a * x + b; }
-    };
-    vector<line> ln;
+const ll MAXN = 4e5 + 5, INF = (ll)1e18 + 9, MAXR = 2e9;
 
-    int ch(int p, int d) {
-        if (ln[p].ch[d] == -1) {
-            ln[p].ch[d] = ln.size();
-            ln.emplace_back();
-        }
-        return ln[p].ch[d];
-    }
-    LichaoTree() { ln.emplace_back(); }
-
-    void add(line s, ll l = MI, ll r = MA, int p = 0) {
-        ll m = l + (r - l) / 2;
-        bool L = s(l) > ln[p](l);
-        bool M = s(m) > ln[p](m);
-        bool R = s(r) > ln[p](r);
-        debug(m, s.a, M, l, r);
-        if (M) swap(ln[p], s), swap(ln[p].ch, s.ch);
-        if (s.b == -LINF) return;
-        if (L != M)
-            add(s, l, m - 1, ch(p, 0));
-        else if (R != M)
-            add(s, m + 1, r, ch(p, 1));
-    }
-    ll query(int x, ll l = MI, ll r = MA, int p = 0) {
-        ll m = l + (r - l) / 2, ret = ln[p](x);
-        // debug(x, ret, l, r);
-        if (l > r) return -LINF;
-        if (x < m) return max(ret, query(x, l, m - 1, ch(p, 0)));
-        return max(ret, query(x, m + 1, r, ch(p, 1)));
-    }
+struct Line {
+    ll a, b;
+    int L, R;
+    Line(ll _a = 0, ll _b = -INF) : a(_a), b(_b), L(-1), R(-1) { }
+    ll operator()(ll x) { return a * x + b; }
 };
+vector<Line> tree;
+
+int le(int n) {
+    if (tree[n].L == -1) {
+        tree[n].L = tree.size();
+        tree.emplace_back();
+    }
+    return tree[n].L;
+}
+int ri(int n) {
+    if (tree[n].R == -1) {
+        tree[n].R = tree.size();
+        tree.emplace_back();
+    }
+    return tree[n].R;
+}
+
+void insert(Line line, int n = 0, ll l = -MAXR, ll r = MAXR) {
+    ll mid = (l + r) / 2;
+    bool bl = line(l) < tree[n](l);
+    bool bm = line(mid) < tree[n](mid);
+    if (!bm) {
+        swap(tree[n], line);
+    }
+    if (l == r) {
+        return;
+    }
+    if (line.b == -INF) return;
+    if (bl != bm) {
+        insert(line, le(n), l, mid);
+    } else {
+        insert(line, ri(n), mid + 1, r);
+    }
+}
+
+ll query(int x, int n = 0, ll l = -MAXR, ll r = MAXR) {
+    if (l > r) return -INF;
+    if (l == r) {
+        return tree[n](x);
+    }
+    ll mid = (l + r) / 2;
+    if (x < mid) {
+        return max(tree[n](x), query(x, le(n), l, mid));
+    } else {
+        return max(tree[n](x), query(x, ri(n), mid + 1, r));
+    }
+}
 
 void solve() {
     int t;
@@ -81,14 +95,14 @@ void solve() {
     vector<int> l(t), r(t, n - 1);
     while (true) {
         bool ok = 1;
-        LichaoTree lichao;
+        tree.assign(1, Line());
         for (int i = 0; i < n; i++) {
             auto &[lll, rrr] = lines[i];
-            lichao.add({lll, rrr});
+            insert({lll, rrr});
             /* cout << "Reta " << lll << " " << rrr << endl; */
             for (auto j : q[i]) {
                 ok = 0;
-                ll Y = lichao.query(x[j]);
+                ll Y = query(x[j]);
                 /* cout << "Ponto " << x[j] << " " << y[j] << endl; */
                 /* cout << "Query " << Y << endl; */
                 if (Y > y[j]) {

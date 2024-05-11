@@ -25,10 +25,9 @@ void solve() {
 
     for (int i = 0; i < n; i++) cin >> l[i] >> r[i];
 
-    ll L = 0, R = 1e9;
-    ll ans = -1;
+    ll L = -1, R = 1e9 + 1;
 
-    while (L <= R) {
+    while (R - L > 1) {
         ll mid = midpoint(L, R);
         ll mn = 0, mx = 0;
         bool db = 1;
@@ -42,13 +41,10 @@ void solve() {
             mn = max(mn, l[i]);
             mx = min(mx, r[i]);
         }
-        if (db) {
-            ans = mid;
-            R = mid - 1;
-        } else L = mid + 1;
+        (db ? R : L) = mid;
     }
 
-    cout << ans << endl;
+    cout << R << endl;
 }
 
 signed main() {
