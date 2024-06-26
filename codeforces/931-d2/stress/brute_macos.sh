@@ -5,9 +5,9 @@ if [ $# -ne 3 ]; then
     exit 1
 fi
 
-g++-13 -O2 $1 -o /tmp/__code
-g++-13 -O2 $2 -o /tmp/__brute
-g++-13 -O2 $3 -o /tmp/__gen
+g++-14 -O2 $1 -o /tmp/__code
+g++-14 -O2 $2 -o /tmp/__brute
+g++-14 -O2 $3 -o /tmp/__gen
 
 for((i = 1; ; ++i)); do
     /tmp/__gen > /tmp/__input_file

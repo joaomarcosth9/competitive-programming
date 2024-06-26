@@ -34,7 +34,6 @@ struct DSU {
 const int N = 16;
 int n, m;
 int dist[N][N];
-int msk[N][N];
 
 void solve() {
     cin >> n >> m;
@@ -50,7 +49,7 @@ void solve() {
 
     vector<int> vis(n);
 
-    vector<pair<int, int>> masks;
+    vector<pair<int, vector<int>>> masks;
 
     for (int i = 0; i < n; i++) {
         if (vis[d.find(i)]) continue;
@@ -83,9 +82,15 @@ void solve() {
 
             if (imp) continue;
 
+            assert(who[0] != -1);
+
             int used_positions = 0;
+            vector<int> guys2;
             for (int j = 0; j < n; j++) {
-                if (who[j] != -1) used_positions |= 1 << j;
+                if (who[j] != -1) {
+                    used_positions |= 1 << j;
+                    guys2.push_back(who[j]);
+                }
             }
 
             for (auto u : guys) {
@@ -93,7 +98,7 @@ void solve() {
             }
             vis[d.find(i)] = 1;
 
-            masks.push_back({used_positions, i});
+            masks.push_back({used_positions, guys2});
 
             break;
         }
@@ -103,13 +108,62 @@ void solve() {
         debug(bin(u.first, n), u.second);
     }
 
+    for (int i = 0; i < n; i++) {
+        debug(i, d.find(i));
+    }
+
     int nmasks = (int)masks.size();
 
-    for (int mask = 1; mask < (1 << n); mask++) {
-        for (int sub = mask; sub; sub = (sub - 1) & mask) {
+    vector<int> ans(n, -2);
 
+    for (int i = 0; i < nmasks; i++) {
+        for (int pos = 0; pos < n; pos++) {
+            // 16 ^ 2
+            vector<int> dp(1 << n, 0);
+            int actual = (masks[i].first << pos);
+            if (actual >> n) continue;
+            debug(i, pos, bin(actual, n));
+            dp[actual] = 1;
+            for (int j = 0; j < nmasks; j++) {
+                // 16
+                if (i == j) continue;
+                auto ndp = dp;
+                for (int posj = 0; posj < n; posj++) {
+                    // 16
+                    auto &[mask, _] = masks[j];
+                    actual = (mask << posj);
+                    if (actual >> n) continue;
+                    debug(j, bin(actual, n));
+                    for (int msk = 0; msk < (1 << n); msk++) {
+                        // 2 ^ 16
+                        if ((msk & actual) == 0) {
+                            ndp[msk | actual] |= dp[msk];
+                        }
+                    }
+                }
+                dp = ndp;
+            }
+            if (dp[(1 << n) - 1]) {
+                auto &[mask, guys] = masks[i];
+                int it_guys = 0;
+                for (int j = 0; j < n; j++) {
+                    if (mask & (1 << j)) {
+                        if (ans[guys[it_guys]] == -2) {
+                            ans[guys[it_guys]] = j + pos;
+                        } else {
+                            ans[guys[it_guys]] = -1;
+                        }
+                        it_guys++;
+                    }
+                }
+            }
         }
     }
+
+    for (int i = 0; i < n; i++) {
+        cout << (ans[i] == -1 ? -1 : ans[i] + 1) << " ";
+    }
+    cout << endl;
 
 }
 
