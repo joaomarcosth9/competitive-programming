@@ -35,21 +35,45 @@ bool intersect(circle a, circle b) {
     return d <= a.r + b.r;
 }
 
+pair<ld, ld> rotate(pair<ld, ld> a, ld alpha) {
+    auto [x, y] = a;
+    return {cos(alpha) * x - sin(alpha) * y, sin(alpha) * x + cos(alpha) * y};
+}
+
+void unit_v(pair<ld, ld> &vec) {
+    auto len = sqrt(vec.first * vec.first + vec.second * vec.second);
+    vec.first /= len;
+    vec.second /= len;
+}
+
 array<pair<ld, ld>, 2> points(circle a, circle b) {
     assert(intersect(a, b));
     ld dx = b.x - a.x;
     ld dy = b.y - a.y;
-    ld d = sqrt(dx * dx + dy * dy);
-    ld theta = acos((a.r * a.r + d * d - b.r * b.r) / (2 * a.r * d));
-    ld phi = atan2(dy, dx);
-    return {{{a.x + a.r * cos(phi + theta), a.y + a.r * sin(phi + theta)},
-             {a.x + a.r * cos(phi - theta), a.y + a.r * sin(phi - theta)}}};
-    //
-    //
-    // COMPREENDIDO!!!
-    //
-    //
+    ld d2 = dx * dx + dy * dy;
+    ld alpha = acos((a.r * a.r + d2 - b.r * b.r) / (2 * a.r * sqrt(d2)));
+    pair<ld, ld> v_d = {dx, dy};
+    auto v1 = rotate(v_d, alpha);
+    auto v2 = rotate(v_d, -alpha);
+    unit_v(v1);
+    unit_v(v2);
+    v1.first *= a.r;
+    v1.second *= a.r;
+    v2.first *= a.r;
+    v2.second *= a.r;
+    return {{{a.x + v1.first, a.y + v1.second}, {a.x + v2.first, a.y + v2.second}}};
 }
+
+/* array<pair<ld, ld>, 2> points(circle a, circle b) { */
+/*     assert(intersect(a, b)); */
+/*     ld dx = b.x - a.x; */
+/*     ld dy = b.y - a.y; */
+/*     ld d = sqrt(dx * dx + dy * dy); */
+/*     ld theta = acos((a.r * a.r + d * d - b.r * b.r) / (2 * a.r * d)); */
+/*     ld phi = atan2(dy, dx); */
+/*     return { { { a.x + a.r * cos(phi + theta), a.y + a.r * sin(phi + theta) }, */
+/*              { a.x + a.r * cos(phi - theta), a.y + a.r * sin(phi - theta) } } }; */
+/* } */
 
 bool contains(circle a, pair<ld, ld> p) {
     ld dx = a.x - p.first;
